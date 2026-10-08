@@ -1,0 +1,774 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=Space+Grotesk:wght@600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+/* Custom puzzle canvas dots */
+.bg-grid-dots {
+  background-image: radial-gradient(#bfc7d2 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+/* Puzzle interlocking connectors */
+.puzzle-male-tab {
+  width: 22px;
+  height: 10px;
+  border-radius: 0 0 7px 7px;
+  position: absolute;
+  left: 32px;
+  bottom: -10px;
+  z-index: 20;
+}
+.puzzle-female-slot {
+  width: 22px;
+  height: 10px;
+  border-radius: 0 0 7px 7px;
+  position: absolute;
+  left: 32px;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+.puzzle-exec-active {
+  ring-width: 4px;
+  box-shadow: 0 0 0 3px #38bdf8, 0 8px 24px rgba(2, 132, 199, 0.45) !important;
+  transform: scale(1.02);
+  transition: all 0.25s ease-in-out;
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary-fixed": "#6ffbbe", "surface-container": "#e7eeff", "on-secondary": "#ffffff", "on-tertiary-fixed": "#2a1700", "on-tertiary-container": "#fffbff", "surface-container-lowest": "#ffffff", "background": "#f9f9ff", "primary-fixed": "#cce5ff", "on-primary-fixed-variant": "#004b73", "surface-bright": "#f9f9ff", "on-surface-variant": "#3f4850", "on-secondary-container": "#00714d", "outline": "#707881", "on-primary-container": "#fdfcff", "inverse-primary": "#93ccff", "primary-container": "#007bb9", "secondary-container": "#6cf8bb", "primary-fixed-dim": "#93ccff", "secondary-fixed-dim": "#4edea3", "surface": "#f9f9ff", "secondary": "#006c49", "tertiary-container": "#a36700", "on-background": "#111c2d", "on-primary": "#ffffff", "surface-variant": "#d8e3fb", "on-tertiary": "#ffffff", "tertiary-fixed-dim": "#ffb95f", "inverse-on-surface": "#ecf1ff", "on-secondary-fixed": "#002113", "surface-container-high": "#dee8ff", "surface-container-low": "#f0f3ff", "outline-variant": "#bfc7d2", "primary": "#006194", "surface-dim": "#cfdaf2", "on-error": "#ffffff", "on-secondary-fixed-variant": "#005236", "tertiary-fixed": "#ffddb8", "on-error-container": "#93000a", "error-container": "#ffdad6", "surface-container-highest": "#d8e3fb", "inverse-surface": "#263143", "on-surface": "#111c2d", "on-primary-fixed": "#001d31", "surface-tint": "#006398", "on-tertiary-fixed-variant": "#653e00", "error": "#ba1a1a", "tertiary": "#825100" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-mobile": "1rem", "space-lg": "1.5rem", "margin": "2rem", "space-sm": "0.5rem", "gutter-mobile": "1rem", "space-md": "1rem", "gutter": "1.5rem", "space-xs": "0.25rem", "space-xl": "2.5rem" }, "fontFamily": { "label-code": [ "Space Grotesk" ], "headline-md": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "display": [ "Plus Jakarta Sans" ], "label-badge": [ "Plus Jakarta Sans" ], "display-mobile": [ "Plus Jakarta Sans" ], "body-sm": [ "Plus Jakarta Sans" ] }, "fontSize": { "label-code": [ "15px", { "lineHeight": "20px", "fontWeight": "600" } ], "headline-md": [ "24px", { "lineHeight": "32px", "fontWeight": "700" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "fontWeight": "700" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "fontWeight": "700" } ], "headline-lg-mobile": [ "24px", { "lineHeight": "32px", "fontWeight": "700" } ], "body-lg": [ "18px", { "lineHeight": "28px", "fontWeight": "500" } ], "body-md": [ "16px", { "lineHeight": "24px", "fontWeight": "500" } ], "display": [ "48px", { "lineHeight": "56px", "fontWeight": "800" } ], "label-badge": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700" } ], "display-mobile": [ "32px", { "lineHeight": "40px", "fontWeight": "800" } ], "body-sm": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ] } } } };</script></head><body class="bg-background font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-gradient-to-b from-surface-container-low to-surface-container-lowest/95 backdrop-blur-md shadow-[0_4px_16px_-4px_rgba(0,97,148,0.08)]"><div class="h-20 w-full px-margin flex items-center justify-between gap-gutter"><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-md py-space-xs rounded-full shadow-[0_2px_0_0_#bfc7d2]"><div class="w-6 h-6 rounded-full bg-secondary flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary text-[16px]">smart_toy</span></div><span class="font-label-badge text-label-badge text-primary font-bold tracking-wider">MADE BY: RPL STUDENT</span></div></div><nav class="hidden lg:flex items-center gap-space-sm bg-surface-container/60 p-space-xs rounded-full" data-active-classes="bg-primary-container text-on-primary font-bold shadow-[0_3px_0_0_#004b73]"><a class="font-body-md text-body-md px-space-md py-space-xs rounded-full text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all" data-path="beranda" href="#">Beranda</a><a class="font-body-md text-body-md px-space-md py-space-xs rounded-full text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all" data-path="pilih-kelas" href="#">Pilih Kelas</a><a class="font-body-md text-body-md px-space-md py-space-xs rounded-full text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-all" data-path="peta-petualangan" href="#">Peta Petualangan</a><a aria-current="page" class="px-space-md py-space-xs rounded-full transition-all bg-primary-container text-on-primary font-bold shadow-[0_3px_0_0_#004b73]" data-path="belajar-dan-tantangan" href="#">Belajar &amp; Tantangan</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-md py-space-xs rounded-full shadow-[0_2px_0_0_#bfc7d2]"><div class="w-6 h-6 rounded-full bg-secondary flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary text-[16px]">smart_toy</span></div><span class="font-label-badge text-label-badge text-primary font-bold tracking-wider">MADE BY: RPL STUDENT</span></div></div></div></header><main class="w-full pt-20 bg-background min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<div class="px-margin pb-space-xl flex flex-col gap-space-md max-w-[1560px] mx-auto w-full">
+<!-- Top Level Bar & Context -->
+<section class="bg-surface-container-lowest rounded-xl shadow-md p-space-md lg:p-space-lg flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mt-4">
+<div class="flex flex-col gap-space-xs">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-badge text-label-badge shadow-[0_2px_0_0_#93ccff]">
+<span class="material-symbols-outlined text-[16px]">school</span>
+            Kelas 4
+          </span>
+<span class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-badge text-label-badge shadow-[0_2px_0_0_#ffb95f]">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+            Level 4: Kondisi (IF / ELSE)
+          </span>
+<span class="inline-flex items-center gap-1 px-space-sm py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-badge text-label-badge">
+<span class="material-symbols-outlined text-[15px]">stars</span>
+            Hadiah: +80 XP
+          </span>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface">
+          Misi: Pandu CoFun Melewati Batu Karang!
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+          Gunakan blok keputusan <span class="font-bold text-tertiary">JIKA (IF)</span> untuk memeriksa apakah ada rintangan di depan robot, dan pilih jalur aman ke Bintang Emas.
+        </p>
+</div>
+<!-- Action Tab / View Toggle -->
+<div class="flex items-center p-1 bg-surface-container-high rounded-full self-start lg:self-center shrink-0 shadow-inner">
+<button class="flex items-center gap-1.5 px-space-md py-space-xs rounded-full font-label-badge text-label-badge text-on-surface-variant hover:text-on-surface transition-all" id="tab-material-btn" onclick="toggleHintDrawer()" type="button">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+          📖 Pelajari Materi
+        </button>
+<button class="flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-primary text-on-primary shadow-[0_3px_0_0_#004b73] font-label-badge text-label-badge transition-all" id="tab-arena-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">sports_esports</span>
+          🎮 Arena Tantangan
+        </button>
+</div>
+</section>
+<!-- Quick Concept Drawer (Togglable/Visible on Load) -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md shadow-sm border border-outline-variant/30" id="concept-drawer">
+<div class="flex items-center gap-space-md">
+<div class="w-11 h-11 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#653e00]">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-badge text-label-badge text-tertiary uppercase font-bold">Inti Pelajaran Hari Ini</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+<strong>Kondisi (IF/ELSE):</strong> Komputer berpikir seperti kamu! <span class="text-tertiary font-bold">JIKA lapar → makan</span>, <span class="text-primary font-bold">SELAIN ITU → main</span>. Di maze ini, robot memeriksa batu sebelum melangkah!
+          </p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface text-body-sm font-label-badge flex items-center gap-1 self-end md:self-auto shrink-0 bg-surface-container px-3 py-1 rounded-full transition-colors" onclick="document.getElementById('concept-drawer').classList.add('hidden')">
+        Tutup <span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Mobile Library Toggle Drawer Trigger (Visible on small screens) -->
+<div class="lg:hidden flex items-center justify-between bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/40">
+<button class="flex items-center gap-2 px-space-md py-2 bg-primary-fixed text-on-primary-fixed-variant rounded-lg font-label-badge text-label-badge font-bold w-full justify-center" onclick="toggleMobilePalette()">
+<span class="material-symbols-outlined text-[18px]">extension</span> Buka Kotak Perintah Puzzle
+  </button>
+</div>
+<!-- 3-COLUMN CORE GAMEPLAY WORKSPACE (Desktop: 3 cols / 5 cols / 4 cols) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start"><!-- COLUMN 1 (LEFT): SIMULATOR LABIRIN & ROBOT (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md order-1 lg:order-1">
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md lg:p-space-lg flex flex-col gap-space-md border border-outline-variant/30">
+<!-- Simulator Header & Step Counter -->
+<div class="flex items-center justify-between pb-space-xs border-b border-surface-container-high">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-secondary text-on-secondary flex items-center justify-center shadow-[0_2px_0_0_#002113]">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Simulator Labirin</h3>
+<span class="font-label-badge text-[11px] text-on-surface-variant">Peta Uji 5×5</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-high px-3 py-1 rounded-full border border-outline-variant/40">
+<span class="material-symbols-outlined text-[16px] text-primary">footprint</span>
+<span class="font-label-code text-[12px] font-bold text-on-surface" id="step-counter">Langkah: 0 / 4</span>
+</div>
+</div>
+<!-- Expressive Robot Speech Bubble -->
+<div class="relative bg-surface-container-high rounded-xl p-space-sm shadow-sm flex items-start gap-space-sm border border-primary/20">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-[0_2px_0_0_#004b73]">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+</div>
+<div class="flex-1">
+<p class="font-body-sm text-[13px] text-on-surface leading-snug" id="robot-speech">
+            “Ayo susun puzzle kodingmu! Aku siap mendeteksi rintangan batu di depan.”
+          </p>
+</div>
+<div class="absolute -bottom-2 left-6 w-3.5 h-3.5 bg-surface-container-high rotate-45 border-r border-b border-primary/20"></div>
+</div>
+<!-- Live Execution Stepper Badge -->
+<div class="flex items-center justify-between bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/30 text-[12px]">
+<span class="font-label-badge text-on-surface-variant flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse" id="status-dot"></span> Status Robot:
+        </span>
+<span class="font-label-code font-bold text-primary" id="status-badge">Siap di Titik Awal</span>
+</div>
+<!-- 5x5 Maze Arena Grid -->
+<div class="relative bg-surface-container-low rounded-xl p-3 shadow-inner flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<div class="grid grid-cols-5 grid-rows-5 gap-1.5 w-full max-w-[340px] aspect-square relative" id="maze-grid">
+<!-- Row 1 -->
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">1,1</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">1,2</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">1,3</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">1,4</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">1,5</div>
+<!-- Row 2 -->
+<!-- START TILE (1,1 index / col 1 row 2) -->
+<div class="relative bg-secondary-fixed/90 rounded-lg flex items-center justify-center shadow-sm border border-secondary/30" id="tile-start">
+<span class="text-[9px] font-bold text-secondary absolute bottom-1 font-label-badge">START</span>
+</div>
+<!-- Tile 2,2 (Path) -->
+<div class="bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-sm" id="tile-path-1">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">arrow_forward</span>
+</div>
+<!-- Tile 2,3 (OBSTACLE BATU KARANG) -->
+<div class="bg-error-container rounded-lg flex flex-col items-center justify-center text-on-error-container shadow-sm p-1 text-center border-2 border-error/40 relative overflow-hidden" id="tile-rock">
+<span class="material-symbols-outlined text-[24px] text-error animate-pulse" style="font-variation-settings: 'FILL' 1;">landslide</span>
+<span class="font-label-badge text-[8px] font-bold leading-none mt-0.5 text-error">BATU</span>
+</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">2,4</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">2,5</div>
+<!-- Row 3: Safe Detour Path -->
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">3,1</div>
+<div class="bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-sm" id="tile-path-2">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">subdirectory_arrow_right</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-sm" id="tile-path-3">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">arrow_forward</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-sm" id="tile-path-4">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">arrow_downward</span>
+</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">3,5</div>
+<!-- Row 4: Goal Area -->
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">4,1</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">4,2</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">4,3</div>
+<!-- GOAL TILE (4,4) -->
+<div class="bg-tertiary-fixed rounded-lg flex flex-col items-center justify-center text-on-tertiary-fixed shadow-[0_3px_0_0_#ffb95f] p-1 border border-tertiary/40 relative overflow-hidden" id="tile-goal">
+<span class="material-symbols-outlined text-[26px] text-tertiary animate-bounce" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-badge text-[8px] font-bold text-tertiary">FINISH</span>
+</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">4,5</div>
+<!-- Row 5 -->
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">5,1</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">5,2</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">5,3</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">5,4</div>
+<div class="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant">5,5</div>
+<!-- ABSOLUTE ROBOT AVATAR TOKEN -->
+<div class="absolute top-[72px] left-[6px] w-[54px] h-[54px] z-30 transition-all duration-500 ease-out flex items-center justify-center pointer-events-none" id="robot-avatar-token">
+<div class="w-10 h-10 bg-primary text-on-primary rounded-xl flex flex-col items-center justify-center shadow-[0_3px_0_0_#004b73] border border-white/40">
+<div class="flex gap-1 mb-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+</div>
+<span class="material-symbols-outlined text-[16px] leading-none">smart_toy</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Legend & Direction Compass -->
+<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-[12px] px-1 pt-1">
+<div class="flex items-center gap-2">
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-secondary-fixed"></span> Mulai</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-error-container"></span> Rintangan</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-tertiary-fixed"></span> Bintang</span>
+</div>
+<div class="flex items-center gap-1 font-label-badge text-[11px] text-primary bg-primary-fixed px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">explore</span> Arah: Timur (Kanan)
+        </div>
+</div>
+<!-- In-simulator Toast Notification -->
+<div class="hidden bg-primary text-white text-xs px-3 py-2 rounded-lg shadow-md transition-all flex items-center gap-2" id="sim-toast">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span id="sim-toast-msg" class="">Notifikasi</span>
+</div>
+</div>
+</div>
+
+<!-- COLUMN 2 (MIDDLE): KOTAK PERINTAH (Block Library - 3 Cols) -->
+<div class="lg:col-span-3 flex flex-col gap-space-sm hidden lg:flex order-2 lg:order-2" id="block-library-col">
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md flex flex-col gap-space-md border border-outline-variant/30 sticky top-24">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container-high">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">category</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-[16px] text-on-surface font-bold leading-tight">Kotak Perintah</h3>
+<span class="font-label-badge text-[11px] text-on-surface-variant">Pilih kepingan puzzle</span>
+</div>
+</div>
+<span class="text-[10px] bg-surface-container-high text-primary px-2 py-0.5 rounded-full font-label-code">Library</span>
+</div>
+<!-- Category 1: Gerakan (Sky Blue #0284c7) -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-sky-700 font-label-badge text-[12px] font-bold">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">directions_run</span> Gerakan</span>
+<span class="text-[10px] text-sky-600 bg-sky-100 px-1.5 rounded">3 Balok</span>
+</div>
+<!-- Piece: Maju 1 Langkah -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none" onclick="spawnNotification('Kepingan Maju siap digunakan!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#0284c7] hover:bg-[#0369a1] text-white px-3 py-2.5 rounded-lg shadow-[0_4px_0_0_#075985] flex items-center justify-between border-t border-l border-white/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+<span class="font-label-code text-[13px] font-bold">Maju 1 Langkah</span>
+</div>
+<span class="material-symbols-outlined text-[15px] opacity-75">drag_indicator</span>
+</div>
+<div class="puzzle-male-tab bg-[#0284c7] shadow-[0_2px_0_0_#075985]"></div>
+</div>
+<!-- Piece: Belok Kanan -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none mt-1" onclick="spawnNotification('Kepingan Belok Kanan siap!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#0284c7] hover:bg-[#0369a1] text-white px-3 py-2.5 rounded-lg shadow-[0_4px_0_0_#075985] flex items-center justify-between border-t border-l border-white/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">turn_right</span>
+<span class="font-label-code text-[13px] font-bold">Belok Kanan ↷</span>
+</div>
+<span class="material-symbols-outlined text-[15px] opacity-75">drag_indicator</span>
+</div>
+<div class="puzzle-male-tab bg-[#0284c7] shadow-[0_2px_0_0_#075985]"></div>
+</div>
+<!-- Piece: Belok Kiri -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none mt-1" onclick="spawnNotification('Kepingan Belok Kiri siap!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#0284c7] hover:bg-[#0369a1] text-white px-3 py-2.5 rounded-lg shadow-[0_4px_0_0_#075985] flex items-center justify-between border-t border-l border-white/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">turn_left</span>
+<span class="font-label-code text-[13px] font-bold">Belok Kiri ↶</span>
+</div>
+<span class="material-symbols-outlined text-[15px] opacity-75">drag_indicator</span>
+</div>
+<div class="puzzle-male-tab bg-[#0284c7] shadow-[0_2px_0_0_#075985]"></div>
+</div>
+</div>
+<!-- Category 2: Kondisi (Warm Yellow/Amber #d97706) -->
+<div class="flex flex-col gap-2 pt-2 border-t border-surface-container-high">
+<div class="flex items-center justify-between text-amber-800 font-label-badge text-[12px] font-bold">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">alt_route</span> Kondisi (IF / ELSE)</span>
+<span class="text-[10px] text-amber-700 bg-amber-100 px-1.5 rounded">2 Balok</span>
+</div>
+<!-- Condition Piece: JIKA -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none" onclick="spawnNotification('Kepingan JIKA siap!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#d97706] hover:bg-[#b45309] text-white px-3 py-2.5 rounded-lg shadow-[0_4px_0_0_#78350f] flex items-center justify-between border-t border-l border-white/30">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">help</span>
+<span class="font-label-code text-[13px] font-bold">JIKA &lt;rintangan&gt;</span>
+</div>
+<span class="text-[10px] bg-black/20 px-1.5 py-0.5 rounded font-mono">C-Block</span>
+</div>
+<div class="puzzle-male-tab bg-[#d97706] shadow-[0_2px_0_0_#78350f]"></div>
+</div>
+<!-- Condition Piece: SELAIN ITU -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none mt-1" onclick="spawnNotification('Kepingan SELAIN ITU siap!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#b45309] hover:bg-[#92400e] text-white px-3 py-2 rounded-lg shadow-[0_3px_0_0_#78350f] flex items-center justify-between border-t border-l border-white/30">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px]">call_split</span>
+<span class="font-label-code text-[12px] font-bold">SELAIN ITU</span>
+</div>
+<span class="material-symbols-outlined text-[14px] opacity-75">drag_indicator</span>
+</div>
+<div class="puzzle-male-tab bg-[#b45309] shadow-[0_2px_0_0_#78350f]"></div>
+</div>
+</div>
+<!-- Category 3: Perulangan (Soft Green #10b981) -->
+<div class="flex flex-col gap-2 pt-2 border-t border-surface-container-high">
+<div class="flex items-center justify-between text-emerald-800 font-label-badge text-[12px] font-bold">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[15px]">repeat</span> Perulangan</span>
+<span class="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 rounded">1 Balok</span>
+</div>
+<!-- Loop Piece: ULANGI -->
+<div class="relative group cursor-grab active:cursor-grabbing hover:-translate-y-0.5 transition-all select-none" onclick="spawnNotification('Kepingan Loop ULANGI!')">
+<div class="puzzle-female-slot"></div>
+<div class="bg-[#059669] hover:bg-[#047857] text-white px-3 py-2.5 rounded-lg shadow-[0_4px_0_0_#064e3b] flex items-center gap-1.5 border-t border-l border-white/30">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span class="font-label-code text-[13px] font-bold">ULANGI [2x]</span>
+</div>
+<div class="puzzle-male-tab bg-[#059669] shadow-[0_2px_0_0_#064e3b]"></div>
+</div>
+</div>
+<div class="text-[11px] text-on-surface-variant bg-surface-container-low p-2 rounded-lg text-center font-body-sm mt-1">
+        💡 Tip: Kepingan puzzle saling mengunci secara otomatis.
+      </div>
+</div>
+</div>
+
+<!-- COLUMN 3 (RIGHT): PAPAN PUZZLE KODING (Workspace Canvas - 5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md order-3 lg:order-3">
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-md lg:p-space-lg flex flex-col gap-space-md border border-outline-variant/30 min-h-[640px]">
+<!-- Workspace Toolbar Header -->
+<div class="flex items-center justify-between pb-space-xs border-b border-surface-container-high">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shadow-[0_2px_0_0_#004b73]">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Papan Puzzle Koding</h2>
+<span class="font-label-badge text-[11px] text-on-surface-variant">Rangkaian balok logika aktif</span>
+</div>
+</div>
+<!-- Canvas tools -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-full border border-outline-variant/40">
+<button class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant" onclick="spawnNotification('Zoom In Canvas')" title="Perbesar" type="button">
+<span class="material-symbols-outlined text-[16px]">zoom_in</span>
+</button>
+<button class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-surface-container-high text-on-surface-variant" onclick="spawnNotification('Canvas Normal')" title="Perkecil" type="button">
+<span class="material-symbols-outlined text-[16px]">zoom_out</span>
+</button>
+<button class="w-7 h-7 rounded-full flex items-center justify-center hover:bg-error-container text-error" onclick="resetBlocksVisual()" title="Bersihkan Susunan" type="button">
+<span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+</button>
+</div>
+</div>
+<!-- Puzzle Playing Board Background -->
+<div class="bg-surface-container-low/70 bg-grid-dots rounded-xl p-space-md sm:p-space-lg flex flex-col gap-2 relative shadow-inner overflow-x-auto min-h-[500px] border border-outline-variant/30" id="puzzle-canvas">
+<!-- 1. START ANCHOR BLOCK (Emerald/Teal Hat Block) -->
+<div class="relative w-max select-none drop-shadow-sm transition-all duration-300" id="block-hat">
+<div class="inline-flex items-center gap-2.5 bg-[#059669] text-white font-label-code text-[14px] px-4 py-2.5 rounded-t-2xl rounded-br-lg shadow-[0_4px_0_0_#064e3b] border-t-2 border-white/40">
+<div class="w-6 h-6 rounded-full bg-emerald-300/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px] text-emerald-200" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<span class="font-bold tracking-wide">🟢 KETIKA ROBOT DIJALANKAN</span>
+<span class="text-[10px] bg-emerald-900/40 text-emerald-200 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Mulai</span>
+</div>
+<!-- Male Interlocking Tab into First Command Piece -->
+<div class="puzzle-male-tab bg-[#059669] shadow-[0_2px_0_0_#064e3b]" style="left: 38px;"></div>
+</div>
+<!-- 2. COMMAND PIECE 1: Sky Blue "Maju 1 Langkah" -->
+<div class="relative ml-5 mt-2.5 w-max select-none drop-shadow-sm transition-all duration-300" id="block-step-1">
+<!-- Female Slot on Top to receive Hat block tab -->
+<div class="puzzle-female-slot" style="left: 20px;"></div>
+<div class="flex items-center justify-between gap-3 bg-[#0284c7] text-white font-label-code text-[13px] px-4 py-2.5 rounded-lg shadow-[0_4px_0_0_#075985] border-l-4 border-l-sky-300 border-t border-white/30 min-w-[240px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[17px]">directions_run</span>
+<span class="font-bold">Maju 1 Langkah</span>
+</div>
+<span class="text-[11px] bg-sky-900/40 text-sky-200 px-2 py-0.5 rounded-full font-sans font-medium">ke (1,2)</span>
+</div>
+<!-- Bottom Male Tab to plug into IF condition -->
+<div class="puzzle-male-tab bg-[#0284c7] shadow-[0_2px_0_0_#075985]" style="left: 20px;"></div>
+</div>
+<!-- 3. CONDITION C-BLOCK PIECE: Warm Amber "JIKA Ada Batu" -->
+<div class="relative ml-5 mt-2.5 max-w-full select-none drop-shadow-sm transition-all duration-300" id="block-if-c">
+<!-- Female Slot on top to receive Piece 1 tab -->
+<div class="puzzle-female-slot" style="left: 20px;"></div>
+<!-- Outer C-Block Container with Spine & Jaws -->
+<div class="flex flex-col bg-[#d97706] text-white rounded-xl shadow-[0_5px_0_0_#78350f] border-t border-l border-white/30 overflow-hidden">
+<!-- C-Block Top Jaw: Condition Header & Sensor socket -->
+<div class="relative px-3.5 py-2.5 bg-[#d97706] flex items-center gap-2 flex-wrap font-label-code text-[13px] border-b border-amber-900/30">
+<span class="w-2.5 h-2.5 rounded-sm bg-amber-200 shadow-sm"></span>
+<span class="font-bold tracking-wide uppercase">JIKA</span>
+<!-- Hexagonal Sensor Socket Pill -->
+<div class="bg-surface-container-lowest text-amber-950 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm inline-flex items-center gap-1.5 border border-amber-300">
+<span class="material-symbols-outlined text-[16px] text-error" style="font-variation-settings: 'FILL' 1;">landslide</span>
+<span class="font-bold">Ada Batu di Depan?</span>
+<span class="text-[9px] bg-amber-200/60 text-amber-900 px-1.5 py-0.2 rounded font-mono font-bold">[SENSOR]</span>
+</div>
+<span class="font-bold text-amber-100">MAKA:</span>
+</div>
+<!-- C-Block First Jaw Cavity (Inside IF Branch) -->
+<div class="flex pl-4 pr-3 py-2 bg-black/15">
+<!-- Left Spine Bar -->
+<div class="w-3.5 bg-[#d97706] rounded-l-sm border-r border-amber-800/40 shrink-0 mr-2 flex items-center justify-center">
+<div class="w-1 h-14 bg-amber-200/30 rounded-full"></div>
+</div>
+<!-- Nested Children Inside IF Branch -->
+<div class="flex flex-col gap-2 flex-1">
+<!-- Child Block 1: Belok Kanan -->
+<div class="relative w-max transition-all duration-300" id="block-inside-turn">
+<div class="puzzle-female-slot" style="left: 16px;"></div>
+<div class="bg-[#0284c7] text-white font-label-code text-[12px] px-3.5 py-2 rounded-md shadow-[0_3px_0_0_#075985] flex items-center gap-2 border-t border-white/20">
+<span class="material-symbols-outlined text-[16px]">turn_right</span>
+<span class="font-bold">Belok Kanan ↷</span>
+<span class="text-[10px] bg-sky-900/30 text-sky-200 px-1.5 py-0.5 rounded">Hindari Batu</span>
+</div>
+<div class="puzzle-male-tab bg-[#0284c7] shadow-[0_2px_0_0_#075985]" style="left: 16px;"></div>
+</div>
+<!-- Child Block 2: Maju 1 Langkah -->
+<div class="relative w-max transition-all duration-300" id="block-inside-step">
+<div class="puzzle-female-slot" style="left: 16px;"></div>
+<div class="bg-[#0284c7] text-white font-label-code text-[12px] px-3.5 py-2 rounded-md shadow-[0_3px_0_0_#075985] flex items-center gap-2 border-t border-white/20">
+<span class="material-symbols-outlined text-[16px]">directions_walk</span>
+<span class="font-bold">Maju 1 Langkah (Jalur Aman)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- C-Block Middle Divider Bar: SELAIN ITU Header -->
+<div class="relative px-3.5 py-1.5 bg-[#b45309] font-label-code text-[13px] font-bold flex items-center gap-2 border-y border-amber-950/40">
+<span class="material-symbols-outlined text-[16px] text-amber-200">call_split</span>
+<span class="">SELAIN ITU:</span>
+</div>
+<!-- C-Block Second Jaw Cavity (Inside ELSE Branch) -->
+<div class="flex pl-4 pr-3 py-2 bg-black/15">
+<div class="w-3.5 bg-[#b45309] rounded-l-sm border-r border-amber-950/40 shrink-0 mr-2 flex items-center justify-center">
+<div class="w-1 h-8 bg-amber-200/30 rounded-full"></div>
+</div>
+<div class="flex flex-col gap-1.5 flex-1">
+<!-- Child Block in ELSE: Maju 1 Langkah -->
+<div class="relative w-max opacity-90 transition-all duration-300" id="block-inside-else">
+<div class="puzzle-female-slot" style="left: 16px;"></div>
+<div class="bg-[#0284c7]/90 text-white font-label-code text-[12px] px-3.5 py-2 rounded-md shadow-[0_3px_0_0_#075985] flex items-center gap-2 border-t border-white/20">
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+<span class="font-bold">Maju 1 Langkah</span>
+</div>
+</div>
+</div>
+</div>
+<!-- C-Block Bottom Finishing Bar -->
+<div class="h-3 bg-[#d97706] rounded-b-lg border-t border-amber-800/40 relative">
+<div class="puzzle-male-tab bg-[#d97706] shadow-[0_2px_0_0_#78350f]" style="left: 20px;"></div>
+</div>
+</div>
+</div>
+<!-- 4. DROP TARGET PLACEHOLDER (Dashed puzzle socket) -->
+<div class="ml-5 mt-3 flex items-center gap-2 text-[12px] text-on-surface-variant font-label-code bg-white/70 px-4 py-2.5 rounded-xl border-2 border-dashed border-primary/40 w-max hover:bg-white transition-all shadow-sm cursor-pointer" onclick="spawnNotification('Tarik kepingan dari Kotak Perintah ke sini')">
+<span class="material-symbols-outlined text-[18px] text-primary">add_circle</span>
+<span class="font-bold text-primary">⊕ Pasang kepingan puzzle di sini</span>
+</div>
+</div>
+<!-- Action Control Toolbar at bottom of workspace -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs border-t border-surface-container-high">
+<div class="flex items-center gap-2 flex-wrap">
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-badge text-label-badge shadow-[0_3px_0_0_#ffb95f] hover:translate-y-[-1px] active:translate-y-[2px] transition-all" id="hint-btn" onclick="openHintModal()" type="button">
+<span class="material-symbols-outlined text-[17px]">lightbulb</span>
+            💡 Bantuan
+          </button>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-badge text-label-badge shadow-[0_3px_0_0_#4edea3] hover:translate-y-[-1px] active:translate-y-[2px] transition-all" id="check-btn" onclick="checkLogicPuzzle()" type="button">
+<span class="material-symbols-outlined text-[17px]">check_box</span>
+            🔍 Cek Logika
+          </button>
+<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-label-badge hover:bg-surface-container-highest transition-all" id="reset-btn" onclick="resetSimulation()" type="button">
+<span class="material-symbols-outlined text-[17px]">restart_alt</span>
+            🔄 Reset
+          </button>
+</div>
+<!-- Primary Big Run CTA -->
+<button class="flex items-center gap-2 px-space-lg py-2.5 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] hover:translate-y-[-1px] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-all w-full sm:w-auto justify-center" id="run-btn" onclick="runRobotSequence()" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+          Jalankan Robot!
+        </button>
+</div>
+</div>
+</div></div>
+<!-- SUPPLEMENTARY LEARNING PROGRESS BANNER -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md lg:p-space-lg shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md border border-outline-variant/30 mt-2">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-[0_3px_0_0_#00714d]">
+<span class="material-symbols-outlined text-[28px]">trophy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-[18px] text-on-surface font-bold">Kemajuan Belajar: Level 4 dari 8</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Selesaikan level ini untuk membuka Lencana Penjelajah Algoritma!</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md w-full md:w-80">
+<div class="w-full bg-surface-container-high h-3 rounded-full overflow-hidden shadow-inner">
+<div class="bg-primary h-full rounded-full w-1/2 transition-all duration-700"></div>
+</div>
+<span class="font-label-code text-label-code text-primary font-bold shrink-0">50%</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- MODAL 1: BANTUAN / HINT MODAL -->
+<div class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 transition-all" id="hint-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-lg shadow-2xl border border-outline-variant/30 flex flex-col gap-space-md animate-scaleUp">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Petunjuk Guru CoFun</h3>
+</div>
+<button class="w-8 h-8 rounded-full hover:bg-surface-container text-on-surface-variant flex items-center justify-center" onclick="closeHintModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="bg-tertiary-fixed/30 rounded-xl p-space-md border border-tertiary-fixed">
+<p class="font-body-md text-on-surface leading-relaxed">
+        “Coba perhatikan arah robot tepat sebelum batu karang! Robot harus <strong>Belok Kanan ↷</strong> dulu untuk turun ke jalur aman bawah, lalu melangkah ke bintang.”
+      </p>
+</div>
+<div class="flex justify-end">
+<button class="px-space-lg py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73]" onclick="closeHintModal()">
+        Saya Paham! 👍
+      </button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: SUCCESS POPUP SIMULATION MODAL -->
+<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 transition-all" id="success-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-md w-full p-space-lg shadow-2xl border border-secondary-fixed flex flex-col items-center text-center gap-space-md animate-bounce-short">
+<div class="w-20 h-20 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_4px_0_0_#006c49]">
+<span class="material-symbols-outlined text-[44px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<span class="text-xs uppercase font-label-badge text-secondary font-bold tracking-widest">Level Selesai!</span>
+<h3 class="font-headline-lg text-[26px] text-on-surface font-extrabold mt-1">🎉 Mantap! Robot Sampai Tujuan!</h3>
+<p class="font-body-md text-on-surface-variant mt-2">
+        Blok keputusan IF/ELSE kamu bekerja sempurna menghindari batu karang dan mencapai Bintang Emas!
+      </p>
+</div>
+<div class="flex items-center justify-center gap-3 w-full bg-secondary-container/40 p-3 rounded-xl border border-secondary-fixed">
+<span class="font-label-badge text-secondary font-bold text-sm">Hadiah Didapat:</span>
+<span class="px-3 py-1 bg-secondary text-white rounded-full font-label-code text-sm font-bold shadow-sm">+80 XP 🌟</span>
+</div>
+<div class="flex items-center gap-2 w-full pt-2">
+<button class="flex-1 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-label-badge font-bold hover:bg-surface-container-highest" onclick="closeSuccessModal()">
+        Ulangi Level
+      </button>
+<button class="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110" onclick="alert('Membuka Level 5: Perulangan Bersarang!')">
+        Lanjut Level 5 ➔
+      </button>
+</div>
+</div>
+</div>
+<!-- FOOTER -->
+<footer class="w-full bg-surface-container-low py-space-lg mt-8 shadow-[0_-1px_8px_rgba(0,0,0,0.02)] border-t border-outline-variant/30">
+<div class="w-full px-margin flex flex-col md:flex-row items-center justify-between gap-space-md max-w-[1560px] mx-auto">
+<div class="flex items-center gap-space-sm">
+<img alt="CoFun Logo" class="h-6 w-auto object-contain opacity-80" src="https://lh3.googleusercontent.com/aida/AEtjO1W_LV8Pz6ctmn3TR1Z0pTBt-a2fjRvTExw25lTwvG8GeJDAkkXxNNqBTc0_ETuqdmlWvw6uXfb5TMO_Wxl3EyvmolDc9rQzuWaU0_mpDJl7MtyBNMqz6wJ8o1-ZDeAi01ANwDmlCmKLa59xImz-TOk_NgCZ8MzrD6wIJQCyA7DMIJ_lgb2eO-ayoBuRwmO_t763fT3pvoe2l_bLyQfblflr3fd3HXYfPJ9zgUgsDfS5">
+<span class="font-body-sm text-body-sm text-on-surface-variant">CoFun © Belajar Koding Menyenangkan untuk SD</span>
+</div>
+<div class="flex items-center gap-space-lg">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Aman &amp; Terbimbing untuk Anak</span>
+</div>
+</div>
+</footer>
+<!-- INTERACTIVE GAMEPLAY JAVASCRIPT -->
+<script>
+  let isExecuting = false;
+  let soundEnabled = true;
+
+  // Notification Toast Helper
+  function spawnNotification(text) {
+    const toast = document.getElementById('sim-toast');
+    const msg = document.getElementById('sim-toast-msg');
+    if (!toast || !msg) return;
+    msg.textContent = text;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 2200);
+  }
+
+  // Toggle Sound Button
+  document.getElementById('sound-toggle-btn').addEventListener('click', function() {
+    soundEnabled = !soundEnabled;
+    const icon = document.getElementById('sound-icon');
+    if (soundEnabled) {
+      icon.textContent = 'volume_up';
+      spawnNotification('Suara Efek: Aktif');
+    } else {
+      icon.textContent = 'volume_off';
+      spawnNotification('Suara Efek: Hening');
+    }
+  });
+
+  // Toggle Drawer
+  function toggleHintDrawer() {
+    const drawer = document.getElementById('concept-drawer');
+    drawer.classList.toggle('hidden');
+  }
+
+  // Toggle Mobile Palette
+  function toggleMobilePalette() {
+    const palette = document.getElementById('block-library-col');
+    palette.classList.toggle('hidden');
+    if (!palette.classList.contains('hidden')) {
+      palette.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // Modal Handlers
+  function openHintModal() {
+    const modal = document.getElementById('hint-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+  function closeHintModal() {
+    const modal = document.getElementById('hint-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+  function openSuccessModal() {
+    const modal = document.getElementById('success-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+  function closeSuccessModal() {
+    const modal = document.getElementById('success-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    resetSimulation();
+  }
+
+  // Check Logic validation
+  function checkLogicPuzzle() {
+    const speech = document.getElementById('robot-speech');
+    const statusBadge = document.getElementById('status-badge');
+    statusBadge.textContent = "✓ Logika Diverifikasi!";
+    speech.textContent = "Logika valid! Blok IF siap memeriksa batu karang dan berbelok menghindari tabrakan.";
+    spawnNotification('✓ Rangkaian puzzle koding valid & siap!');
+  }
+
+  // Visual Clean Helper
+  function resetBlocksVisual() {
+    ['block-hat', 'block-step-1', 'block-if-c', 'block-inside-turn', 'block-inside-step', 'block-inside-else'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('puzzle-exec-active');
+    });
+  }
+
+  // Reset Simulation
+  function resetSimulation() {
+    if (isExecuting) return;
+    resetBlocksVisual();
+    const robot = document.getElementById('robot-avatar-token');
+    const speech = document.getElementById('robot-speech');
+    const stepCounter = document.getElementById('step-counter');
+    const statusBadge = document.getElementById('status-badge');
+
+    // Reset robot coordinates to Tile (1,1)
+    robot.style.top = '72px';
+    robot.style.left = '6px';
+    robot.style.transform = 'rotate(0deg)';
+
+    stepCounter.textContent = 'Langkah: 0 / 4';
+    statusBadge.textContent = 'Siap di Titik Awal';
+    speech.textContent = '“Robot kembali ke titik awal. Tekan Jalankan Robot untuk mencoba!”';
+    spawnNotification('Simulator di-reset.');
+  }
+
+  // Run Robot Stepping Sequence with visual block pulse
+  function runRobotSequence() {
+    if (isExecuting) return;
+    isExecuting = true;
+    resetBlocksVisual();
+
+    const robot = document.getElementById('robot-avatar-token');
+    const speech = document.getElementById('robot-speech');
+    const stepCounter = document.getElementById('step-counter');
+    const statusBadge = document.getElementById('status-badge');
+    const runBtn = document.getElementById('run-btn');
+
+    runBtn.disabled = true;
+    runBtn.classList.add('opacity-75');
+
+    // Step 0: Start block fires
+    const hat = document.getElementById('block-hat');
+    hat.classList.add('puzzle-exec-active');
+    statusBadge.textContent = "Mengeksekusi Kode...";
+    speech.textContent = "Robot menyala! Menjalankan instruksi pertama...";
+
+    // STEP 1: Maju 1 langkah (ke tile 1,2)
+    setTimeout(() => {
+      hat.classList.remove('puzzle-exec-active');
+      const step1 = document.getElementById('block-step-1');
+      step1.classList.add('puzzle-exec-active');
+
+      stepCounter.textContent = 'Langkah: 1 / 4';
+      statusBadge.textContent = "Langkah 1: Maju";
+      speech.textContent = "Melangkah maju ke depan...";
+      robot.style.left = '76px'; // Move right by 1 tile width
+
+      // STEP 2: Evaluasi IF Condition
+      setTimeout(() => {
+        step1.classList.remove('puzzle-exec-active');
+        const ifBlock = document.getElementById('block-if-c');
+        ifBlock.classList.add('puzzle-exec-active');
+
+        statusBadge.textContent = "Memeriksa Rintangan";
+        speech.textContent = "SENSOR: Ada batu karang di depan! Menjalankan instruksi MAKA...";
+
+        // STEP 3: Belok Kanan
+        setTimeout(() => {
+          const turnBlock = document.getElementById('block-inside-turn');
+          turnBlock.classList.add('puzzle-exec-active');
+
+          statusBadge.textContent = "Langkah 2: Belok Kanan";
+          speech.textContent = "Belok kanan 90° menghadap ke bawah...";
+          robot.style.transform = 'rotate(90deg)';
+
+          // STEP 4: Maju ke jalur aman bawah
+          setTimeout(() => {
+            turnBlock.classList.remove('puzzle-exec-active');
+            const innerStep = document.getElementById('block-inside-step');
+            innerStep.classList.add('puzzle-exec-active');
+
+            stepCounter.textContent = 'Langkah: 2 / 4';
+            statusBadge.textContent = "Langkah 3: Menghindar";
+            speech.textContent = "Maju 1 langkah menghindar ke baris bawah...";
+            robot.style.top = '142px'; // Move down by 1 tile
+
+            // STEP 5: Menuju Bintang Finish
+            setTimeout(() => {
+              innerStep.classList.remove('puzzle-exec-active');
+              ifBlock.classList.remove('puzzle-exec-active');
+
+              stepCounter.textContent = 'Langkah: 4 / 4';
+              statusBadge.textContent = "Langkah 4: Capai Bintang";
+              speech.textContent = "Bergerak ke Bintang Emas...";
+              robot.style.left = '216px';
+              robot.style.top = '212px';
+              robot.style.transform = 'rotate(0deg)';
+
+              // VICTORY FINISH
+              setTimeout(() => {
+                statusBadge.textContent = "Tantangan Selesai!";
+                speech.textContent = "Horee! Bintang Emas tercapai dengan sempurna!";
+                runBtn.disabled = false;
+                runBtn.classList.remove('opacity-75');
+                isExecuting = false;
+                openSuccessModal();
+              }, 800);
+
+            }, 900);
+
+          }, 900);
+
+        }, 900);
+
+      }, 900);
+
+    }, 800);
+  }
+</script>
+
+
+</body></html>

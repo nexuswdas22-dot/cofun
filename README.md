@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CoFun — Coding Fun
+
+Media pembelajaran interaktif berbasis game puzzle untuk memperkenalkan logika pemrograman dan *computational thinking* kepada siswa SD Kelas 1–6.
+
+> *"Bukan sekadar editor kode, melainkan puzzle permainan logika."*
+
+Anak-anak tidak mengetik sintaks, melainkan menyusun kepingan puzzle magnetik untuk memandu robot menuntaskan misi. Prinsip utama: **Salah → Coba → Perbaiki → Berhasil**.
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- [React 19](https://react.dev/) + [TypeScript 5](https://www.typescriptlang.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/) dengan design token kustom
+- Font: Plus Jakarta Sans & Space Grotesk (`next/font`), Material Symbols (ikon)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) — otomatis di-redirect ke `/beranda`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Perintah lain:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # jalankan production server
+npm run lint    # eslint
+```
 
-## Learn More
+## Rute
 
-To learn more about Next.js, take a look at the following resources:
+| URL | Halaman | Status |
+|---|---|---|
+| `/` | Redirect ke `/beranda` | Selesai |
+| `/beranda` | Beranda (hero interaktif, fondasi, peta kelas K1–K6, alur 3 langkah) | Selesai |
+| `/pilih-kelas` | Katalog kartu kelas 1–6 | Direncanakan |
+| `/peta-petualangan` | Peta level misi per kelas | Direncanakan |
+| `/belajar-dan-tantangan` | Arena: simulator labirin, kotak perintah, papan puzzle | Direncanakan |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Struktur Proyek
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+cofun/
+├── app/
+│   ├── layout.tsx            # Root layout: font, metadata, Navbar
+│   ├── globals.css           # Design token (@theme) dari design.md
+│   ├── page.tsx              # Redirect ke /beranda
+│   ├── icon.png              # Favicon (otomatis diload Next.js)
+│   └── beranda/
+│       ├── page.tsx          # Seksi statis halaman beranda
+│       └── HeroSection.tsx   # Hero + animasi robot (client component)
+├── components/
+│   └── Navbar.tsx            # Navigasi pill, badge RPL Student
+├── lib/
+│   └── assets.ts             # Konstanta aset (path logo)
+├── public/
+│   └── images/logo.png       # Logo CoFun
+├── stitch/                   # Referensi desain dari Stitch (bukan bagian build)
+│   ├── htmlcode/             # HTML asli tiap layar
+│   └── imgreferences/        # Screenshot tiap layar
+├── design.md                 # Design system (token warna, tipografi, spacing)
+└── PRD.md                    # Product Requirements Document
+```
 
-## Deploy on Vercel
+## Design System
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Token dibangun di `app/globals.css` (`@theme`) dan bersumber dari `design.md`:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Warna:** palet Material-3 — primary `#006194`, container `#007bb9`, surface `#f9f9ff`, sekunder `#006c49`, tersier `#825100`, error `#ba1a1a`
+- **Tipografi:** skala `display` hingga `label-badge`; blok kode memakai Space Grotesk (`label-code`)
+- **Spacing:** token kustom `margin`, `gutter`, `space-xs` … `space-xl`
+- **Gaya:** tombol taktil dengan efek ekstrusi bawah, target sentuh minimum 44px
+
+## Sumber Desain
+
+- Proyek Stitch: **CoFun UI/UX Prototype** (`2197497788622805466`)
+- Layar yang dikonversi: Beranda, Pilih Kelas, Peta Petualangan, Arena Belajar & Tantangan
+- File HTML + screenshot asli tersimpan di `stitch/` sebagai referensi
+
+## Catatan
+
+- Logo (`public/images/logo.png`) dirujuk lewat `lib/assets.ts`; favicon di `app/icon.png`.
+- Tanpa login — akses terbuka untuk siswa, guru, dan orang tua.
+
+Made by: RPL Student
