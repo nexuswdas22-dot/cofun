@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Reveal from "@/components/Reveal";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -27,8 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="id"
-      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
-    >
+      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} h-full antialiased`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -43,6 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full bg-background font-body-md text-on-surface antialiased">
         <Navbar />
+        <Reveal />
         {children}
       </body>
     </html>

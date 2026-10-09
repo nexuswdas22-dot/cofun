@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import HeroSection from "./HeroSection";
-import { cofunLogoSrc } from "@/lib/assets";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Beranda - CoFun",
@@ -142,8 +142,14 @@ export default function BerandaPage() {
       <main className="w-full pt-20 bg-background min-h-[calc(100vh-5rem)]">
         <div className="flex flex-col w-full">
           <HeroSection />
-          <section className="w-full px-margin py-space-xl bg-surface-container-low/50">
-            <div className="max-w-7xl mx-auto flex flex-col gap-space-xl">
+          <section
+            className="w-full px-margin-mobile md:px-margin py-space-xl bg-surface-container-low/50"
+            id="tentang"
+          >
+            <div
+              className="max-w-7xl mx-auto flex flex-col gap-space-xl"
+              data-reveal
+            >
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
                 <div className="flex flex-col gap-space-xs max-w-2xl">
                   <div className="inline-flex items-center gap-1 font-label-badge text-label-badge text-primary uppercase font-bold tracking-wider">
@@ -152,20 +158,16 @@ export default function BerandaPage() {
                     </span>{" "}
                     Mengapa Belajar di CoFun?
                   </div>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
                     Fondasi Berpikir Kritis Lewat Permainan Seru
                   </h2>
                 </div>
-                <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
-                  Dirancang khusus agar anak memahami cara kerja teknologi masa
-                  depan tanpa harus merasa pusing atau bosan.
-                </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg">
                 {features.map((feature) => (
                   <div
                     key={feature.title}
-                    className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group"
+                    className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between gap-space-md group"
                   >
                     <div className="flex flex-col gap-space-md">
                       <div
@@ -200,8 +202,11 @@ export default function BerandaPage() {
               </div>
             </div>
           </section>
-          <section className="w-full px-margin py-space-xl bg-background">
-            <div className="max-w-7xl mx-auto flex flex-col gap-space-xl">
+          <section className="w-full px-margin-mobile md:px-margin py-space-xl bg-background" id="materi">
+            <div
+              className="max-w-7xl mx-auto flex flex-col gap-space-xl"
+              data-reveal
+            >
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
                 <div className="flex flex-col gap-space-xs max-w-2xl">
                   <div className="inline-flex items-center gap-1 font-label-badge text-label-badge text-primary uppercase font-bold tracking-wider">
@@ -210,21 +215,16 @@ export default function BerandaPage() {
                     </span>{" "}
                     Kurikulum Berbasis Tantangan Seru
                   </div>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
                     Jelajahi Jalur Belajar & Game Tiap Kelas
                   </h2>
                 </div>
-                <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
-                  Materi computational thinking dirancang bertahap sesuai usia
-                  anak SD dengan game petualangan yang interaktif dan
-                  menyenangkan.
-                </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
                 {classes.map((item) => (
                   <div
                     key={item.badge}
-                    className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group border border-outline-variant/30"
+                    className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between gap-space-md group border border-outline-variant/30"
                   >
                     <div className="flex flex-col gap-space-md">
                       <div className="flex items-center justify-between">
@@ -248,21 +248,28 @@ export default function BerandaPage() {
                         </p>
                       </div>
                     </div>
-                    <div
-                      className={`flex items-center gap-1 font-label-code text-label-code group-hover:translate-x-1 transition-transform cursor-pointer ${item.linkColor}`}
+                    <Link
+                      className={`flex items-center gap-1 font-label-code text-label-code group-hover:translate-x-1 transition-transform ${item.linkColor}`}
+                      href="/pilih-kelas"
                     >
                       <span>Lihat Materi & Game</span>
                       <span className="material-symbols-outlined text-[16px]">
                         arrow_forward
                       </span>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </div>
             </div>
           </section>
-          <section className="w-full px-margin py-space-xl bg-surface-container-low/50">
-            <div className="max-w-7xl mx-auto flex flex-col gap-space-lg">
+          <section
+            className="w-full px-margin-mobile md:px-margin py-space-xl bg-surface-container-low/50"
+            id="cara-belajar"
+          >
+              <div
+                className="max-w-7xl mx-auto flex flex-col gap-space-lg"
+                data-reveal
+              >
               <div className="flex flex-col gap-space-xs">
                 <div className="inline-flex items-center gap-1 font-label-badge text-label-badge text-tertiary uppercase font-bold tracking-wider">
                   <span className="material-symbols-outlined text-[16px]">
@@ -270,7 +277,7 @@ export default function BerandaPage() {
                   </span>{" "}
                   3 Langkah Asyik
                 </div>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
                   Bagaimana Cara Anak Belajar di CoFun?
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant max-w-xl">
@@ -282,7 +289,7 @@ export default function BerandaPage() {
                 {steps.map((step) => (
                   <div
                     key={step.number}
-                    className="flex flex-col gap-space-md bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30"
+                    className="flex flex-col gap-space-md bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all border border-outline-variant/30"
                   >
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 font-headline-sm text-headline-sm ${step.numberBox}`}
@@ -304,10 +311,13 @@ export default function BerandaPage() {
           </section>
         </div>
         <section
-          className="w-full px-margin py-space-xl bg-background mb-space-xl"
+          className="w-full px-margin-mobile md:px-margin py-space-xl bg-background mb-space-xl"
           id="cta-banner"
         >
-          <div className="max-w-7xl mx-auto bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-2xl p-space-lg lg:p-space-xl shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-space-lg">
+          <div
+            className="max-w-7xl mx-auto bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-2xl p-space-lg lg:p-space-xl shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-space-lg"
+            data-reveal
+          >
             <div className="absolute -left-10 -bottom-10 opacity-10">
               <svg
                 fill="currentColor"
@@ -325,7 +335,7 @@ export default function BerandaPage() {
                 </span>{" "}
                 Dunia Coding Tanpa Batas
               </div>
-              <h2 className="font-display text-headline-lg lg:text-display text-on-primary tracking-tight">
+              <h2 className="font-display text-headline-lg-mobile md:text-headline-lg lg:text-display text-on-primary tracking-tight">
                 30 Level Menantang Siap Dimainkan!
               </h2>
               <p className="font-body-md text-body-md text-primary-fixed">
@@ -334,40 +344,20 @@ export default function BerandaPage() {
               </p>
             </div>
             <div className="z-10 flex flex-col sm:flex-row items-center gap-space-md shrink-0">
-              <button
+              <Link
                 className="w-full sm:w-auto bg-secondary-fixed hover:bg-secondary text-on-secondary-fixed hover:text-on-secondary font-headline-sm text-headline-sm px-space-xl py-3 rounded-full shadow-[0_4px_0_0_#005236] active:translate-y-1 active:shadow-[0_1px_0_0_#005236] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                type="button"
+                href="/pilih-kelas"
               >
                 <span className="material-symbols-outlined text-[24px]">
                   play_arrow
                 </span>
                 <span>Buka Peta Level</span>
-              </button>
+              </Link>
             </div>
           </div>
         </section>
       </main>
-      <footer className="w-full bg-surface-container-low py-space-xl shadow-[0_-1px_8px_rgba(0,0,0,0.02)]">
-        <div className="w-full px-margin flex flex-col md:flex-row items-center justify-between gap-space-md">
-          <div className="flex items-center gap-space-sm">
-            <Image
-              alt="CoFun Logo"
-              className="h-6 w-auto object-contain opacity-80"
-              height={148}
-              src={cofunLogoSrc}
-              width={512}
-            />
-            <span className="font-body-sm text-body-sm text-on-surface-variant">
-              CoFun © Belajar Koding Menyenangkan untuk SD
-            </span>
-          </div>
-          <div className="flex items-center gap-space-lg">
-            <span className="font-body-sm text-body-sm text-on-surface-variant">
-              Aman & Terbimbing untuk Anak
-            </span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const ROBOT_TRANSFORMS = [
@@ -48,7 +49,7 @@ export default function HeroSection() {
   const eyeRadius = phase === "idle" ? 5 : 7;
 
   return (
-    <section className="relative w-full overflow-hidden px-margin py-space-xl lg:py-24 bg-gradient-to-b from-surface-container-low via-background to-background">
+    <section className="relative w-full overflow-hidden px-margin-mobile md:px-margin py-space-xl lg:py-24 bg-gradient-to-b from-surface-container-low via-background to-background">
       <div className="absolute -top-12 -left-12 w-72 h-72 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full bg-secondary-fixed/20 blur-3xl pointer-events-none" />
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center relative z-10">
@@ -65,7 +66,7 @@ export default function HeroSection() {
             </span>
           </div>
           <div className="flex flex-col gap-space-sm">
-            <h1 className="font-display text-display text-on-surface tracking-tight">
+            <h1 className="font-display text-display-mobile md:text-display text-on-surface tracking-tight">
               Belajar Coding Jadi{" "}
               <br className="hidden sm:inline" />
               <span className="text-primary underline decoration-secondary-container decoration-wavy decoration-4">
@@ -80,7 +81,7 @@ export default function HeroSection() {
           </div>
           <div className="flex flex-wrap items-center gap-space-md pt-space-xs w-full sm:w-auto">
             <button
-              className="group flex items-center justify-center gap-space-sm bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-space-lg py-3 rounded-full shadow-[0_4px_0_0_#004b73] active:translate-y-1 active:shadow-[0_1px_0_0_#004b73] transition-all cursor-pointer"
+              className="group flex w-full sm:w-auto items-center justify-center gap-space-sm bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-space-lg py-3 rounded-full shadow-[0_4px_0_0_#004b73] active:translate-y-1 active:shadow-[0_1px_0_0_#004b73] transition-all cursor-pointer"
               id="cta-start"
               onClick={scrollToBanner}
               type="button"
@@ -90,17 +91,17 @@ export default function HeroSection() {
               </span>
               <span>Mulai Belajar Sekarang</span>
             </button>
-            <button
-              className="flex items-center justify-center gap-space-xs bg-surface-container-lowest hover:bg-surface-container-high text-primary font-headline-sm text-headline-sm px-space-lg py-3 rounded-full shadow-[0_3px_0_0_#bfc7d2] active:translate-y-1 active:shadow-[0_1px_0_0_#bfc7d2] transition-all cursor-pointer"
-              type="button"
+            <Link
+              className="flex w-full sm:w-auto items-center justify-center gap-space-xs bg-surface-container-lowest hover:bg-surface-container-high text-primary font-headline-sm text-headline-sm px-space-lg py-3 rounded-full shadow-[0_3px_0_0_#bfc7d2] active:translate-y-1 active:shadow-[0_1px_0_0_#bfc7d2] transition-all cursor-pointer"
+              href="/pilih-kelas"
             >
               <span className="material-symbols-outlined text-[22px]">
                 explore
               </span>
               <span>Lihat Petualangan</span>
-            </button>
+            </Link>
           </div>
-          <div className="flex items-center gap-space-lg pt-space-md">
+          <div className="flex flex-wrap items-center gap-space-lg pt-space-md">
             <div className="flex items-center gap-space-xs">
               <div className="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
                 <span className="material-symbols-outlined text-[18px]">

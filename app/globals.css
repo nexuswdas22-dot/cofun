@@ -126,8 +126,17 @@
     padding: 0;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
   body {
     overscroll-behavior: none;
+    touch-action: manipulation;
   }
 
   main > :first-child {
@@ -140,5 +149,124 @@
 
   ::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Puzzle interlocking (arena) */
+.bg-grid-dots {
+  background-image: radial-gradient(#bfc7d2 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+
+.puzzle-male-tab {
+  width: 22px;
+  height: 10px;
+  border-radius: 0 0 7px 7px;
+  position: absolute;
+  left: 32px;
+  bottom: -10px;
+  z-index: 20;
+}
+
+.puzzle-female-slot {
+  width: 22px;
+  height: 10px;
+  position: absolute;
+  left: 32px;
+  top: 0;
+  background: rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+
+.puzzle-exec-active {
+  box-shadow:
+    0 0 0 3px #38bdf8,
+    0 8px 24px rgba(2, 132, 199, 0.45) !important;
+  transform: scale(1.02);
+  transition: all 0.25s ease-in-out;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceShort {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.2s ease-out both;
+}
+
+.animate-bounce-short {
+  animation: bounceShort 1.2s ease-in-out infinite;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.2s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-fade-in,
+  .animate-slide-down {
+    animation: none;
   }
 }
