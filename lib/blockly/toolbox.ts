@@ -1,5 +1,8 @@
 // Toolbox Blockly dibangun dari daftar blok yang diizinkan di soal
 // (field challenges.allowed_blocks_json).
+// Memakai flyoutToolbox (flat, tanpa kategori): semua blok tampil di strip
+// horizontal atas. Ini menghindari bug flyout vertikal + scrollbar yang
+// tabrakan dengan papan saat digulir.
 
 import type * as Blockly from "blockly/core";
 
@@ -11,23 +14,15 @@ const FRIENDLY_TO_BLOCK: Record<string, string> = {
   jika_rintangan: "cf_jika_rintangan",
 };
 
-const GROUPS: { name: string; colour: string; kinds: string[] }[] = [
-  { name: "Gerakan", colour: "#0284c7", kinds: ["maju", "belok_kanan", "belok_kiri"] },
-  { name: "Perulangan", colour: "#059669", kinds: ["ulangi"] },
-  { name: "Kondisi", colour: "#d97706", kinds: ["jika_rintangan"] },
-];
+const ORDER: string[] = ["maju", "belok_kanan", "belok_kiri", "ulangi", "jika_rintangan"];
 
 export function buildToolbox(allowedBlocks: string[]): Blockly.utils.toolbox.ToolboxDefinition {
-  const contents = GROUPS.map((group) => ({
-    kind: "category",
-    name: group.name,
-    colour: group.colour,
-    contents: group.kinds
-      .filter((kind) => allowedBlocks.includes(kind))
-      .map((kind) => ({ kind: "block" as const, type: FRIENDLY_TO_BLOCK[kind] })),
-  })).filter((category) => category.contents.length > 0);
+  const contents = ORDER.filter((kind) => allowedBlocks.includes(kind)).map((kind) => ({
+    kind: "block" as const,
+    type: FRIENDLY_TO_BLOCK[kind],
+  }));
 
-  return { kind: "categoryToolbox", contents } as Blockly.utils.toolbox.ToolboxDefinition;
+  return { kind: "flyoutToolbox", contents } as Blockly.utils.toolbox.ToolboxDefinition;
 }
 
 export { FRIENDLY_TO_BLOCK };

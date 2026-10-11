@@ -1,95 +1,506 @@
 {
   "slug": "kelas-6",
   "nomor": 6,
-  "judul": "Kelas 6: Variabel & Algoritma",
+  "judul": "Kelas 6: Coding Challenge Terpadu",
   "badge": "Kelas 6 SD",
-  "pulau": "Pulau Pangkalan Rover Mars",
-  "chip": "Petualangan Variabel",
-  "bannerTitle": "Simpan Nilai di Variabel",
-  "bannerCode": "energi = 100; skor = 0;",
-  "ctaEnabled": false,
+  "pulau": "Pulau Coding Terpadu",
+  "chip": "Misi Final",
+  "bannerTitle": "Efisien dan Tepat",
+  "bannerCode": "ulangi 3 { maju(); } belok_kanan();",
+  "ctaEnabled": true,
   "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
-      "title": "Level 1 — Combine Logic",
-      "topic": "Menggabungkan beberapa kondisi menjadi satu aturan.",
-      "desc": "Kalau energi cukup DAN jalan aman, rover boleh maju terus.",
+      "title": "Level 1 — Algoritma Efisien",
+      "topic": "Beberapa program bisa menyelesaikan masalah yang sama dengan jumlah blok berbeda.",
+      "desc": "Bandingkan dua program yang sama-sama benar. Program yang lebih ringkas biasanya lebih efisien.",
       "skills": [
-        "Menggabung dua kondisi",
-        "Membaca hasil benar atau salah",
-        "Membuat keputusan bertingkat"
+        "Membandingkan dua program",
+        "Menghitung jumlah blok",
+        "Menyederhanakan gerakan berulang"
       ],
       "btnText": "Mulai Level 1",
-      "nodeLabel": "Combine Logic",
-      "nodeIcon": "alt_route",
+      "nodeLabel": "Algoritma Efisien",
+      "nodeIcon": "speed",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Ringkas dengan Perulangan",
+          "brief": "Sampai bintang dengan batas 3 blok. Gerakan yang berulang harus diringkas.",
+          "tujuan": "Siswa membandingkan solusi menggunakan ukuran efisiensi yang jelas.",
+          "materi": "Beberapa program dapat menyelesaikan masalah yang sama dengan jumlah blok atau langkah berbeda.",
+          "contoh": "Tiga blok maju bisa diganti satu perulangan yang maju tiga kali.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang empat petak ke kanan.",
+          "batasan": [
+            "Batas blok eksplisit: 3.",
+            "Rute harus bisa diselesaikan."
+          ],
+          "kriteria": "Robot mencapai tujuan dan memenuhi batas blok.",
+          "hints": [
+            "Cari gerakan berulang yang dapat ditulis lebih ringkas."
+          ],
+          "feedbackSukses": "Kamu memenuhi target dan batas efisiensi.",
+          "feedbackGagal": "Periksa apakah ada blok yang dapat disederhanakan.",
+          "maze": {
+            "size": 5,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path",
+                "goal"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 3
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 2,
-      "title": "Level 2 — Logic Master",
-      "topic": "Merancang aturan main sederhana untuk game mini.",
-      "desc": "Buat aturan menang dan kalah untuk mini game rover Mars.",
+      "title": "Level 2 — Logika Bertingkat",
+      "topic": "Program dapat memeriksa lebih dari satu kondisi saat berjalan.",
+      "desc": "Ada dua titik berbatu di rute. Program perlu memeriksa keadaan di setiap titik, boleh dengan kondisi di dalam kondisi.",
       "skills": [
-        "Merancang aturan game",
-        "Menyimpan status menang",
-        "Menguji aturan game"
+        "Menangani beberapa kondisi",
+        "Menelusuri urutan evaluasi",
+        "Menguji setiap cabang"
       ],
       "btnText": "Mulai Level 2",
-      "nodeLabel": "Logic Master",
-      "nodeIcon": "sports_esports",
+      "nodeLabel": "Logika Bertingkat",
+      "nodeIcon": "account_tree",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Dua Titik Berbatu",
+          "brief": "Rute punya dua titik berbatu. Susun program dengan blok JIKA agar robot menghindari keduanya dan sampai bintang.",
+          "tujuan": "Siswa memahami dan menguji kondisi yang saling berkaitan.",
+          "materi": "Kondisi dapat diperiksa lebih dari satu kali dalam satu program. Kamu boleh menaruh satu kondisi di dalam cabang kondisi lain.",
+          "contoh": "Jika ada batu di depan, jalankan cabang MAKA; di dalam cabang itu boleh ada pemeriksaan kondisi lagi.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu pertama di jalur lurus atas, batu kedua di jalur bawah.",
+          "batasan": [
+            "Gunakan blok JIKA yang didukung engine.",
+            "Semua kondisi dijelaskan di materi.",
+            "Sediakan waktu menguji tiap cabang."
+          ],
+          "kriteria": "Program memilih cabang yang benar di kedua titik dan mencapai bintang.",
+          "hints": [
+            "Telusuri kondisi dari bagian terluar menuju bagian di dalamnya."
+          ],
+          "feedbackSukses": "Tepat! Kamu memahami logika bertingkat.",
+          "feedbackGagal": "Periksa kondisi mana yang dievaluasi terlebih dahulu.",
+          "maze": {
+            "size": 5,
+            "cells": [
+              [
+                "start",
+                "path",
+                "rock",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "path",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "rock",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi",
+            "jika_rintangan"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 3,
-      "title": "Level 3 — Variable & Function",
-      "topic": "Menyimpan skor dan energi dalam variabel, lalu membungkusnya jadi fungsi.",
-      "desc": "Simpan skor batu dan sisa baterai dalam variabel, lalu rapikan menjadi fungsi.",
+      "title": "Level 3 — Manajemen Kunci",
+      "topic": "Kunci harus diambil sebelum pintu bisa dibuka.",
+      "desc": "Kumpulkan kunci dulu, baru menuju pintu. Pintu hanya terbuka jika robot sudah punya kunci.",
       "skills": [
-        "Membuat & mengubah variabel",
-        "Membungkus logika jadi fungsi",
-        "Memanggil fungsi saat dibutuhkan"
+        "Mengelola tujuan berurutan",
+        "Mengambil objek di jalan",
+        "Merencanakan rute panjang"
       ],
       "btnText": "Mulai Level 3",
-      "nodeLabel": "Variable & Function",
-      "nodeIcon": "function",
+      "nodeLabel": "Manajemen Kunci",
+      "nodeIcon": "key",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Kunci dan Pintu",
+          "brief": "Ambil kunci yang ada di jalur, lalu buka pintu dan capai bintang. Robot tanpa kunci tidak bisa melewati pintu.",
+          "tujuan": "Siswa mengelola beberapa nilai dalam satu program.",
+          "materi": "Setiap tujuan memiliki aturan: kunci harus diambil lebih dulu sebelum pintu terbuka. Nilai 'punya kunci' berubah saat robot menginjak kunci.",
+          "contoh": "Robot mengambil kunci di petak kunci, lalu melangkah ke pintu yang sebelumnya terkunci.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Kunci ada di jalur atas. Pintu terkunci sebelum bintang.",
+          "batasan": [
+            "Kunci diambil saat robot menginjak petak kunci.",
+            "Pintu hanya bisa dilewati setelah kunci diambil."
+          ],
+          "kriteria": "Kunci diambil lebih dulu, lalu robot melewati pintu dan mencapai bintang.",
+          "hints": [
+            "Periksa setiap tujuan secara terpisah, lalu perhatikan pengaruhnya terhadap keputusan."
+          ],
+          "feedbackSukses": "Bagus! Kamu mengelola beberapa nilai dalam satu program.",
+          "feedbackGagal": "Periksa urutan: apakah kunci sudah diambil sebelum robot mencapai pintu?",
+          "maze": {
+            "size": 5,
+            "cells": [
+              [
+                "start",
+                "key",
+                "path",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "door",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi",
+            "jika_rintangan"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 4,
-      "title": "Level 4 — Debug Master",
-      "topic": "Menemukan kesalahan kode dan memperbaikinya.",
-      "desc": "Jadilah dokter kode! Cari balok yang salah urutan dan perbaiki sampai misi sukses.",
+      "title": "Level 4 — Debugging Lanjutan",
+      "topic": "Debugging terpadu memeriksa urutan, perulangan, kondisi, dan kesalahan arah.",
+      "desc": "Papan sudah terisi program yang salah. Telusuri satu langkah per langkah sampai menemukan kesalahannya, lalu perbaiki.",
       "skills": [
-        "Menemukan bug program",
-        "Memperbaiki logika robot",
-        "Menguji ulang sampai benar"
+        "Menelusuri program awal",
+        "Menemukan kesalahan arah",
+        "Memperbaiki dan menguji ulang"
       ],
       "btnText": "Mulai Level 4",
-      "nodeLabel": "Debug Master",
-      "nodeIcon": "pest_control",
+      "nodeLabel": "Debugging Lanjutan",
+      "nodeIcon": "bug_report",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Perbaiki Program di Papan",
+          "brief": "Papan sudah terisi program, tapi robot gagal karena satu blok belok yang salah. Temukan dan perbaiki blok itu.",
+          "tujuan": "Siswa menemukan kesalahan pada program yang menggabungkan beberapa konsep.",
+          "materi": "Debugging terpadu memerlukan pemeriksaan urutan, perulangan, kondisi, dan perubahan nilai.",
+          "contoh": "Telusuri satu putaran perulangan dan catat perubahan arah robot.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Program awal di papan menggunakan belok kiri yang membuat robot menabrak dinding.",
+          "batasan": [
+            "Kesalahan hanya satu blok belok.",
+            "Semua konsep sudah diajarkan.",
+            "Program awal harus benar-benar gagal."
+          ],
+          "kriteria": "Program yang diperbaiki membawa robot ke bintang.",
+          "hints": [
+            "Telusuri satu langkah dan catat arah robot sebelum melanjutkan."
+          ],
+          "feedbackSukses": "Debugging selesai! Programmu lolos pengujian.",
+          "feedbackGagal": "Periksa urutan eksekusi dan arah robot setelah setiap belok.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "initialBlocks": {
+            "blocks": {
+              "languageVersion": 0,
+              "blocks": [
+                {
+                  "type": "cf_maju",
+                  "next": {
+                    "block": {
+                      "type": "cf_maju",
+                      "next": {
+                        "block": {
+                          "type": "cf_maju",
+                          "next": {
+                            "block": {
+                              "type": "cf_belok_kiri",
+                              "next": {
+                                "block": {
+                                  "type": "cf_maju",
+                                  "next": {
+                                    "block": {
+                                      "type": "cf_maju",
+                                      "next": {
+                                        "block": {
+                                          "type": "cf_maju"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi",
+            "jika_rintangan"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 5,
-      "title": "Level 5 — Final Mission",
-      "topic": "Misi akhir: program lengkap rover Mars.",
-      "desc": "Rover harus mengumpulkan batu, menghemat energi, dan kembali ke landasan!",
+      "title": "Level 5 — Misi Final CoFun",
+      "topic": "Pemecahan masalah terpadu: perencanaan, perulangan, kondisi, dan pengujian.",
+      "desc": "Misi terakhir. Pecah misi menjadi tujuan kecil, lalu uji setiap bagian.",
       "skills": [
-        "Variabel + kondisi + fungsi",
-        "Program utuh tanpa error",
-        "Mendapat lencana Pilot Rover"
+        "Merencanakan misi",
+        "Menggabungkan konsep",
+        "Menguji dan memperbaiki"
       ],
       "btnText": "Mulai Level 5",
-      "nodeLabel": "Final Mission",
-      "nodeIcon": "flag",
+      "nodeLabel": "Misi Final",
+      "nodeIcon": "emoji_events",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Misi Final: Lewati Batu ke Bintang",
+          "brief": "Rancang program untuk sampai bintang. Gunakan maksimal 6 blok dan hindari batu.",
+          "tujuan": "Siswa menggabungkan konsep yang dipelajari untuk menyelesaikan masalah terpadu.",
+          "materi": "Pemecahan masalah terpadu melibatkan perencanaan, perulangan, kondisi, variabel, pengujian, dan perbaikan.",
+          "contoh": "Pecah misi menjadi beberapa target kecil dan uji setiap bagian program.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah. Batu menghalangi jalur lurus.",
+          "batasan": [
+            "Semua konsep yang dibutuhkan sudah diajarkan.",
+            "Tujuan dan aturan interaksi dijelaskan dengan jelas.",
+            "Gunakan paling banyak 6 blok."
+          ],
+          "kriteria": "Robot menyelesaikan tujuan dan memenuhi batas blok.",
+          "hints": [
+            "Pecah misi menjadi tujuan kecil dan uji program satu bagian setiap kali."
+          ],
+          "feedbackSukses": "Misi Final CoFun berhasil! Kamu merancang, menguji, dan memperbaiki programmu.",
+          "feedbackGagal": "Pilih tujuan yang belum tercapai dan telusuri program yang memengaruhinya.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "rock",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 6
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     }
   ]
 }

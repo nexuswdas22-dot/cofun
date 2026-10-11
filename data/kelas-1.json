@@ -1,95 +1,361 @@
 {
   "slug": "kelas-1",
   "nomor": 1,
-  "judul": "Kelas 1: Pondasi Logika",
+  "judul": "Kelas 1: Mengenal Logika",
   "badge": "Kelas 1 SD",
-  "pulau": "Pulau Urutan Langkah",
-  "chip": "Petualangan Urutan",
+  "pulau": "Pulau Pola & Arah",
+  "chip": "Petualangan Logika",
   "bannerTitle": "Langkah demi Langkah",
   "bannerCode": "maju(); belok_kanan(); maju();",
-  "ctaEnabled": false,
+  "ctaEnabled": true,
   "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
       "title": "Level 1 — Kenali Pola",
-      "topic": "Mengenali pola gambar dan langkah yang berulang.",
-      "desc": "Lihat dulu pola langkah Kancil: maju, maju, maju. Sekarang giliranmu mengenali polanya!",
+      "topic": "Pola adalah susunan yang mengikuti aturan tertentu.",
+      "desc": "Pola adalah susunan yang berulang mengikuti aturan. Perhatikan bentuk yang muncul bergantian.",
       "skills": [
         "Mengenali pola yang berulang",
-        "Menemukan pola yang hilang",
-        "Meniru pola sederhana"
+        "Melanjutkan pola",
+        "Memilih bagian berikutnya"
       ],
       "btnText": "Mulai Level 1",
       "nodeLabel": "Kenali Pola",
       "nodeIcon": "pattern",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Lanjutkan Polanya",
+          "brief": "Pilih bentuk berikutnya dari pola yang sudah ada.",
+          "tujuan": "Siswa mengenali pola sederhana dan menentukan bagian berikutnya.",
+          "materi": "Pola adalah susunan yang mengikuti aturan tertentu, misalnya bentuk yang berulang secara bergantian.",
+          "contoh": "Lingkaran, persegi, lingkaran, persegi, ... Bentuk berikutnya adalah lingkaran.",
+          "kondisiAwal": "Pola lingkaran dan persegi tampil bergantian.",
+          "batasan": [
+            "Gunakan satu aturan pola yang konsisten.",
+            "Hanya satu pilihan yang sesuai."
+          ],
+          "kriteria": "Pilihan siswa mengikuti aturan pola.",
+          "hints": [
+            "Perhatikan bentuk yang muncul secara bergantian."
+          ],
+          "feedbackSukses": "Hebat! Kamu menemukan polanya.",
+          "feedbackGagal": "Coba perhatikan urutan bentuknya sekali lagi.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Lingkaran, persegi, lingkaran, persegi, ... Apa bentuk berikutnya?",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "Lingkaran"
+              },
+              {
+                "id": "b",
+                "label": "Persegi"
+              },
+              {
+                "id": "c",
+                "label": "Segitiga"
+              }
+            ],
+            "jawaban": [
+              "a"
+            ],
+            "visual": "pola-bentuk"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": "pola-bentuk"
     },
     {
       "nomor": 2,
       "title": "Level 2 — Kelompokkan",
-      "topic": "Mengelompokkan objek sesuai ciri yang sama.",
-      "desc": "Kelompokkan buah dan batu sebelum Kancil menyeberang, supaya jalurmu rapi!",
+      "topic": "Benda dikelompokkan berdasarkan satu ciri yang sama.",
+      "desc": "Kelompokkan benda berdasarkan satu ciri saja, misalnya bentuk.",
       "skills": [
-        "Mengelompokkan objek serupa",
-        "Memisahkan yang bukan kelompok",
-        "Menjelaskan ciri kelompok"
+        "Mengelompokkan benda serupa",
+        "Memakai satu kriteria",
+        "Memisahkan yang bukan kelompok"
       ],
       "btnText": "Mulai Level 2",
       "nodeLabel": "Kelompokkan",
       "nodeIcon": "category",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Kelompok Bentuk Bulat",
+          "brief": "Pilih semua benda yang berbentuk bulat.",
+          "tujuan": "Siswa mengelompokkan objek berdasarkan ciri yang diminta.",
+          "materi": "Benda dapat dikelompokkan berdasarkan ciri yang sama, seperti bentuk atau warna.",
+          "contoh": "Bola dan roda berbentuk bulat. Kotak tidak berbentuk bulat.",
+          "kondisiAwal": "Ada empat benda: bola, kotak, roda, dan segitiga.",
+          "batasan": [
+            "Gunakan satu kriteria saja: bentuk bulat.",
+            "Setiap benda hanya bisa masuk satu kelompok."
+          ],
+          "kriteria": "Semua benda bulat terpilih dan tidak ada benda lain yang terpilih.",
+          "hints": [
+            "Fokus pada bentuk yang diminta, bukan warna atau ukuran."
+          ],
+          "feedbackSukses": "Benar! Kamu mengelompokkan berdasarkan ciri yang tepat.",
+          "feedbackGagal": "Periksa kembali aturan kelompoknya.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Pilih semua benda yang berbentuk bulat.",
+            "opsi": [
+              {
+                "id": "bola",
+                "label": "Bola"
+              },
+              {
+                "id": "kotak",
+                "label": "Kotak"
+              },
+              {
+                "id": "roda",
+                "label": "Roda"
+              },
+              {
+                "id": "segitiga",
+                "label": "Segitiga"
+              }
+            ],
+            "jawaban": [
+              "bola",
+              "roda"
+            ],
+            "visual": "objek-bulat"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": "objek-bulat"
     },
     {
       "nomor": 3,
       "title": "Level 3 — Kenali Arah",
-      "topic": "Mengenal arah hadap: utara, timur, selatan, dan barat.",
-      "desc": "Kancil butuh petunjuk arah. Arahkan hadapnya ke kanan, kiri, dan lurus supaya tidak tersesat!",
+      "topic": "Gerak maju mengikuti arah hadap robot.",
+      "desc": "Robot bergerak maju ke arah bagian depannya. Tentukan arah geraknya dari orientasi robot.",
       "skills": [
-        "Mengenal arah hadap robot",
-        "Memberi perintah belok",
-        "Membaca petunjuk arah"
+        "Mengenali arah hadap robot",
+        "Menentukan arah gerak",
+        "Membaca ilustrasi arah"
       ],
       "btnText": "Mulai Level 3",
       "nodeLabel": "Kenali Arah",
       "nodeIcon": "explore",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Ke Mana Robot Bergerak?",
+          "brief": "Robot menghadap ke kanan. Tentukan arah geraknya jika maju satu langkah.",
+          "tujuan": "Siswa memahami arah gerak berdasarkan orientasi robot.",
+          "materi": "Gerakan maju mengikuti arah hadap robot.",
+          "contoh": "Robot menghadap ke kanan. Jika maju satu langkah, robot bergerak ke kanan.",
+          "kondisiAwal": "Robot menghadap ke kanan (timur) pada peta kecil.",
+          "batasan": [
+            "Tampilkan arah hadap robot dengan jelas.",
+            "Belum memakai Blockly."
+          ],
+          "kriteria": "Siswa memilih arah yang sesuai dengan orientasi robot.",
+          "hints": [
+            "Lihat ke arah mana bagian depan robot menghadap."
+          ],
+          "feedbackSukses": "Tepat! Kamu memahami arah robot.",
+          "feedbackGagal": "Coba perhatikan kembali bagian depan robot.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Robot menghadap ke kanan. Jika maju satu langkah, robot bergerak ke...",
+            "opsi": [
+              {
+                "id": "kanan",
+                "label": "Kanan"
+              },
+              {
+                "id": "kiri",
+                "label": "Kiri"
+              },
+              {
+                "id": "atas",
+                "label": "Atas"
+              },
+              {
+                "id": "bawah",
+                "label": "Bawah"
+              }
+            ],
+            "jawaban": [
+              "kanan"
+            ],
+            "visual": "robot-arah"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": "robot-arah"
     },
     {
       "nomor": 4,
       "title": "Level 4 — Ikuti Instruksi",
-      "topic": "Melakukan instruksi persis seperti yang dibaca.",
-      "desc": "Bacakan resep nenek, lalu bantu Kancil mengambil buah sesuai urutan resepnya.",
+      "topic": "Instruksi harus dijalankan berurutan agar tujuan tercapai.",
+      "desc": "Urutan instruksi menentukan hasil gerakan. Ikuti langkah satu per satu dari posisi awal.",
       "skills": [
-        "Membaca instruksi sederhana",
-        "Membandingkan urutan buah",
-        "Menyelesaikan resep nenek"
+        "Menyusun instruksi berurutan",
+        "Mengikuti langkah satu per satu",
+        "Mencapai petak tujuan"
       ],
       "btnText": "Mulai Level 4",
       "nodeLabel": "Ikuti Instruksi",
       "nodeIcon": "menu_book",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Ikuti Instruksi ke Bintang",
+          "brief": "Susun blok gerak agar robot sampai ke Bintang Emas tanpa rintangan.",
+          "tujuan": "Siswa menyusun instruksi secara berurutan.",
+          "materi": "Instruksi perlu dilakukan dalam urutan yang tepat agar tujuan tercapai.",
+          "contoh": "Maju, maju, lalu belok kanan dan maju lagi membawa robot ke sudut berbeda.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah.",
+          "batasan": [
+            "Gunakan blok gerak maju dan belok.",
+            "Tanpa perulangan atau kondisi."
+          ],
+          "kriteria": "Robot mencapai Bintang Emas setelah menjalankan instruksi.",
+          "hints": [
+            "Mulai dari posisi robot dan ikuti setiap langkah satu per satu."
+          ],
+          "feedbackSukses": "Mantap! Urutan instruksi membawamu ke tujuan.",
+          "feedbackGagal": "Periksa urutan langkah dari posisi awal.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 5,
       "title": "Level 5 — Misi Pertama",
-      "topic": "Misi gabungan semua materi Kelas 1.",
-      "desc": "Misi terakhir: bantu Kancil sampai ke rumah nenek dengan urutan langkah yang tepat!",
+      "topic": "Blockly menyusun instruksi visual yang dijalankan robot.",
+      "desc": "Susun blok gerak untuk misi pertamamu. Setiap blok dijalankan robot satu per satu.",
       "skills": [
-        "Menggabungkan pola, arah & urutan",
-        "Menyelesaikan misi tanpa salah langkah",
-        "Mendapat lencana Kancil Pintar"
+        "Mengenal Blockly",
+        "Menyambung blok gerak",
+        "Menjalankan program"
       ],
       "btnText": "Mulai Level 5",
       "nodeLabel": "Misi Pertama",
       "nodeIcon": "flag",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Misi Pertama: Robot Mengikuti Programmu",
+          "brief": "Sambungkan blok maju dan belok agar robot sampai ke bintang. Pastikan urutannya benar!",
+          "tujuan": "Siswa memahami hubungan antara blok dengan gerakan robot.",
+          "materi": "Blockly menggunakan blok visual untuk menyusun instruksi program. Setiap blok mewakili satu perintah bagi robot.",
+          "contoh": "Sambungkan blok maju, lalu jalankan robot satu langkah.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan atas.",
+          "batasan": [
+            "Blok gerak maju dan belok saja.",
+            "Tanpa perulangan, kondisi, atau variabel.",
+            "Grid sederhana tanpa rintangan."
+          ],
+          "kriteria": "Robot mencapai Bintang Emas melalui eksekusi program.",
+          "hints": [
+            "Bandingkan arah robot dengan posisi tujuan sebelum menentukan langkah."
+          ],
+          "feedbackSukses": "Misi pertama berhasil! Robot mengikuti programmu.",
+          "feedbackGagal": "Jalankan lagi dan perhatikan gerakan setiap blok.",
+          "maze": {
+            "size": 3,
+            "cells": [
+              [
+                "start",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": null
     }
   ]
 }

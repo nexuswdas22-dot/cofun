@@ -10,6 +10,7 @@ export type Level = {
   nodeLabel: string;
   nodeIcon: string;
   xpReward: number;
+  visual: string | null;
 };
 
 export type Kelas = {
@@ -26,7 +27,7 @@ export type Kelas = {
   levels: Level[];
 };
 
-export type MazeCell = "empty" | "path" | "start" | "goal" | "rock";
+export type MazeCell = "empty" | "path" | "start" | "goal" | "rock" | "key" | "door";
 
 export type Facing = "utara" | "timur" | "selatan" | "barat";
 
@@ -39,16 +40,49 @@ export type MazeData = {
 export type WinCondition = {
   type: "reach_goal";
   maxSteps?: number;
+  maxBlocks?: number;
 };
+
+export type ChallengeTipe = "blockly" | "kuis";
+
+export type KuisOption = { id: string; label: string };
+
+export type KuisPayload =
+  | {
+      mode: "pilihan";
+      pertanyaan: string;
+      opsi: KuisOption[];
+      jawaban: string[];
+      visual?: string;
+    }
+  | {
+      mode: "urutan";
+      pertanyaan: string;
+      kartu: KuisOption[];
+      urutanBenar: string[];
+      visual?: string;
+    };
 
 export type Challenge = {
   id: number;
+  tipe: ChallengeTipe;
   title: string;
   brief: string;
-  maze: MazeData;
+  tujuan: string;
+  materi: string;
+  contoh: string;
+  kondisiAwal: string;
+  batasan: string[];
+  kriteria: string;
+  hint: string;
+  feedbackSukses: string;
+  feedbackGagal: string;
+  maze: MazeData | null;
   allowedBlocks: string[];
   winCondition: WinCondition;
-  hints: string[];
+  kuis: KuisPayload | null;
+  // Workspace awal (JSON serialisasi Blockly) untuk soal debugging.
+  initialBlocks: Record<string, unknown> | null;
   difficulty: number;
   levelId: number;
   levelNomor: number;

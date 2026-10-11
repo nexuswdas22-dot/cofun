@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
-import type { Challenge, Kelas, Level } from "./types";
+import type { Challenge, Kelas, KuisPayload, Level, MazeData, WinCondition } from "./types";
 
 const DB_DIR = path.join(process.cwd(), "data");
 const DB_PATH = path.join(DB_DIR, "cofun.db");
@@ -60,6 +60,7 @@ type LevelRow = {
   node_label: string | null;
   node_icon: string | null;
   xp_reward: number;
+  visual: string | null;
 };
 
 function toLevel(row: LevelRow): Level {
@@ -73,6 +74,7 @@ function toLevel(row: LevelRow): Level {
     nodeLabel: row.node_label ?? row.title,
     nodeIcon: row.node_icon ?? "extension",
     xpReward: row.xp_reward,
+    visual: row.visual,
   };
 }
 
@@ -119,12 +121,22 @@ export function getKelasBySlug(slug: string): Kelas | undefined {
 
 type ChallengeRow = {
   id: number;
+  tipe: string;
   title: string;
   brief: string;
-  maze_json: string;
+  tujuan: string | null;
+  materi: string | null;
+  contoh: string | null;
+  kondisi_awal: string | null;
+  batasan_json: string;
+  kriteria: string | null;
+  hints_json: string;
+  feedback_sukses: string | null;
+  feedback_gagal: string | null;
+  maze_json: string | null;
   allowed_blocks_json: string;
   win_condition_json: string;
-  hints_json: string;
+  payload_json: string | null;
   difficulty: number;
   level_id: number;
   level_nomor: number;
@@ -140,8 +152,10 @@ type ChallengeRow = {
 
 const CHALLENGE_SELECT = `
   SELECT
-    ch.id, ch.title, ch.brief, ch.maze_json, ch.allowed_blocks_json,
-    ch.win_condition_json, ch.hints_json, ch.difficulty, ch.level_id,
+    ch.id, ch.tipe, ch.title, ch.brief, ch.tujuan, ch.materi, ch.contoh, ch.kondisi_awal,
+    ch.batasan_json, ch.kriteria, ch.hints_json, ch.feedback_sukses, ch.feedback_gagal,
+    ch.maze_json, ch.allowed_blocks_json, ch.win_condition_json, ch.payload_json,
+    ch.difficulty, ch.level_id,
     lv.nomor AS level_nomor, lv.title AS level_title, lv.topic AS level_topic,
     lv.xp_reward,
     k.slug AS kelas_slug, k.nomor AS kelas_nomor, k.judul AS kelas_judul, k.chip AS kelas_chip,
@@ -153,21 +167,32 @@ const CHALLENGE_SELECT = `
 `;
 
 function toChallenge(row: ChallengeRow): Challenge {
-  const maze = parseJson<Challenge["maze"]>(row.maze_json, {
-    size: 0,
-    cells: [],
-    start: { col: 0, row: 0, facing: "timur" },
-  });
+  const hints = parseJson<string[]>(row.hints_json, []);
   return {
     id: row.id,
+    tipe: row.tipe === "kuis" ? "kuis" : "blockly",
     title: row.title,
     brief: row.brief,
-    maze,
+    tujuan: row.tujuan ?? "",
+    materi: row.materi ?? "",
+    contoh: row.contoh ?? "",
+    kondisiAwal: row.kondisi_awal ?? "",
+    batasan: parseJson<string[]>(row.batasan_json, []),
+    kriteria: row.kriteria ?? "",
+    hint: hints[0] ?? "",
+    feedbackSukses: row.feedback_sukses ?? "",
+    feedbackGagal: row.feedback_gagal ?? "",
+    maze: row.maze_json ? parseJson<MazeData | null>(row.maze_json, null) : null,
     allowedBlocks: parseJson<string[]>(row.allowed_blocks_json, []),
-    winCondition: parseJson<Challenge["winCondition"]>(row.win_condition_json, {
-      type: "reach_goal",
-    }),
-    hints: parseJson<string[]>(row.hints_json, []),
+    winCondition: parseJson<WinCondition>(row.win_condition_json, { type: "reach_goal" }),
+    kuis:
+      row.tipe === "kuis" && row.payload_json
+        ? parseJson<KuisPayload | null>(row.payload_json, null)
+        : null,
+    initialBlocks:
+      row.tipe === "blockly" && row.payload_json
+        ? parseJson<Record<string, unknown> | null>(row.payload_json, null)
+        : null,
     difficulty: row.difficulty,
     levelId: row.level_id,
     levelNomor: row.level_nomor,
@@ -180,6 +205,37 @@ function toChallenge(row: ChallengeRow): Challenge {
     kelasChip: row.kelas_chip ?? "",
     totalLevels: row.total_levels || 5,
   };
+}
+
+// Soal arena per level: satu challenge per level (urutan pertama).
+export function getChallengeForLevel(kelasSlug: string, levelNomor: number): Challenge | undefined {
+  const db = getDb();
+  const row = db
+    .prepare(`${CHALLENGE_SELECT} AND k.slug = ? AND lv.nomor = ? ORDER BY ch.urutan LIMIT 1`)
+    .get(kelasSlug, levelNomor) as ChallengeRow | undefined;
+  return row ? toChallenge(row) : undefined;
+}
+
+// Materi isi soal tiap level (untuk drawer peta): nomor level -> materi challenge.
+export function getMateriPerLevel(kelasSlug: string): Record<number, string> {
+  const db = getDb();
+  const rows = db
+    .prepare(
+      `SELECT lv.nomor AS level_nomor, ch.materi
+       FROM challenges ch
+       JOIN levels lv ON lv.id = ch.level_id
+       JOIN kelas k ON k.id = lv.kelas_id
+       WHERE k.slug = ? AND ch.is_published = 1 AND lv.is_published = 1
+       ORDER BY lv.nomor, ch.urutan`,
+    )
+    .all(kelasSlug) as { level_nomor: number; materi: string | null }[];
+  const result: Record<number, string> = {};
+  for (const row of rows) {
+    if (row.materi && result[row.level_nomor] === undefined) {
+      result[row.level_nomor] = row.materi;
+    }
+  }
+  return result;
 }
 
 // Soal yang dibuka di arena /belajar-dan-tantangan (urutan published pertama).

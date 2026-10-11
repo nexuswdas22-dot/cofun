@@ -1,95 +1,369 @@
 {
   "slug": "kelas-5",
   "nomor": 5,
-  "judul": "Kelas 5: Fungsi & Prosedur",
+  "judul": "Kelas 5: Variabel dan Strategi",
   "badge": "Kelas 5 SD",
-  "pulau": "Pulau Pabrik Kue",
-  "chip": "Petualangan Fungsi",
-  "bannerTitle": "Resep Jadi Satu Fungsi",
-  "bannerCode": "fungsi aduk() { ... }",
-  "ctaEnabled": false,
+  "pulau": "Pulau Strategi",
+  "chip": "Petualangan Strategi",
+  "bannerTitle": "Strategi Berulang",
+  "bannerCode": "ulangi 4 { maju(); } belok_kanan();",
+  "ctaEnabled": true,
   "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
-      "title": "Level 1 — Loop Kompleks",
-      "topic": "Perulangan bertingkat untuk langkah yang panjang.",
-      "desc": "Aduk berkali-kali sambil mencetak — perulangan bersarang membuat produksi jauh lebih cepat!",
+      "title": "Level 1 — Perulangan Kompleks",
+      "topic": "Perulangan dapat menjalankan beberapa instruksi sekaligus.",
+      "desc": "Satu blok ULANGI bisa berisi beberapa gerakan. Pola yang diulang harus jelas.",
       "skills": [
-        "Loop di dalam loop",
-        "Mengatur jumlah pengulangan",
-        "Menghemat balok instruksi"
+        "Mengatur perulangan dengan beberapa instruksi",
+        "Mengenali pola berulang",
+        "Menyusun rute berulang"
       ],
       "btnText": "Mulai Level 1",
-      "nodeLabel": "Loop Kompleks",
-      "nodeIcon": "all_inclusive",
+      "nodeLabel": "Perulangan Kompleks",
+      "nodeIcon": "repeat",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Pola Maju dan Belok",
+          "brief": "Gunakan satu ULANGI berisi maju dan belok untuk mencapai bintang. Batas blok: 5.",
+          "tujuan": "Siswa mengatur perulangan yang berisi beberapa gerakan.",
+          "materi": "Perulangan dapat menjalankan beberapa instruksi secara berulang.",
+          "contoh": "Dua gerakan (maju lalu belok) diulang dua kali membentuk pola tangga.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah membentuk pola tangga.",
+          "batasan": [
+            "Siswa sudah memahami perulangan dasar.",
+            "Gunakan paling banyak 5 blok."
+          ],
+          "kriteria": "Robot menyelesaikan rute tanpa tabrakan dengan batas blok terpenuhi.",
+          "hints": [
+            "Periksa seluruh isi perulangan, bukan hanya jumlah pengulangannya."
+          ],
+          "feedbackSukses": "Kamu mengatur pola berulang dengan tepat.",
+          "feedbackGagal": "Periksa urutan instruksi di dalam perulangan.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "rock",
+                "rock"
+              ],
+              [
+                "rock",
+                "path",
+                "path",
+                "rock"
+              ],
+              [
+                "rock",
+                "rock",
+                "path",
+                "path"
+              ],
+              [
+                "rock",
+                "rock",
+                "rock",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 5
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 2,
-      "title": "Level 2 — Kondisi Bersarang",
-      "topic": "Keputusan IF/ELSE di dalam perulangan.",
-      "desc": "Kalau adonan kurang, tambah; kalau cukup, lanjut mencetak — semuanya di dalam loop!",
+      "title": "Level 2 — Kondisi Kompleks",
+      "topic": "Program dapat memilih tindakan berbeda untuk situasi berbeda.",
+      "desc": "Setiap cabang JIKA harus punya tujuan yang jelas. Uji tiap kemungkinan keadaan.",
       "skills": [
-        "Menempatkan kondisi di dalam loop",
-        "Membaca kondisi bertingkat",
-        "Menguji tiap cabang keputusan"
+        "Menangani beberapa situasi",
+        "Membaca cabang JIKA dan SELAIN ITU",
+        "Menguji setiap kemungkinan"
       ],
       "btnText": "Mulai Level 2",
-      "nodeLabel": "Kondisi Bersarang",
-      "nodeIcon": "call_split",
+      "nodeLabel": "Kondisi Kompleks",
+      "nodeIcon": "alt_route",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Dua Situasi, Dua Tindakan",
+          "brief": "Pilih tindakan yang benar untuk setiap situasi di jalan robot.",
+          "tujuan": "Siswa menangani beberapa keadaan menggunakan kondisi.",
+          "materi": "Program dapat memilih tindakan berbeda untuk situasi yang berbeda.",
+          "contoh": "Jika ada batu di depan maka belok, selain itu maju.",
+          "kondisiAwal": "Dua situasi diuji: (1) batu di depan robot, (2) jalan di depan robot aman.",
+          "batasan": [
+            "Gunakan kondisi yang didukung engine.",
+            "Setiap cabang punya tujuan jelas."
+          ],
+          "kriteria": "Program memberikan tindakan yang benar pada kedua skenario.",
+          "hints": [
+            "Uji setiap kemungkinan keadaan dan amati cabang yang dijalankan."
+          ],
+          "feedbackSukses": "Programmu menangani semua situasi yang diuji.",
+          "feedbackGagal": "Periksa cabang yang belum memberikan tindakan sesuai keadaan.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Jika ada batu di depan robot, tindakan apa yang benar? Jika jalan aman, tindakan apa yang benar?",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "Batu: belok. Aman: maju."
+              },
+              {
+                "id": "b",
+                "label": "Batu: maju. Aman: belok."
+              },
+              {
+                "id": "c",
+                "label": "Keduanya: maju."
+              }
+            ],
+            "jawaban": [
+              "a"
+            ],
+            "visual": "situasi-batu"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": "situasi-batu"
     },
     {
       "nomor": 3,
-      "title": "Level 3 — Variabel",
-      "topic": "Menyimpan nilai bahan dan hasil kue dalam variabel.",
-      "desc": "Simpan jumlah tepung dan jumlah kue ke dalam variabel supaya mudah dipantau.",
+      "title": "Level 3 — Variabel Mandiri",
+      "topic": "Variabel menyimpan nilai yang bisa berubah selama program berjalan.",
+      "desc": "Variabel adalah kotak penyimpan nilai. Pelajari kapan nilainya dimulai, berubah, dan dibaca.",
       "skills": [
-        "Membuat variabel",
-        "Mengubah nilai variabel",
+        "Memahami nilai awal variabel",
+        "Memahami perubahan nilai",
         "Membaca nilai variabel"
       ],
       "btnText": "Mulai Level 3",
-      "nodeLabel": "Variabel",
-      "nodeIcon": "data_object",
+      "nodeLabel": "Variabel Mandiri",
+      "nodeIcon": "tag",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Nilai Variabel Penghitung",
+          "brief": "Variabel jumlah mulai dari 0. Setiap robot mengambil satu kunci, nilainya bertambah satu. Berapa nilai setelah robot mengambil 3 kunci?",
+          "tujuan": "Siswa membuat dan menggunakan variabel dalam program.",
+          "materi": "Variabel menyimpan nilai yang dapat digunakan dan diubah selama program berjalan.",
+          "contoh": "Variabel dimulai 0, lalu tambah 1 setiap ambil kunci. Setelah satu kunci, nilainya 1.",
+          "kondisiAwal": "Variabel jumlah = 0. Robot akan mengambil 3 kunci berurutan.",
+          "batasan": [
+            "Jelaskan nilai awal dan perubahan nilai.",
+            "Pengumpulan kunci harus mengubah variabel."
+          ],
+          "kriteria": "Siswa menghitung nilai variabel dengan benar setelah perubahan.",
+          "hints": [
+            "Pikirkan kapan nilai dimulai, kapan berubah, dan kapan diperiksa."
+          ],
+          "feedbackSukses": "Hebat! Kamu menggunakan variabel dalam program.",
+          "feedbackGagal": "Periksa nilai awal, perubahan nilai, dan bagian yang membaca nilainya.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Variabel jumlah mulai dari 0. Setiap kunci diambil, jumlah ditambah 1. Setelah 3 kunci diambil, nilai jumlah adalah...",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "0"
+              },
+              {
+                "id": "b",
+                "label": "1"
+              },
+              {
+                "id": "c",
+                "label": "3"
+              },
+              {
+                "id": "d",
+                "label": "4"
+              }
+            ],
+            "jawaban": [
+              "c"
+            ],
+            "visual": "kotak-variabel"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": "kotak-variabel"
     },
     {
       "nomor": 4,
-      "title": "Level 4 — Function",
-      "topic": "Membuat blok fungsi untuk tugas yang berulang.",
-      "desc": "Simpan tugas aduk jadi satu fungsi, lalu panggil kapan pun dibutuhkan!",
+      "title": "Level 4 — Gabungan Logika",
+      "topic": "Variabel, perulangan, dan kondisi dapat dipakai bersama.",
+      "desc": "Perulangan menjalankan gerakan berulang, dan kondisi memilih tindakan. Keduanya bisa digabung.",
       "skills": [
-        "Membuat fungsi sendiri",
-        "Memanggil fungsi berkali-kali",
-        "Menggabungkan fungsi jadi prosedur"
+        "Menggabungkan perulangan dan kondisi",
+        "Menentukan urutan pemeriksaan",
+        "Menjelaskan nilai yang berubah"
       ],
       "btnText": "Mulai Level 4",
-      "nodeLabel": "Function",
-      "nodeIcon": "function",
+      "nodeLabel": "Gabungan Logika",
+      "nodeIcon": "hub",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Urutan Pemeriksaan",
+          "brief": "Program mengulang maju 3 kali, dan di setiap langkah memeriksa batu. Di mana pemeriksaan kondisi dilakukan?",
+          "tujuan": "Siswa menggabungkan variabel, perulangan, dan kondisi.",
+          "materi": "Program dapat mengelola perubahan sambil menjalankan instruksi berulang dan memilih tindakan berdasarkan kondisi.",
+          "contoh": "Perulangan menjalankan isinya beberapa kali, dan setiap putaran memeriksa kondisi lagi.",
+          "kondisiAwal": "Program: ULANGI 3 [JIKA batu di depan: belok, SELAIN ITU: maju].",
+          "batasan": [
+            "Semua konsep sudah diperkenalkan.",
+            "Nilai awal dan aturan perubahan jelas."
+          ],
+          "kriteria": "Siswa menjelaskan bahwa kondisi diperiksa setiap putaran.",
+          "hints": [
+            "Telusuri satu putaran perulangan dan catat perubahan setiap kali."
+          ],
+          "feedbackSukses": "Bagus! Semua bagian programmu bekerja bersama.",
+          "feedbackGagal": "Periksa kapan nilai berubah dan kapan kondisi diperiksa.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Program ULANGI 3 berisi JIKA batu di depan. Berapa kali kondisi diperiksa?",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "Satu kali"
+              },
+              {
+                "id": "b",
+                "label": "Tiga kali, setiap putaran"
+              },
+              {
+                "id": "c",
+                "label": "Tidak pernah"
+              }
+            ],
+            "jawaban": [
+              "b"
+            ],
+            "visual": "ulangi-kondisi"
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": "ulangi-kondisi"
     },
     {
       "nomor": 5,
-      "title": "Level 5 — Coding Mission",
-      "topic": "Misi akhir produksi kue otomatis.",
-      "desc": "Produksi 10 kue tanpa henti dengan program lengkap buatanmu!",
+      "title": "Level 5 — Misi Strategis",
+      "topic": "Program kompleks lebih mudah diperbaiki jika diuji per bagian.",
+      "desc": "Uji satu bagian rute sebelum menjalankan program lengkap. Lalu perbaiki yang salah.",
       "skills": [
-        "Fungsi + loop + variabel",
-        "Menjaga produksi tetap stabil",
-        "Mendapat lencana Koki Algoritma"
+        "Merancang program",
+        "Menguji per bagian",
+        "Memperbaiki kegagalan"
       ],
       "btnText": "Mulai Level 5",
-      "nodeLabel": "Coding Mission",
+      "nodeLabel": "Misi Strategis",
       "nodeIcon": "flag",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Uji Satu Bagian Dulu",
+          "brief": "Robot harus sampai bintang. Program ini gagal di bagian turun. Ubah dengan menguji satu bagian dulu.",
+          "tujuan": "Siswa merancang, menguji, dan memperbaiki program dengan beberapa tujuan.",
+          "materi": "Program kompleks lebih mudah diperbaiki jika diuji per bagian.",
+          "contoh": "Uji dulu jalur lurus, baru uji jalur turun.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah. Ada batu di jalur turun.",
+          "batasan": [
+            "Gunakan konsep yang telah dipelajari.",
+            "Tujuan dan syarat harus jelas.",
+            "Gunakan paling banyak 6 blok."
+          ],
+          "kriteria": "Robot mencapai bintang dengan batas blok terpenuhi.",
+          "hints": [
+            "Uji satu bagian program terlebih dahulu."
+          ],
+          "feedbackSukses": "Misi strategis selesai melalui perencanaan dan pengujian.",
+          "feedbackGagal": "Pilih satu bagian program untuk diperiksa lebih dahulu.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "rock",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 6
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     }
   ]
 }

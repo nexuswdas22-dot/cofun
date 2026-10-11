@@ -11,6 +11,7 @@ const navLinks = [
   { href: "#tentang", label: "Tentang" },
   { href: "#materi", label: "Materi" },
   { href: "#cara-belajar", label: "Cara Belajar" },
+  { href: "/tanya-jawab", label: "Tanya-Jawab" },
   { href: "#kontak", label: "Kontak" },
 ];
 

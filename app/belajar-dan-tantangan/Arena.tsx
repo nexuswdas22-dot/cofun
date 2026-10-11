@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { facingToRotate } from "@/lib/blockly/simulate";
 import type { SimFrame } from "@/lib/blockly/simulate";
 import type { BlocklyArenaHandle } from "@/components/blockly/BlocklyArena";
-import type { Challenge, MazeCell } from "@/lib/types";
+import { markLevelComplete } from "@/lib/progress";
+import type { Challenge, MazeCell, MazeData } from "@/lib/types";
 
 const BlocklyArena = dynamic(() => import("@/components/blockly/BlocklyArena"), {
   ssr: false,
@@ -15,7 +16,7 @@ const BlocklyArena = dynamic(() => import("@/components/blockly/BlocklyArena"), 
   ),
 });
 
-type RobotState = { col: number; row: number; rotate: number };
+type RobotState = { col: number; row: number; rotate: number; keyTaken?: boolean };
 
 const GRID_GAP_PX = 6;
 
@@ -28,11 +29,13 @@ function MazeCellView({
   row,
   col,
   covered,
+  keyTaken,
 }: {
   kind: MazeCell;
   row: number;
   col: number;
   covered?: boolean;
+  keyTaken?: boolean;
 }) {
   const key = `${row}-${col}`;
   if (kind === "start") {
@@ -93,6 +96,44 @@ function MazeCellView({
       </div>
     );
   }
+  if (kind === "key") {
+    // Kunci sudah diambil robot — petaknya berubah jadi jalur biasa.
+    if (keyTaken) {
+      return (
+        <div
+          className="bg-surface-container-lowest rounded-lg flex items-center justify-center shadow-sm"
+          key={key}
+        >
+          <span className="w-2 h-2 rounded-full bg-outline-variant/50" />
+        </div>
+      );
+    }
+    return (
+      <div
+        className="bg-tertiary-fixed rounded-lg flex flex-col items-center justify-center shadow-sm border border-tertiary/40"
+        key={key}
+      >
+        <span
+          className="material-symbols-outlined text-[22px] text-tertiary"
+          style={{ fontVariationSettings: "'FILL' 1" }}
+        >
+          key
+        </span>
+        <span className="font-label-badge text-[8px] font-bold text-tertiary">KUNCI</span>
+      </div>
+    );
+  }
+  if (kind === "door") {
+    return (
+      <div
+        className="bg-surface-container-high rounded-lg flex flex-col items-center justify-center shadow-sm border-2 border-primary/40"
+        key={key}
+      >
+        <span className="material-symbols-outlined text-[22px] text-primary">lock</span>
+        <span className="font-label-badge text-[8px] font-bold text-primary">PINTU</span>
+      </div>
+    );
+  }
   return (
     <div
       className="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant"
@@ -104,14 +145,28 @@ function MazeCellView({
 }
 
 export default function Arena({ challenge }: { challenge: Challenge }) {
+  // Arena ini hanya untuk tipe blockly; soal kuis dirender oleh KuisArena.
+  if (!challenge.maze) {
+    return (
+      <p className="px-margin-mobile md:px-margin py-space-xl text-on-surface-variant">
+        Soal ini belum memiliki peta.
+      </p>
+    );
+  }
+  return <BlocklyChallenge challenge={challenge} maze={challenge.maze} />;
+}
+
+function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: MazeData }) {
   const maxSteps = challenge.winCondition.maxSteps;
-  const mazeSize = challenge.maze.size;
+  const maxBlocks = challenge.winCondition.maxBlocks;
+  const mazeSize = maze.size;
   const cellSize = `calc((100% - ${(mazeSize - 1) * GRID_GAP_PX}px) / ${mazeSize})`;
   const cellStep = `calc((100% - ${(mazeSize - 1) * GRID_GAP_PX}px) / ${mazeSize} + ${GRID_GAP_PX}px)`;
   const initialRobot: RobotState = {
-    col: challenge.maze.start.col,
-    row: challenge.maze.start.row,
-    rotate: facingToRotate(challenge.maze.start.facing),
+    col: maze.start.col,
+    row: maze.start.row,
+    rotate: facingToRotate(maze.start.facing),
+    keyTaken: false,
   };
 
   const [hintDrawer, setHintDrawer] = useState(true);
@@ -177,7 +232,10 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
 
   const checkLogic = () => {
     if (executing) return;
-    const sim = arenaRef.current?.generateFrames(challenge.maze, challenge.winCondition);
+    clearTimers();
+    setSuccessOpen(false);
+
+    const sim = arenaRef.current?.generateFrames(maze, challenge.winCondition);
     if (!sim) return;
     if (!sim.ok) {
       setStatus("⚠️ Belum Siap");
@@ -185,11 +243,43 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
       spawnNotification(sim.error);
       return;
     }
-    setStatus("✓ Logika Diverifikasi!");
-    setSpeech(
-      "“Rangkaian blokmu valid dan siap dijalankan. Tekan Jalankan Robot kalau sudah siap!”",
-    );
-    spawnNotification("✓ Rangkaian blok koding valid & siap!");
+    if (sim.frames.length === 0) {
+      spawnNotification("Susun dulu bloknya ya!");
+      return;
+    }
+
+    // Cek logika: jalankan robot mengikuti program, lalu kembali ke titik awal.
+    setExecuting(true);
+    setSteps(0);
+    setRobot(initialRobot);
+    setSpeech("“Mengcek logika... Ikuti jalanku ya!”");
+
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      simulatorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    sim.frames.forEach((frame) => {
+      const id = window.setTimeout(() => applyFrame(frame), frame.t);
+      timers.current.push(id);
+    });
+
+    const lastFrame = sim.frames[sim.frames.length - 1];
+    const endId = window.setTimeout(() => {
+      setExecuting(false);
+      setActiveBlock(null);
+      setRobot(initialRobot);
+      setSteps(0);
+      if (sim.result === "success") {
+        setStatus("✓ Logika Benar!");
+        setSpeech("“Logika programmu benar! Robot bisa sampai tujuan. Tekan Jalankan Robot untuk menyelesaikan misi!”");
+        spawnNotification("✓ Logika benar! Siap dijalankan.");
+      } else {
+        setStatus("✗ Logika Belum Lengkap");
+        setSpeech("“Programnya belum sampai tujuan. Perbaiki blokmu, lalu cek lagi!”");
+        spawnNotification("Logika belum benar. Perbaiki blokmu!");
+      }
+    }, lastFrame.t + 900);
+    timers.current.push(endId);
   };
 
   const applyFrame = (frame: SimFrame) => {
@@ -198,6 +288,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
     if (typeof frame.step === "number") setSteps(frame.step);
     if (frame.speech) setSpeech(`“${frame.speech}”`);
     if (frame.robot) setRobot((prev) => ({ ...prev, ...frame.robot! }));
+    if (frame.keyTaken) setRobot((prev) => ({ ...prev, keyTaken: true }));
   };
 
   const runRobotSequence = () => {
@@ -205,7 +296,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
     clearTimers();
     setSuccessOpen(false);
 
-    const sim = arenaRef.current?.generateFrames(challenge.maze, challenge.winCondition);
+    const sim = arenaRef.current?.generateFrames(maze, challenge.winCondition);
     if (!sim) return;
     if (!sim.ok) {
       setStatus("⚠️ Belum Siap");
@@ -237,6 +328,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
       setExecuting(false);
       setActiveBlock(null);
       if (sim.result === "success") {
+        markLevelComplete(challenge.kelasSlug, challenge.levelNomor);
         setSuccessOpen(true);
       } else {
         setStatus("Coba Lagi, Perbaiki Blokmu!");
@@ -244,6 +336,59 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
     }, lastFrame.t + 900);
     timers.current.push(endId);
   };
+
+  // Tombol aksi dipakai di dua tempat: kartu mobile (di bawah simulator)
+  // dan kartu desktop (di dalam papan Blockly).
+  const actionButtons = (
+    <>
+      <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#ffb95f] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
+          onClick={() => setHintOpen(true)}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[17px]">
+            lightbulb
+          </span>
+          Bantuan
+        </button>
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#4edea3] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
+          onClick={checkLogic}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[17px]">
+            check_box
+          </span>
+          Cek Logika
+        </button>
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-[11px] sm:text-label-badge hover:bg-surface-container-highest transition-all"
+          onClick={resetSimulation}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[17px]">
+            restart_alt
+          </span>
+          Reset
+        </button>
+      </div>
+      <button
+        className="flex items-center justify-center gap-2 min-h-11 px-space-lg py-2.5 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] hover:translate-y-[-1px] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-all w-full sm:w-auto disabled:opacity-70"
+        disabled={executing}
+        onClick={runRobotSequence}
+        type="button"
+      >
+        <span
+          className="material-symbols-outlined text-[22px]"
+          style={{ fontVariationSettings: "'FILL' 1" }}
+        >
+          play_arrow
+        </span>
+        {executing ? "Robot Berjalan..." : "Jalankan Robot!"}
+      </button>
+    </>
+  );
 
   return (
     <>
@@ -366,7 +511,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                       Simulator Labirin
                     </h3>
                     <span className="font-label-badge text-[11px] text-on-surface-variant">
-                      Peta Uji {challenge.maze.size}×{challenge.maze.size}
+                      Peta Uji {maze.size}×{maze.size}
                     </span>
                   </div>
                 </div>
@@ -378,6 +523,16 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                     Langkah: {steps} / {maxSteps ?? "∞"}
                   </span>
                 </div>
+                {maxBlocks !== undefined && (
+                  <div className="flex items-center gap-1.5 bg-surface-container-high px-3 py-1 rounded-full border border-outline-variant/40">
+                    <span className="material-symbols-outlined text-[16px] text-primary">
+                      extension
+                    </span>
+                    <span className="font-label-code text-[12px] font-bold text-on-surface">
+                      Batas blok: {maxBlocks}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="relative bg-surface-container-high rounded-xl p-space-sm shadow-sm flex items-start gap-space-sm border border-primary/20">
@@ -408,11 +563,11 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                 <div
                   className="grid gap-1.5 w-full max-w-[340px] aspect-square relative"
                   style={{
-                    gridTemplateColumns: `repeat(${challenge.maze.size}, minmax(0, 1fr))`,
-                    gridTemplateRows: `repeat(${challenge.maze.size}, minmax(0, 1fr))`,
+                    gridTemplateColumns: `repeat(${maze.size}, minmax(0, 1fr))`,
+                    gridTemplateRows: `repeat(${maze.size}, minmax(0, 1fr))`,
                   }}
                 >
-                  {challenge.maze.cells.flatMap((row, rowIndex) =>
+                  {maze.cells.flatMap((row, rowIndex) =>
                     row.map((kind, cellIndex) => (
                       <MazeCellView
                         col={cellIndex}
@@ -423,6 +578,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                         }
                         key={`${rowIndex}-${cellIndex}`}
                         kind={kind}
+                        keyTaken={robot.keyTaken}
                         row={rowIndex}
                       />
                     )),
@@ -470,7 +626,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                   <span className="material-symbols-outlined text-[13px]">
                     explore
                   </span>
-                  Arah Hadap: {challenge.maze.start.facing}
+                  Arah Hadap: {maze.start.facing}
                 </div>
               </div>
 
@@ -487,7 +643,13 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
             </div>
           </div>
 
-          <div className="lg:col-span-8 flex flex-col gap-space-md order-2 lg:order-2">
+          {/* Tombol aksi mobile: tepat di bawah simulator supaya robot
+              terlihat saat diklik. */}
+          <div className="lg:hidden order-2 bg-surface-container-lowest rounded-xl shadow-md p-space-sm flex flex-col gap-space-sm border border-outline-variant/30">
+            {actionButtons}
+          </div>
+
+          <div className="lg:col-span-8 flex flex-col gap-space-md order-3 lg:order-2">
             <div className="bg-surface-container-lowest rounded-xl shadow-md p-space-md lg:p-space-lg flex flex-col gap-space-md border border-outline-variant/30">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-space-xs border-b border-surface-container-high">
                 <div className="flex items-center gap-2 min-w-0">
@@ -501,7 +663,7 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
                       Papan Blockly
                     </h2>
                     <span className="hidden sm:inline font-label-badge text-[11px] text-on-surface-variant">
-                      Ambil blok dari kotak kategori, lalu susun programmu
+                      Ambil blok dari kotak atas, lalu susun programmu
                     </span>
                   </div>
                 </div>
@@ -521,57 +683,14 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
               <BlocklyArena
                 activeBlockId={activeBlock}
                 allowedBlocks={challenge.allowedBlocks}
+                initialBlocks={challenge.initialBlocks}
                 key={challenge.id}
                 ref={arenaRef}
               />
 
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-space-sm pt-space-xs border-t border-surface-container-high">
-                <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
-                  <button
-                    className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#ffb95f] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
-                    onClick={() => setHintOpen(true)}
-                    type="button"
-                  >
-                    <span className="material-symbols-outlined text-[17px]">
-                      lightbulb
-                    </span>
-                    Bantuan
-                  </button>
-                  <button
-                    className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#4edea3] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
-                    onClick={checkLogic}
-                    type="button"
-                  >
-                    <span className="material-symbols-outlined text-[17px]">
-                      check_box
-                    </span>
-                    Cek Logika
-                  </button>
-                  <button
-                    className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-[11px] sm:text-label-badge hover:bg-surface-container-highest transition-all"
-                    onClick={resetSimulation}
-                    type="button"
-                  >
-                    <span className="material-symbols-outlined text-[17px]">
-                      restart_alt
-                    </span>
-                    Reset
-                  </button>
-                </div>
-                <button
-                  className="flex items-center justify-center gap-2 min-h-11 px-space-lg py-2.5 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] hover:translate-y-[-1px] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-all w-full sm:w-auto disabled:opacity-70"
-                  disabled={executing}
-                  onClick={runRobotSequence}
-                  type="button"
-                >
-                  <span
-                    className="material-symbols-outlined text-[22px]"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    play_arrow
-                  </span>
-                  {executing ? "Robot Berjalan..." : "Jalankan Robot!"}
-                </button>
+              {/* Tombol aksi desktop: tetap di dalam papan Blockly. */}
+              <div className="hidden lg:flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-sm pt-space-xs border-t border-surface-container-high">
+                {actionButtons}
               </div>
             </div>
           </div>
@@ -639,19 +758,9 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
             </button>
           </div>
           <div className="bg-tertiary-fixed/30 rounded-xl p-space-md border border-tertiary-fixed flex flex-col gap-space-sm">
-            {challenge.hints.length === 0 ? (
-              <p className="font-body-md text-on-surface leading-relaxed">
-                “Coba jalankan dulu programmu dan perhatikan ke mana robot
-                berhenti. Dari situ biasanya kelihatan blok mana yang perlu
-                ditambah atau diganti.”
-              </p>
-            ) : (
-              challenge.hints.map((hint) => (
-                <p className="font-body-md text-on-surface leading-relaxed" key={hint}>
-                  “{hint}”
-                </p>
-              ))
-            )}
+            <p className="font-body-md text-on-surface leading-relaxed">
+              “{challenge.hint || "Coba jalankan dulu programmu dan perhatikan ke mana robot berhenti."}”
+            </p>
           </div>
           <div className="flex justify-end">
             <button
@@ -706,14 +815,31 @@ export default function Arena({ challenge }: { challenge: Challenge }) {
             >
               Ulangi Level
             </button>
-            <Link
-              className="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110 text-center"
-              href={`/peta-petualangan/${challenge.kelasSlug}`}
-              onClick={() => setSuccessOpen(false)}
-            >
-              Kembali ke Peta ➔
-            </Link>
+            {challenge.levelNomor < challenge.totalLevels ? (
+              <Link
+                className="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110 text-center"
+                href={`/belajar-dan-tantangan/${challenge.kelasSlug}/${challenge.levelNomor + 1}`}
+                onClick={() => setSuccessOpen(false)}
+              >
+                Lanjut Level Berikutnya ➔
+              </Link>
+            ) : (
+              <Link
+                className="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110 text-center"
+                href={`/peta-petualangan/${challenge.kelasSlug}`}
+                onClick={() => setSuccessOpen(false)}
+              >
+                Kembali ke Peta ➔
+              </Link>
+            )}
           </div>
+          <button
+            className="text-on-surface-variant font-label-badge text-label-badge underline underline-offset-2"
+            onClick={() => setSuccessOpen(false)}
+            type="button"
+          >
+            Kembali ke peta petualangan
+          </button>
         </div>
       </div>
     </>

@@ -1,119 +1,451 @@
 {
   "slug": "kelas-4",
   "nomor": 4,
-  "judul": "Kelas 4: Block Coding",
+  "judul": "Kelas 4: Dasar Pemrograman Blockly",
   "badge": "Kelas 4 SD",
   "pulau": "Pulau Percabangan Algoritma",
   "chip": "Petualangan Logika",
   "bannerTitle": "Robot Memilih Jalan Sendiri",
   "bannerCode": "jika (ada_batu) { belok_kiri() }",
   "ctaEnabled": true,
-  "levelAktif": 4,
+  "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
-      "title": "Level 1 — Kenalan dengan Blok",
-      "topic": "Mengenal bentuk potongan balok koding dan cara menempelkannya.",
-      "desc": "Kamu sudah berhasil belajar cara menempelkan blok maju, mundur, dan memutar. Dasar yang sangat kokoh!",
+      "title": "Level 1 — Kenalan dengan Blockly",
+      "topic": "Blok Blockly disambungkan dalam urutan eksekusi.",
+      "desc": "Susun blok awal dan blok maju, lalu jalankan robot. Blok dijalankan dari atas ke bawah.",
       "skills": [
-        "Menemukan bentuk balok puzzle",
-        "Menempel blok tanpa salah urutan",
-        "Mengenal arah hadap robot"
+        "Menyambung blok",
+        "Menjalankan urutan blok",
+        "Mencapai target sederhana"
       ],
-      "btnText": "Buka Materi & Challenge",
-      "nodeLabel": "Kenalan dengan Blok",
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Kenalan Blockly",
       "nodeIcon": "extension",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Program Blockly Pertamamu",
+          "brief": "Susun blok gerak agar robot mencapai bintang.",
+          "tujuan": "Siswa menyusun program menggunakan blok visual.",
+          "materi": "Blok Blockly disambungkan dalam urutan eksekusi.",
+          "contoh": "Susun blok awal dan blok maju, lalu jalankan robot.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan atas.",
+          "batasan": [
+            "Gunakan blok gerak dan urutan.",
+            "Tanpa perulangan, kondisi, atau variabel."
+          ],
+          "kriteria": "Robot mencapai tujuan.",
+          "hints": [
+            "Pastikan blok terhubung sesuai urutan yang ingin dijalankan."
+          ],
+          "feedbackSukses": "Programmu berjalan dengan benar.",
+          "feedbackGagal": "Periksa urutan blok dan hasil setiap gerakan.",
+          "maze": {
+            "size": 3,
+            "cells": [
+              [
+                "start",
+                "path",
+                "goal"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 2,
-      "title": "Level 2 — Susun Program",
-      "topic": "Menyusun rangkaian aksi berurutan secara teratur dari atas ke bawah.",
-      "desc": "Kamu sudah hebat mengatur urutan langkah robot agar sampai ke garis aman tanpa menabrak dinding.",
+      "title": "Level 2 — Tantangan Rute",
+      "topic": "Program direncanakan dan diuji dengan memperhatikan arah robot.",
+      "desc": "Rute punya beberapa belokan dan rintangan. Periksa arah robot setelah setiap belokan.",
       "skills": [
-        "Menyusun langkah dari atas ke bawah",
-        "Menghitung langkah robot",
-        "Menghindari tabrakan dinding"
+        "Merencanakan rute",
+        "Memeriksa arah robot",
+        "Menghindari tabrakan"
       ],
-      "btnText": "Buka Kembali Materi",
-      "nodeLabel": "Susun Program",
-      "nodeIcon": "reorder",
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Tantangan Rute",
+      "nodeIcon": "route",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Rute Melewati Batu Karang",
+          "brief": "Susun program agar robot melewati batu karang dan sampai bintang tanpa tabrakan.",
+          "tujuan": "Siswa membuat program gerak untuk rute dengan beberapa rintangan.",
+          "materi": "Program perlu direncanakan dan diuji dengan memperhatikan arah robot.",
+          "contoh": "Peragakan rute dengan beberapa belokan.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Dua batu karang menghalangi jalur lurus.",
+          "batasan": [
+            "Gunakan blok yang sudah diajarkan.",
+            "Semua rintangan terlihat jelas.",
+            "Solusi alternatif diterima."
+          ],
+          "kriteria": "Robot mencapai target tanpa tabrakan.",
+          "hints": [
+            "Periksa arah robot setelah setiap belokan."
+          ],
+          "feedbackSukses": "Rute berhasil diselesaikan.",
+          "feedbackGagal": "Cari titik ketika robot mulai menyimpang dari rute.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "rock",
+                "empty"
+              ],
+              [
+                "empty",
+                "path",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "rock",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 3,
       "title": "Level 3 — Perulangan",
-      "topic": "Mengulang perintah berkali-kali menggunakan 1 blok pintar.",
-      "desc": "Kamu berhasil menghemat balok dengan perulangan 4 langkah untuk menggambar pola persegi rapi!",
+      "topic": "Perulangan menjalankan instruksi di dalamnya beberapa kali.",
+      "desc": "Gunakan satu blok ULANGI untuk menggantikan gerakan yang sama berkali-kali.",
       "skills": [
-        "Mengulang perintah dengan blok ULANGI",
-        "Menghitung bintang yang dikumpulkan",
-        "Menghemat jumlah balok"
+        "Memakai blok ULANGI",
+        "Menghitung jumlah pengulangan",
+        "Menghemat blok"
       ],
-      "btnText": "Buka Kembali Materi",
+      "btnText": "Mulai Level 3",
       "nodeLabel": "Perulangan",
-      "nodeIcon": "all_inclusive",
+      "nodeIcon": "repeat",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Lurus dengan Perulangan",
+          "brief": "Sampai bintang dengan memakai blok ULANGI. Batas blok: 4.",
+          "tujuan": "Siswa menggunakan perulangan untuk mengurangi instruksi berulang.",
+          "materi": "Perulangan menjalankan instruksi di dalamnya beberapa kali.",
+          "contoh": "Tiga blok maju bisa diganti satu perulangan yang menjalankan maju tiga kali.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang empat petak ke kanan.",
+          "batasan": [
+            "Jelaskan jumlah pengulangan.",
+            "Gunakan paling banyak 4 blok."
+          ],
+          "kriteria": "Robot mencapai tujuan dan memenuhi batas blok.",
+          "hints": [
+            "Cari bagian program yang mengulang gerakan yang sama."
+          ],
+          "feedbackSukses": "Bagus! Kamu menggunakan perulangan.",
+          "feedbackGagal": "Periksa isi perulangan dan jumlah pengulangannya.",
+          "maze": {
+            "size": 5,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path",
+                "goal"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "ulangi"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 4
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 4,
-      "title": "Level 4 — Kondisi",
-      "topic": "Konsep percabangan keputusan saat robot menghadapi situasi berbeda di lintasan.",
-      "desc": "Robot belajar memilih jalan sendiri jika ada rintangan di depan! Kamu akan menyusun blok perintah: jika ada rintangan, belok; jika aman, maju terus.",
+      "title": "Level 4 — Logika Kondisi",
+      "topic": "Kondisi memungkinkan program memilih tindakan berdasarkan keadaan.",
+      "desc": "Jika ada batu di depan, robot belok. Jika jalan aman, robot maju.",
       "skills": [
-        "Membaca kondisi sensor rintangan",
-        "Membuat jalur alternatif dengan blok ELSE",
-        "Mengarahkan CoFun Bot ke bendera akhir"
+        "Memahami kondisi JIKA",
+        "Memakai MAKA dan SELAIN ITU",
+        "Memilih tindakan sesuai keadaan"
       ],
-      "btnText": "Buka Materi & Challenge",
+      "btnText": "Mulai Level 4",
       "nodeLabel": "Kondisi",
       "nodeIcon": "alt_route",
       "xpReward": 80,
       "challenges": [
         {
           "urutan": 1,
+          "tipe": "blockly",
           "title": "Misi: Pandu CoFun Melewati Batu Karang!",
-          "brief": "Gunakan blok keputusan JIKA (IF) untuk memeriksa apakah ada rintangan di depan robot, dan pilih jalur aman ke Bintang Emas.",
+          "brief": "Gunakan blok keputusan JIKA untuk memeriksa apakah ada batu di depan robot, lalu pilih jalur aman ke Bintang Emas.",
+          "tujuan": "Siswa membuat program yang merespons keadaan tertentu.",
+          "materi": "Kondisi JIKA/SELAIN ITU memungkinkan program memilih tindakan berdasarkan keadaan yang diperiksa.",
+          "contoh": "Jika ada batu di depan, belok. Jika tidak, maju.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu karang di depan robot.",
+          "batasan": [
+            "Kondisi harus didukung engine (ada batu di depan).",
+            "Setiap cabang harus memiliki perilaku yang dapat diuji."
+          ],
+          "kriteria": "Program memilih tindakan sesuai keadaan dan mencapai tujuan.",
+          "hints": [
+            "Perhatikan keadaan yang diperiksa sebelum program memilih tindakan."
+          ],
+          "feedbackSukses": "Tepat! Programmu merespons kondisi dengan benar.",
+          "feedbackGagal": "Periksa kondisi dan tindakan di setiap cabang.",
           "maze": {
             "size": 5,
             "cells": [
-              ["empty", "empty", "empty", "empty", "empty"],
-              ["start", "path", "rock", "empty", "empty"],
-              ["empty", "path", "path", "path", "empty"],
-              ["empty", "empty", "empty", "goal", "empty"],
-              ["empty", "empty", "empty", "empty", "empty"]
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ],
+              [
+                "start",
+                "path",
+                "rock",
+                "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "path",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "empty",
+                "empty"
+              ]
             ],
-            "start": { "col": 0, "row": 1, "facing": "timur" }
+            "start": {
+              "col": 0,
+              "row": 1,
+              "facing": "timur"
+            }
           },
-          "allowedBlocks": ["maju", "belok_kanan", "belok_kiri", "ulangi", "jika_rintangan"],
-          "winCondition": { "type": "reach_goal", "maxSteps": 12 },
-          "hints": [
-            "Coba perhatikan arah robot tepat sebelum batu karang! Robot harus Belok Kanan dulu untuk turun ke jalur aman bawah, lalu melangkah ke bintang.",
-            "Blok JIKA punya dua rak: MAKA dijalankan kalau ada batu di depan, SELAIN ITU dijalankan kalau jalannya aman."
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi",
+            "jika_rintangan"
           ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxSteps": 12
+          },
           "difficulty": 2
         }
-      ]
+      ],
+      "visual": null
     },
     {
       "nomor": 5,
-      "title": "Level 5 — Debugging",
-      "topic": "Menemukan kesalahan kode dan memperbaikinya agar misi sukses.",
-      "desc": "Jadilah dokter kode! Kamu akan mencari balok yang salah urutan atau salah arah dan menjadikannya sempurna.",
+      "title": "Level 5 — Misi Pemrograman",
+      "topic": "Urutan, perulangan, dan kondisi dipakai bersama untuk menyelesaikan misi.",
+      "desc": "Gabungkan perulangan dan kondisi untuk menyelesaikan rute. Pisahkan gerakan berulang dari tindakan yang bergantung kondisi.",
       "skills": [
-        "Menemukan blok yang salah urutan",
-        "Memperbaiki logika robot",
-        "Menguji ulang sampai misi sukses"
+        "Menggabungkan urutan, perulangan, dan kondisi",
+        "Menguji setiap bagian",
+        "Memperbaiki program"
       ],
       "btnText": "Mulai Level 5",
-      "nodeLabel": "Debugging",
-      "nodeIcon": "pest_control",
+      "nodeLabel": "Misi Pemrograman",
+      "nodeIcon": "smart_toy",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Misi Gabungan Batu Karang",
+          "brief": "Gabungkan perulangan untuk menyelesaikan rute ke bintang. Batas blok: 7, jadi program harus ringkas.",
+          "tujuan": "Siswa menggabungkan urutan dan perulangan untuk menyelesaikan rute.",
+          "materi": "Beberapa konsep pemrograman dapat digunakan bersama untuk menyelesaikan misi.",
+          "contoh": "Satu perulangan maju untuk lurus, lalu belok dan perulangan lagi.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu karang di tengah jalur.",
+          "batasan": [
+            "Semua konsep telah diajarkan.",
+            "Gunakan paling banyak 7 blok."
+          ],
+          "kriteria": "Robot mencapai bintang dengan batas blok terpenuhi.",
+          "hints": [
+            "Cari gerakan lurus yang berulang, lalu tulis dengan satu blok ULANGI."
+          ],
+          "feedbackSukses": "Mantap! Kamu menggabungkan beberapa konsep.",
+          "feedbackGagal": "Hitung dulu berapa blok yang kamu pakai, lalu ringkas gerakan yang berulang.",
+          "maze": {
+            "size": 5,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "rock",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri",
+            "ulangi",
+            "jika_rintangan"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxBlocks": 7
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     }
   ]
 }

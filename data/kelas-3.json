@@ -1,95 +1,439 @@
 {
   "slug": "kelas-3",
   "nomor": 3,
-  "judul": "Kelas 3: Loop & Counter",
+  "judul": "Kelas 3: Algoritma dan Pemecahan Masalah",
   "badge": "Kelas 3 SD",
-  "pulau": "Pulau Bintang Angkasa",
-  "chip": "Petualangan Perulangan",
-  "bannerTitle": "Loop Menuju Bintang",
-  "bannerCode": "ulangi(4) { langkah_bintang(); }",
-  "ctaEnabled": false,
+  "pulau": "Pulau Algoritma",
+  "chip": "Petualangan Algoritma",
+  "bannerTitle": "Algoritma Mandiri",
+  "bannerCode": "ulangi 3 { maju(); } belok_kanan();",
+  "ctaEnabled": true,
   "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
-      "title": "Level 1 — Apa Itu Algoritma?",
-      "topic": "Mengenal algoritma sebagai urutan langkah menuju tujuan.",
-      "desc": "Sebelum lepas landas, kenali dulu urutan persiapan roketmu!",
+      "title": "Level 1 — Lengkapi Algoritma",
+      "topic": "Algoritma dapat diperiksa untuk menentukan instruksi yang kurang.",
+      "desc": "Ada satu bagian program yang hilang. Pilih instruksi yang tepat untuk melengkapinya.",
       "skills": [
-        "Menyusun langkah logis",
-        "Mengecek urutan persiapan",
-        "Menjalankan langkah pertama"
+        "Memeriksa algoritma",
+        "Menentukan instruksi yang hilang",
+        "Memahami perubahan posisi"
       ],
       "btnText": "Mulai Level 1",
-      "nodeLabel": "Apa Itu Algoritma?",
-      "nodeIcon": "schema",
+      "nodeLabel": "Lengkapi Algoritma",
+      "nodeIcon": "extension",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Bagian yang Hilang",
+          "brief": "Program ingin robot sampai bintang. Pilih instruksi yang mengisi bagian kosong.",
+          "tujuan": "Siswa melengkapi program yang kehilangan instruksi.",
+          "materi": "Algoritma dapat diperiksa untuk menentukan instruksi yang diperlukan.",
+          "contoh": "Program maju, maju, lalu kosong. Robot perlu belok agar bisa masuk ke jalur berikutnya.",
+          "kondisiAwal": "Robot di titik awal menghadap kanan. Program: maju, maju, [kosong], maju. Bintang berada di bawah kolom ketiga.",
+          "batasan": [
+            "Satu bagian program kosong.",
+            "Pilihan mencakup pengecoh yang masuk akal.",
+            "Semua blok yang dibutuhkan sudah pernah diajarkan."
+          ],
+          "kriteria": "Program lengkap mencapai tujuan.",
+          "hints": [
+            "Perhatikan posisi robot setelah menjalankan blok sebelumnya."
+          ],
+          "feedbackSukses": "Tepat! Kamu melengkapi algoritma.",
+          "feedbackGagal": "Pikirkan perubahan posisi yang dibutuhkan.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Program: maju, maju, [kosong], maju. Robot menghadap kanan dan bintang ada di bawah kolom ketiga. Blok apa yang mengisi bagian kosong?",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "Belok kanan"
+              },
+              {
+                "id": "b",
+                "label": "Belok kiri"
+              },
+              {
+                "id": "c",
+                "label": "Maju"
+              }
+            ],
+            "jawaban": [
+              "a"
+            ],
+            "visual": "slot-program"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": "slot-program"
     },
     {
       "nomor": 2,
       "title": "Level 2 — Buat Algoritma",
-      "topic": "Menyusun instruksi maju dan belok untuk robot penjelajah.",
-      "desc": "Tulis urutan maju dan belok agar penjelajah sampai ke bintang.",
+      "topic": "Tujuan dipecah menjadi langkah kecil yang bisa dilakukan.",
+      "desc": "Rencanakan rute dulu, lalu ubah rencana itu menjadi blok. Ada lebih dari satu jawaban yang benar.",
       "skills": [
-        "Instruksi maju satu langkah",
-        "Instruksi belok kiri & kanan",
-        "Menggabungkan maju dan belok"
+        "Merencanakan rute",
+        "Memecah tujuan",
+        "Menyusun program sendiri"
       ],
       "btnText": "Mulai Level 2",
       "nodeLabel": "Buat Algoritma",
-      "nodeIcon": "directions",
+      "nodeIcon": "account_tree",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Rancang Algoritmamu Sendiri",
+          "brief": "Buat program agar robot sampai bintang. Ada lebih dari satu cara yang benar.",
+          "tujuan": "Siswa merancang urutan instruksi sendiri.",
+          "materi": "Tujuan dapat dipecah menjadi langkah-langkah kecil yang dapat dilakukan.",
+          "contoh": "Rencanakan rute singkat sebelum menyusun blok.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah. Ada satu batu di tengah.",
+          "batasan": [
+            "Gunakan blok yang sudah dipelajari.",
+            "Robot tidak boleh menabrak batu."
+          ],
+          "kriteria": "Robot mencapai bintang tanpa melanggar aturan misi.",
+          "hints": [
+            "Rencanakan rute terlebih dahulu, lalu ubah menjadi instruksi."
+          ],
+          "feedbackSukses": "Berhasil! Kamu merancang algoritmamu sendiri.",
+          "feedbackGagal": "Uji rute sedikit demi sedikit dan periksa titik saat robot menyimpang.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "rock",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal",
+            "maxSteps": 12
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 3,
-      "title": "Level 3 — Pecahkan Masalah",
-      "topic": "Memecah masalah besar menjadi langkah-langkah kecil.",
-      "desc": "Ada asteroid di jalurmu! Pecah masalahnya jadi langkah kecil yang mudah.",
+      "title": "Level 3 — Pilih Instruksi",
+      "topic": "Abstraksi membantu fokus pada informasi yang diperlukan.",
+      "desc": "Tidak semua instruksi berguna. Pilih hanya yang membantu mencapai tujuan.",
       "skills": [
-        "Memecah masalah jadi langkah kecil",
-        "Mencoba solusi bertahap",
-        "Memeriksa hasil tiap langkah"
+        "Memilah instruksi",
+        "Mengenali instruksi yang tidak perlu",
+        "Fokus pada tujuan"
       ],
       "btnText": "Mulai Level 3",
-      "nodeLabel": "Pecahkan Masalah",
-      "nodeIcon": "psychology",
+      "nodeLabel": "Pilih Instruksi",
+      "nodeIcon": "filter_alt",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Instruksi yang Dibutuhkan",
+          "brief": "Pilih semua instruksi yang diperlukan agar robot sampai bintang di kanan bawah.",
+          "tujuan": "Siswa memilih informasi dan instruksi yang relevan.",
+          "materi": "Abstraksi membantu kita fokus pada informasi yang diperlukan untuk menyelesaikan masalah.",
+          "contoh": "Robot menghadap kanan. Untuk turun ke bawah, perlu belok kanan dulu.",
+          "kondisiAwal": "Robot di titik awal menghadap kanan. Bintang di kanan bawah. Ada empat instruksi tersedia.",
+          "batasan": [
+            "Instruksi yang relevan dan pengecoh harus jelas.",
+            "Solusi alternatif yang valid tidak dianggap salah."
+          ],
+          "kriteria": "Pilihan memenuhi kebutuhan misi tanpa instruksi yang tidak diperlukan.",
+          "hints": [
+            "Tanyakan apakah setiap instruksi membantu mencapai tujuan."
+          ],
+          "feedbackSukses": "Bagus! Kamu fokus pada instruksi yang diperlukan.",
+          "feedbackGagal": "Periksa fungsi setiap instruksi terhadap tujuan.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Robot menghadap kanan dan bintang di kanan bawah. Pilih instruksi yang diperlukan.",
+            "opsi": [
+              {
+                "id": "kanan",
+                "label": "Belok kanan"
+              },
+              {
+                "id": "kiri",
+                "label": "Belok kiri"
+              },
+              {
+                "id": "maju",
+                "label": "Maju"
+              },
+              {
+                "id": "ulangi",
+                "label": "Ulangi 3 kali"
+              }
+            ],
+            "jawaban": [
+              "kanan",
+              "maju"
+            ],
+            "visual": "robot-bintang"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": "robot-bintang"
     },
     {
       "nomor": 4,
-      "title": "Level 4 — Jika... Maka...",
-      "topic": "Memperkenalkan keputusan sederhana JIKA / MAKA.",
-      "desc": "Jika ada bintang, ambil; jika kosong, lanjut. Robot mulai bisa memilih!",
+      "title": "Level 4 — Debugging Challenge",
+      "topic": "Debugging membandingkan hasil program dengan tujuan.",
+      "desc": "Program gagal. Temukan langkah pertama yang berbeda dari yang seharusnya.",
       "skills": [
-        "Membaca kondisi sederhana",
-        "Memilih tindakan sesuai kondisi",
-        "Menguji keputusan robot"
+        "Membandingkan hasil dengan tujuan",
+        "Mencari langkah pertama yang salah",
+        "Memperbaiki program"
       ],
       "btnText": "Mulai Level 4",
-      "nodeLabel": "Jika... Maka...",
-      "nodeIcon": "alt_route",
+      "nodeLabel": "Debugging",
+      "nodeIcon": "bug_report",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Perbaiki Program yang Gagal",
+          "brief": "Papan sudah terisi program yang gagal karena satu blok belok keliru. Telusuri programmu, temukan kesalahannya, lalu perbaiki dan jalankan ulang.",
+          "tujuan": "Siswa mendiagnosis kesalahan dan menguji perbaikannya.",
+          "materi": "Debugging dilakukan dengan membandingkan hasil program dengan tujuan.",
+          "contoh": "Telusuri program untuk menemukan langkah pertama yang salah.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Program awal memakai belok kanan pada titik yang salah sehingga robot menyimpang dari rute.",
+          "batasan": [
+            "Kesalahan dapat ditemukan dengan konsep yang sudah diajarkan.",
+            "Jangan memberikan solusi lengkap.",
+            "Kesalahan tidak berasal dari bug game."
+          ],
+          "kriteria": "Program yang diperbaiki memenuhi semua aturan misi dan robot mencapai bintang.",
+          "hints": [
+            "Cari langkah pertama ketika hasil berbeda dari yang diharapkan."
+          ],
+          "feedbackSukses": "Debugging berhasil! Kamu memperbaiki program melalui pengujian.",
+          "feedbackGagal": "Bandingkan hasil setiap langkah dengan rute yang seharusnya.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "initialBlocks": {
+            "blocks": {
+              "languageVersion": 0,
+              "blocks": [
+                {
+                  "type": "cf_maju",
+                  "next": {
+                    "block": {
+                      "type": "cf_maju",
+                      "next": {
+                        "block": {
+                          "type": "cf_belok_kanan",
+                          "next": {
+                            "block": {
+                              "type": "cf_maju",
+                              "next": {
+                                "block": {
+                                  "type": "cf_maju",
+                                  "next": {
+                                    "block": {
+                                      "type": "cf_belok_kanan",
+                                      "next": {
+                                        "block": {
+                                          "type": "cf_maju",
+                                          "next": {
+                                            "block": {
+                                              "type": "cf_belok_kanan",
+                                              "next": {
+                                                "block": {
+                                                  "type": "cf_maju"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 5,
-      "title": "Level 5 — Misi Algoritma",
-      "topic": "Misi akhir: kumpulkan bintang dengan algoritma lengkap.",
-      "desc": "Kumpulkan semua bintang di tata surya dengan algoritma terbaikmu!",
+      "title": "Level 5 — Misi Bertahap",
+      "topic": "Masalah besar lebih mudah jika dibagi menjadi tujuan kecil yang berurutan.",
+      "desc": "Ambil kunci dulu, baru buka pintu. Tujuan pertama harus tercapai sebelum tujuan berikutnya.",
       "skills": [
-        "Algoritma + keputusan sederhana",
-        "Mengoptimalkan jumlah langkah",
-        "Mendapat lencana Jelajah Bintang"
+        "Memecah misi",
+        "Mengikuti urutan tujuan",
+        "Memakai kondisi sederhana"
       ],
       "btnText": "Mulai Level 5",
-      "nodeLabel": "Misi Algoritma",
-      "nodeIcon": "flag",
+      "nodeLabel": "Misi Bertahap",
+      "nodeIcon": "key",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Ambil Kunci, Buka Pintu",
+          "brief": "Robot harus mengambil kunci dulu, lalu melewati pintu menuju bintang.",
+          "tujuan": "Siswa memecah masalah menjadi beberapa tujuan kecil.",
+          "materi": "Masalah besar lebih mudah diselesaikan jika dibagi menjadi bagian-bagian yang teratur.",
+          "contoh": "Peragakan mengambil kunci sebelum menuju pintu.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Kunci ada di tengah. Pintu menghalangi jalur ke bintang.",
+          "batasan": [
+            "Interaksi dengan objek: kunci diambil saat robot menginjaknya.",
+            "Pintu hanya bisa dilewati setelah kunci diambil.",
+            "Gunakan blok yang sudah dipelajari."
+          ],
+          "kriteria": "Kunci diambil lebih dulu, lalu robot mencapai bintang.",
+          "hints": [
+            "Tentukan tujuan yang harus diselesaikan terlebih dahulu."
+          ],
+          "feedbackSukses": "Semua tujuan tercapai sesuai urutan!",
+          "feedbackGagal": "Periksa apakah setiap tujuan sudah dipenuhi sebelum melanjutkan.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "door"
+              ],
+              [
+                "empty",
+                "key",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 3
+        }
+      ],
+      "visual": null
     }
   ]
 }

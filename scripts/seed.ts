@@ -7,12 +7,23 @@ import Database from "better-sqlite3";
 
 type SeedChallenge = {
   urutan?: number;
+  tipe?: "blockly" | "kuis";
   title: string;
   brief: string;
-  maze: unknown;
-  allowedBlocks: string[];
-  winCondition: unknown;
+  tujuan?: string;
+  materi?: string;
+  contoh?: string;
+  kondisiAwal?: string;
+  batasan?: string[];
+  kriteria?: string;
   hints?: string[];
+  feedbackSukses?: string;
+  feedbackGagal?: string;
+  maze?: unknown;
+  allowedBlocks?: string[];
+  winCondition?: unknown;
+  kuis?: unknown;
+  initialBlocks?: unknown;
   difficulty?: number;
   isPublished?: boolean;
 };
@@ -27,6 +38,7 @@ type SeedLevel = {
   nodeLabel?: string;
   nodeIcon?: string;
   xpReward?: number;
+  visual?: string;
   isPublished?: boolean;
   challenges?: SeedChallenge[];
 };
@@ -56,11 +68,8 @@ if (!fs.existsSync(dataDir)) {
   process.exit(1);
 }
 
-fs.mkdirSync(dataDir, { recursive: true });
-const db = new Database(dbPath);
-db.pragma("journal_mode = WAL");
-db.exec(fs.readFileSync(schemaPath, "utf8"));
-
+// Baca & validasi SEMUA file JSON dulu sebelum menyentuh database,
+// agar DB lama tidak rusak kalau ada input yang tidak valid.
 const files = fs
   .readdirSync(dataDir)
   .filter((name) => name.endsWith(".json") && name.startsWith("kelas-"))
@@ -71,6 +80,45 @@ if (files.length === 0) {
   process.exit(1);
 }
 
+const parsedKelasList: SeedKelas[] = [];
+for (const file of files) {
+  const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
+  let parsed: SeedKelas;
+  try {
+    parsed = JSON.parse(raw) as SeedKelas;
+  } catch (error) {
+    console.error(`✗ ${file}: JSON tidak valid.`, error);
+    process.exit(1);
+  }
+  if (!parsed.slug || !Array.isArray(parsed.levels)) {
+    console.error(`✗ ${file}: field slug/levels tidak valid.`);
+    process.exit(1);
+  }
+  // Validasi setiap challenge sebelum menyentuh DB.
+  for (const level of parsed.levels) {
+    for (const challenge of level.challenges ?? []) {
+      const tipe = challenge.tipe ?? "blockly";
+      if (tipe === "blockly" && !challenge.maze) {
+        console.error(`✗ ${parsed.slug} L${level.nomor}: challenge blockly tanpa maze.`);
+        process.exit(1);
+      }
+      if (tipe === "kuis" && !challenge.kuis) {
+        console.error(`✗ ${parsed.slug} L${level.nomor}: challenge kuis tanpa payload kuis.`);
+        process.exit(1);
+      }
+    }
+  }
+  parsedKelasList.push(parsed);
+}
+
+fs.mkdirSync(dataDir, { recursive: true });
+const db = new Database(dbPath);
+db.pragma("journal_mode = WAL");
+// Drop dulu agar perubahan skema (kolom baru) selalu ikut terbuat.
+// Aman: seluruh input sudah tervalidasi di atas, dan seed me-rebuild dari JSON.
+db.exec("DROP TABLE IF EXISTS challenges; DROP TABLE IF EXISTS levels; DROP TABLE IF EXISTS kelas;");
+db.exec(fs.readFileSync(schemaPath, "utf8"));
+
 const insertKelas = db.prepare(`
   INSERT INTO kelas (slug, nomor, judul, badge, pulau, chip, banner_title, banner_code,
                      cta_enabled, level_aktif, is_published)
@@ -80,16 +128,20 @@ const insertKelas = db.prepare(`
 
 const insertLevel = db.prepare(`
   INSERT INTO levels (kelas_id, nomor, title, topic, desc, skills_json, btn_text,
-                      node_label, node_icon, xp_reward, is_published)
+                      node_label, node_icon, xp_reward, visual, is_published)
   VALUES (@kelasId, @nomor, @title, @topic, @desc, @skillsJson, @btnText,
-          @nodeLabel, @nodeIcon, @xpReward, @isPublished)
+          @nodeLabel, @nodeIcon, @xpReward, @visual, @isPublished)
 `);
 
 const insertChallenge = db.prepare(`
-  INSERT INTO challenges (level_id, urutan, title, brief, maze_json, allowed_blocks_json,
-                          win_condition_json, hints_json, difficulty, is_published)
-  VALUES (@levelId, @urutan, @title, @brief, @mazeJson, @allowedBlocksJson,
-          @winConditionJson, @hintsJson, @difficulty, @isPublished)
+  INSERT INTO challenges (level_id, urutan, tipe, title, brief, tujuan, materi, contoh,
+                          kondisi_awal, batasan_json, kriteria, hints_json,
+                          feedback_sukses, feedback_gagal, maze_json, allowed_blocks_json,
+                          win_condition_json, payload_json, difficulty, is_published)
+  VALUES (@levelId, @urutan, @tipe, @title, @brief, @tujuan, @materi, @contoh,
+          @kondisiAwal, @batasanJson, @kriteria, @hintsJson,
+          @feedbackSukses, @feedbackGagal, @mazeJson, @allowedBlocksJson,
+          @winConditionJson, @payloadJson, @difficulty, @isPublished)
 `);
 
 const seedOne = db.transaction((kelas: SeedKelas) => {
@@ -121,19 +173,35 @@ const seedOne = db.transaction((kelas: SeedKelas) => {
       nodeLabel: level.nodeLabel ?? null,
       nodeIcon: level.nodeIcon ?? null,
       xpReward: level.xpReward ?? 80,
+      visual: level.visual ?? null,
       isPublished: level.isPublished === false ? 0 : 1,
     }).lastInsertRowid;
 
     for (const challenge of level.challenges ?? []) {
+      const tipe = challenge.tipe ?? "blockly";
       insertChallenge.run({
         levelId,
         urutan: challenge.urutan ?? 1,
+        tipe,
         title: challenge.title,
         brief: challenge.brief,
-        mazeJson: JSON.stringify(challenge.maze),
+        tujuan: challenge.tujuan ?? null,
+        materi: challenge.materi ?? null,
+        contoh: challenge.contoh ?? null,
+        kondisiAwal: challenge.kondisiAwal ?? null,
+        batasanJson: JSON.stringify(challenge.batasan ?? []),
+        kriteria: challenge.kriteria ?? null,
+        hintsJson: JSON.stringify(challenge.hints ?? []),
+        feedbackSukses: challenge.feedbackSukses ?? null,
+        feedbackGagal: challenge.feedbackGagal ?? null,
+        mazeJson: challenge.maze ? JSON.stringify(challenge.maze) : null,
         allowedBlocksJson: JSON.stringify(challenge.allowedBlocks ?? []),
         winConditionJson: JSON.stringify(challenge.winCondition ?? { type: "reach_goal" }),
-        hintsJson: JSON.stringify(challenge.hints ?? []),
+        payloadJson: challenge.kuis
+          ? JSON.stringify(challenge.kuis)
+          : challenge.initialBlocks
+            ? JSON.stringify(challenge.initialBlocks)
+            : null,
         difficulty: challenge.difficulty ?? 1,
         isPublished: challenge.isPublished === false ? 0 : 1,
       });
@@ -150,19 +218,7 @@ const seedOne = db.transaction((kelas: SeedKelas) => {
 });
 
 let totalKelas = 0;
-for (const file of files) {
-  const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
-  let parsed: SeedKelas;
-  try {
-    parsed = JSON.parse(raw) as SeedKelas;
-  } catch (error) {
-    console.error(`✗ ${file}: JSON tidak valid.`, error);
-    process.exit(1);
-  }
-  if (!parsed.slug || !Array.isArray(parsed.levels)) {
-    console.error(`✗ ${file}: field slug/levels tidak valid.`);
-    process.exit(1);
-  }
+for (const parsed of parsedKelasList) {
   seedOne(parsed);
   totalKelas += 1;
 }

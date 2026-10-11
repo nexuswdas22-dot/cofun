@@ -1,95 +1,414 @@
 {
   "slug": "kelas-2",
   "nomor": 2,
-  "judul": "Kelas 2: Pola & Perulangan",
+  "judul": "Kelas 2: Urutan dan Prediksi",
   "badge": "Kelas 2 SD",
-  "pulau": "Pulau Kebun Wortel",
-  "chip": "Petualangan Pola",
-  "bannerTitle": "Pola yang Berulang",
-  "bannerCode": "ulangi(3) { maju(); }",
-  "ctaEnabled": false,
+  "pulau": "Pulau Rute & Prediksi",
+  "chip": "Petualangan Urutan",
+  "bannerTitle": "Rencanakan Rutemu",
+  "bannerCode": "maju(); maju(); belok_kanan(); maju();",
+  "ctaEnabled": true,
   "levelAktif": 1,
   "isPublished": true,
   "levels": [
     {
       "nomor": 1,
       "title": "Level 1 — Susun Langkah",
-      "topic": "Menyusun jalur sederhana dari titik awal ke tujuan.",
-      "desc": "Bawa robot ke bedeng wortel pertama dengan langkah maju yang tertib.",
+      "topic": "Algoritma adalah urutan instruksi untuk menyelesaikan tugas.",
+      "desc": "Urutan langkah menentukan hasil. Tentukan langkah yang dilakukan paling awal.",
       "skills": [
-        "Menyusun langkah maju",
-        "Menghindari batas kebun",
-        "Sampai ke bedeng wortel"
+        "Mengurutkan langkah",
+        "Menemukan langkah pertama",
+        "Menjelaskan urutan"
       ],
       "btnText": "Mulai Level 1",
       "nodeLabel": "Susun Langkah",
-      "nodeIcon": "route",
+      "nodeIcon": "reorder",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Urutan Membuat Teh",
+          "brief": "Susun langkah membuat teh dari yang paling awal.",
+          "tujuan": "Siswa menyusun langkah kegiatan dalam urutan logis.",
+          "materi": "Algoritma adalah urutan instruksi untuk menyelesaikan tugas.",
+          "contoh": "Mengambil cangkir sebelum menuang air ke cangkir.",
+          "kondisiAwal": "Empat kartu langkah membuat teh tersedia dalam urutan acak.",
+          "batasan": [
+            "Gunakan aktivitas yang familiar.",
+            "Urutan jawaban tidak ambigu."
+          ],
+          "kriteria": "Langkah tersusun sesuai urutan yang benar.",
+          "hints": [
+            "Pikirkan apa yang dilakukan terlebih dahulu dan sesudahnya."
+          ],
+          "feedbackSukses": "Bagus! Langkah-langkahmu tersusun dengan benar.",
+          "feedbackGagal": "Coba tentukan langkah yang harus dilakukan paling awal.",
+          "kuis": {
+            "mode": "urutan",
+            "pertanyaan": "Susun langkah membuat teh dari yang paling awal.",
+            "kartu": [
+              {
+                "id": "tuang",
+                "label": "Tuang air panas"
+              },
+              {
+                "id": "ambil",
+                "label": "Ambil cangkir"
+              },
+              {
+                "id": "celup",
+                "label": "Celup teh"
+              },
+              {
+                "id": "minum",
+                "label": "Minum"
+              }
+            ],
+            "urutanBenar": [
+              "ambil",
+              "tuang",
+              "celup",
+              "minum"
+            ],
+            "visual": "urutan-teh"
+          },
+          "difficulty": 1
+        }
+      ],
+      "visual": "urutan-teh"
     },
     {
       "nomor": 2,
       "title": "Level 2 — Jalan ke Tujuan",
-      "topic": "Memilih jalur teraman melewati rintangan kebun.",
-      "desc": "Ada pagar di tengah! Pilih jalan memutar agar robot tidak menabrak.",
+      "topic": "Rute direncanakan dari posisi awal dengan menghindari rintangan.",
+      "desc": "Rencanakan belokan sebelum robot mencapai rintangan agar sampai ke tujuan.",
       "skills": [
-        "Memilih jalur aman",
-        "Berbelok dengan tepat",
-        "Menghindari tabrakan"
+        "Merencanakan rute",
+        "Menghindari rintangan",
+        "Menggunakan belokan"
       ],
       "btnText": "Mulai Level 2",
       "nodeLabel": "Jalan ke Tujuan",
-      "nodeIcon": "move_to_location",
+      "nodeIcon": "route",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Rute Melewati Batu",
+          "brief": "Robot harus sampai ke bintang tanpa menabrak batu. Rencanakan belokanmu!",
+          "tujuan": "Siswa merencanakan rute dengan memperhatikan arah dan rintangan.",
+          "materi": "Rute dapat direncanakan dari posisi awal menuju tujuan dengan menghindari rintangan.",
+          "contoh": "Belok ke bawah dulu, lalu maju, baru belok ke kanan menuju bintang.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu menghalangi jalur lurus.",
+          "batasan": [
+            "Gunakan blok gerak dasar.",
+            "Semua batu harus terlihat dan dihindari."
+          ],
+          "kriteria": "Robot mencapai bintang tanpa melewati petak batu.",
+          "hints": [
+            "Rencanakan belokan sebelum robot mencapai batu."
+          ],
+          "feedbackSukses": "Rute berhasil! Robot sampai tanpa menabrak.",
+          "feedbackGagal": "Periksa posisi robot sebelum setiap belokan.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "rock",
+                "empty"
+              ],
+              [
+                "empty",
+                "path",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 3,
-      "title": "Level 3 — Ikuti Pola",
-      "topic": "Mengenali pola langkah yang berulang.",
-      "desc": "Maju, maju, belok — pola ini terus berulang. Bantu robot menirunya!",
+      "title": "Level 3 — Prediksi Gerakan",
+      "topic": "Program bisa ditelusuri satu instruksi demi satu instruksi.",
+      "desc": "Sebelum menjalankan program, perkirakan dulu posisi akhir robot.",
       "skills": [
-        "Mengenali pola berulang",
-        "Meniru urutan pola",
-        "Melanjutkan pola yang hilang"
+        "Menelusuri program",
+        "Memprediksi posisi akhir",
+        "Memeriksa hasil"
       ],
       "btnText": "Mulai Level 3",
-      "nodeLabel": "Ikuti Pola",
-      "nodeIcon": "pattern",
+      "nodeLabel": "Prediksi Gerakan",
+      "nodeIcon": "query_stats",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "kuis",
+          "title": "Prediksi Posisi Robot",
+          "brief": "Robot berada di titik awal dan menghadap kanan. Program: maju, maju, belok kanan, maju. Di mana robot berhenti?",
+          "tujuan": "Siswa memperkirakan hasil program sebelum dijalankan.",
+          "materi": "Algoritma dapat ditelusuri satu instruksi demi satu instruksi untuk memperkirakan hasil akhirnya.",
+          "contoh": "Maju dua langkah ke kanan, lalu belok kanan menghadap bawah, lalu maju satu langkah ke bawah.",
+          "kondisiAwal": "Robot di titik (0,0) menghadap kanan. Tidak ada rintangan.",
+          "batasan": [
+            "Gunakan blok yang sudah dikenal.",
+            "Program pendek dan mudah ditelusuri.",
+            "Prediksi diberikan sebelum melihat hasil."
+          ],
+          "kriteria": "Prediksi posisi akhir sesuai hasil eksekusi.",
+          "hints": [
+            "Simulasikan setiap blok satu per satu."
+          ],
+          "feedbackSukses": "Prediksimu tepat!",
+          "feedbackGagal": "Telusuri kembali program satu blok setiap langkah.",
+          "kuis": {
+            "mode": "pilihan",
+            "pertanyaan": "Robot di (0,0) menghadap kanan. Program: maju, maju, belok kanan, maju. Posisi akhir robot?",
+            "opsi": [
+              {
+                "id": "a",
+                "label": "Kolom 2, baris 1"
+              },
+              {
+                "id": "b",
+                "label": "Kolom 3, baris 0"
+              },
+              {
+                "id": "c",
+                "label": "Kolom 0, baris 3"
+              },
+              {
+                "id": "d",
+                "label": "Kolom 2, baris 2"
+              }
+            ],
+            "jawaban": [
+              "a"
+            ],
+            "visual": "grid-robot-kecil"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": "grid-robot-kecil"
     },
     {
       "nomor": 4,
-      "title": "Level 4 — Cari Kesalahan",
-      "topic": "Menemukan langkah yang salah urutan pada program.",
-      "desc": "Ada langkah keliru di program kebun. Temukan dan perbaiki agar wortel selamat!",
+      "title": "Level 4 — Perbaiki Instruksi",
+      "topic": "Debugging adalah menemukan dan memperbaiki kesalahan dalam program.",
+      "desc": "Ada satu instruksi keliru. Temukan dan ganti agar robot sampai tujuan.",
       "skills": [
-        "Menemukan langkah keliru",
-        "Memperbaiki urutan program",
-        "Menguji ulang program"
+        "Menemukan kesalahan",
+        "Memperbaiki satu instruksi",
+        "Menguji ulang"
       ],
       "btnText": "Mulai Level 4",
-      "nodeLabel": "Cari Kesalahan",
-      "nodeIcon": "bug_report",
+      "nodeLabel": "Perbaiki Instruksi",
+      "nodeIcon": "pest_control",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Perbaiki Program di Papan",
+          "brief": "Papan sudah terisi program, tapi ada satu blok belok yang salah sehingga robot gagal. Temukan dan perbaiki blok itu.",
+          "tujuan": "Siswa menemukan dan memperbaiki kesalahan sederhana.",
+          "materi": "Debugging adalah proses menemukan dan memperbaiki kesalahan dalam program.",
+          "contoh": "Jika robot menabrak dinding, periksa arah belokan sebelum langkah itu.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Program awal di papan memakai belok kiri yang membuat robot menabrak dinding.",
+          "batasan": [
+            "Program memiliki satu kesalahan yang disengaja.",
+            "Instruksi lainnya benar.",
+            "Jangan langsung menunjukkan jawaban."
+          ],
+          "kriteria": "Robot mencapai tujuan setelah perbaikan.",
+          "hints": [
+            "Perhatikan bagian ketika arah robot mulai berbeda dari rute yang direncanakan."
+          ],
+          "feedbackSukses": "Kamu menemukan dan memperbaiki kesalahannya.",
+          "feedbackGagal": "Telusuri langkah robot untuk menemukan bagian yang menyimpang.",
+          "maze": {
+            "size": 3,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "initialBlocks": {
+            "blocks": {
+              "languageVersion": 0,
+              "blocks": [
+                {
+                  "type": "cf_maju",
+                  "next": {
+                    "block": {
+                      "type": "cf_maju",
+                      "next": {
+                        "block": {
+                          "type": "cf_belok_kiri",
+                          "next": {
+                            "block": {
+                              "type": "cf_maju",
+                              "next": {
+                                "block": {
+                                  "type": "cf_maju"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     },
     {
       "nomor": 5,
       "title": "Level 5 — Misi Robot",
-      "topic": "Misi akhir memanen wortel dengan pola dan perulangan.",
-      "desc": "Panen wortel sebanyak mungkin dengan program paling hemat balok!",
+      "topic": "Program tersusun dari instruksi yang dijalankan berurutan.",
+      "desc": "Susun program gerak untuk melewati rute dengan beberapa belokan menuju bintang.",
       "skills": [
-        "Menggabungkan pola & loop",
-        "Menghitung wortel hasil panen",
-        "Mendapat lencana Petani Pola"
+        "Membuat program gerak",
+        "Mengatur belokan",
+        "Menguji hasil"
       ],
       "btnText": "Mulai Level 5",
       "nodeLabel": "Misi Robot",
-      "nodeIcon": "flag",
+      "nodeIcon": "smart_toy",
       "xpReward": 80,
-      "challenges": []
+      "challenges": [
+        {
+          "urutan": 1,
+          "tipe": "blockly",
+          "title": "Misi Robot: Rute Berbelok",
+          "brief": "Susun program gerak untuk melewati rute dengan beberapa belokan sampai bintang tanpa tabrakan.",
+          "tujuan": "Siswa membuat dan menguji program gerak dasar.",
+          "materi": "Program tersusun dari instruksi yang dijalankan secara berurutan.",
+          "contoh": "Maju, belok, maju membentuk huruf L.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Rute berbelok dua kali menuju bintang.",
+          "batasan": [
+            "Gunakan blok yang sudah diperkenalkan.",
+            "Tanpa perulangan atau kondisi."
+          ],
+          "kriteria": "Robot mencapai bintang tanpa tabrakan.",
+          "hints": [
+            "Periksa arah hadap robot setelah setiap belokan."
+          ],
+          "feedbackSukses": "Misi selesai! Programmu membawa robot ke tujuan.",
+          "feedbackGagal": "Amati blok yang berjalan tepat sebelum robot keluar dari rute.",
+          "maze": {
+            "size": 4,
+            "cells": [
+              [
+                "start",
+                "path",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "empty",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
+                "rock",
+                "path",
+                "path"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "goal"
+              ]
+            ],
+            "start": {
+              "col": 0,
+              "row": 0,
+              "facing": "timur"
+            }
+          },
+          "allowedBlocks": [
+            "maju",
+            "belok_kanan",
+            "belok_kiri"
+          ],
+          "winCondition": {
+            "type": "reach_goal"
+          },
+          "difficulty": 2
+        }
+      ],
+      "visual": null
     }
   ]
 }

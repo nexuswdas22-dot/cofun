@@ -13,6 +13,7 @@ export type SimFrame = {
   robot?: { col: number; row: number; rotate: number };
   speech?: string;
   finish?: boolean;
+  keyTaken?: boolean;
 };
 
 export type SimResult =
@@ -45,6 +46,7 @@ type SimState = {
   facing: Facing;
   steps: number;
   actions: number;
+  hasKey: boolean;
   t: number;
   stopped: boolean;
   result: "running" | "success" | "fail";
@@ -62,10 +64,15 @@ function cellAt(maze: MazeData, col: number, row: number): MazeCell | null {
   return cells[col];
 }
 
+// Rintangan: batu, tepi peta, dan pintu yang belum dibuka (belum punya kunci).
+function isBlocked(state: SimState, cell: MazeCell | null): boolean {
+  if (cell === null || cell === "rock") return true;
+  return cell === "door" && !state.hasKey;
+}
+
 function isObstacleAhead(state: SimState): boolean {
   const { dc, dr } = DELTA[state.facing];
-  const cell = cellAt(state.maze, state.col + dc, state.row + dr);
-  return cell === null || cell === "rock";
+  return isBlocked(state, cellAt(state.maze, state.col + dc, state.row + dr));
 }
 
 function stopWith(state: SimState, message: string): void {
@@ -73,7 +80,7 @@ function stopWith(state: SimState, message: string): void {
   state.result = "fail";
   pushFrame(state, {
     blockId: null,
-    status: "Misi Belum Berhasil",
+    status: "Misi Gagal",
     speech: message,
   });
   state.t += SENSOR_MS;
@@ -90,25 +97,37 @@ function doMaju(block: Block, state: SimState): void {
   const nextCol = state.col + dc;
   const nextRow = state.row + dr;
   const cell = cellAt(state.maze, nextCol, nextRow);
-  if (cell === null || cell === "rock") {
+  if (isBlocked(state, cell)) {
+    const locked = cell === "door";
     pushFrame(state, {
       blockId: block.id,
-      status: "⚠️ Menabrak Rintangan!",
+      status: locked ? "⚠️ Pintu Terkunci!" : "⚠️ Menabrak Rintangan!",
       step: state.steps,
-      speech: "Aduh! Di depan ada rintangan, aku berhenti di sini.",
+      speech: locked
+        ? "Pintunya terkunci. Aku butuh kunci dulu!"
+        : "Aduh! Di depan ada rintangan, aku berhenti di sini.",
     });
     state.t += FRAME_MS;
-    stopWith(state, "Robot menabrak rintangan. Lihat jalannya, lalu perbaiki blokmu!");
+    stopWith(
+      state,
+      locked
+        ? "Robot belum punya kunci untuk membuka pintu. Ambil kuncinya dulu!"
+        : "Robot menabrak rintangan. Lihat jalannya, lalu perbaiki blokmu!",
+    );
     return;
   }
   state.col = nextCol;
   state.row = nextRow;
   state.steps += 1;
+  const pickedKey = cell === "key";
+  if (pickedKey) state.hasKey = true;
   pushFrame(state, {
     blockId: block.id,
-    status: `Langkah ${state.steps}: Maju`,
+    status: pickedKey ? "Mengambil Kunci!" : `Langkah ${state.steps}: Maju`,
     step: state.steps,
     robot: { col: state.col, row: state.row, rotate: ROTATE[state.facing] },
+    keyTaken: state.hasKey,
+    speech: pickedKey ? "Dapat kunci! Sekarang pintu bisa dibuka." : undefined,
   });
   state.t += FRAME_MS;
   if (cell === "goal") {
@@ -175,9 +194,9 @@ function runStatements(first: Block | null, state: SimState): void {
         const obstacle = isObstacleAhead(state);
         pushFrame(state, {
           blockId: block.id,
-          status: obstacle ? "Sensor: Ada batu di depan!" : "Sensor: Jalur aman",
+          status: obstacle ? "Sensor: Ada rintangan di depan!" : "Sensor: Jalur aman",
           speech: obstacle
-            ? "SENSOR: Ada batu karang di depan! Menjalankan instruksi MAKA..."
+            ? "SENSOR: Ada rintangan di depan! Menjalankan instruksi MAKA..."
             : "SENSOR: jalannya aman, aku lanjut terus!",
         });
         state.t += SENSOR_MS;
@@ -193,6 +212,11 @@ function runStatements(first: Block | null, state: SimState): void {
   }
 }
 
+// Menghitung semua blok CoFun (termasuk yang di dalam ULANGI / JIKA).
+function countCofunBlocks(workspace: Workspace): number {
+  return workspace.getAllBlocks(false).filter((b) => b.type.startsWith("cf_")).length;
+}
+
 export function simulateWorkspace(
   workspace: Workspace,
   maze: MazeData,
@@ -203,6 +227,17 @@ export function simulateWorkspace(
     return { ok: false, error: "Belum ada blok. Susun dulu rangkaian programmu!" };
   }
 
+  // Aturan misi: batas jumlah blok diperiksa sebelum robot berjalan.
+  if (win.maxBlocks) {
+    const used = countCofunBlocks(workspace);
+    if (used > win.maxBlocks) {
+      return {
+        ok: false,
+        error: `Programmu memakai ${used} blok, padahal batasnya ${win.maxBlocks}. Coba ringkas dengan blok ULANGI!`,
+      };
+    }
+  }
+
   const state: SimState = {
     maze,
     win,
@@ -211,6 +246,7 @@ export function simulateWorkspace(
     facing: maze.start.facing,
     steps: 0,
     actions: 0,
+    hasKey: false,
     t: 0,
     stopped: false,
     result: "running",

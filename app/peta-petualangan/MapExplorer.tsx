@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCompletedLevel } from "@/lib/progress";
 import {
   codeOf,
   ctaStateOf,
@@ -105,65 +106,38 @@ function LevelNode({
   );
 }
 
-function ConceptBanner({ title, code }: { title: string; code: string }) {
-  return (
-    <div className="relative w-full h-44 rounded-2xl overflow-hidden bg-gradient-to-br from-primary via-primary-container to-secondary flex items-center justify-center group">
-      <div className="absolute -top-10 -left-8 w-44 h-44 rounded-full bg-on-primary/10" />
-      <div className="absolute -bottom-14 -right-6 w-52 h-52 rounded-full bg-on-primary/10" />
-      <svg
-        className="absolute inset-0 w-full h-full opacity-50"
-        fill="none"
-        preserveAspectRatio="none"
-        viewBox="0 0 400 176"
-      >
-        <path
-          d="M30 140 C 110 140, 130 50, 210 50"
-          stroke="#fdfcff"
-          strokeDasharray="10 14"
-          strokeLinecap="round"
-          strokeWidth="5"
-        />
-        <path
-          d="M140 96 C 190 96, 230 140, 330 140"
-          stroke="#fdfcff"
-          strokeDasharray="10 14"
-          strokeLinecap="round"
-          strokeWidth="5"
-        />
-      </svg>
-      <div className="relative z-10 flex flex-col items-center gap-space-sm">
-        <div className="w-20 h-20 rounded-3xl bg-on-primary/15 border border-on-primary/30 flex items-center justify-center shadow-[0_6px_0_0_rgba(0,0,0,0.15)] group-hover:-translate-y-1 transition-transform">
-          <span
-            className="material-symbols-outlined text-on-primary text-[44px]"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            smart_toy
-          </span>
-        </div>
-        <span className="font-label-badge text-label-badge uppercase tracking-wider text-secondary-fixed bg-on-surface/30 backdrop-blur-sm px-space-sm py-0.5 rounded-full">
-          {title}
-        </span>
-      </div>
-      <div className="absolute bottom-3 left-3 right-3 text-on-primary flex items-center justify-between z-10">
-        <span className="font-label-code text-label-code bg-on-surface/60 backdrop-blur-sm px-2 py-1 rounded">
-          {code}
-        </span>
-        <span className="material-symbols-outlined text-[20px]">
-          smart_toy
-        </span>
-      </div>
-    </div>
-  );
-}
+export default function MapExplorer({
+  kelas,
+  materiMap = {},
+}: {
+  kelas: Kelas;
+  materiMap?: Record<number, string>;
+}) {
+  // levelAktif efektif: gabungan data awal + progres siswa di perangkat ini.
+  // Di-clamp ke jumlah level agar tidak pernah melebihi level terakhir
+  // (kalau semua level selesai, tetap menunjuk level terakhir).
+  const totalLevels = kelas.levels.length;
+  const [levelAktif, setLevelAktif] = useState(kelas.levelAktif);
+  useEffect(() => {
+    const completed = getCompletedLevel(kelas.slug);
+    const effective = Math.min(totalLevels, Math.max(kelas.levelAktif, completed + 1));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLevelAktif(effective);
+  }, [kelas.slug, kelas.levelAktif, totalLevels]);
 
-export default function MapExplorer({ kelas }: { kelas: Kelas }) {
-  const [activeId, setActiveId] = useState(kelas.levelAktif);
+  const kelasAktif: Kelas = { ...kelas, levelAktif };
+  const [activeId, setActiveId] = useState(levelAktif);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setActiveId(levelAktif);
+  }, [levelAktif]);
   const level =
-    kelas.levels.find((item) => item.id === activeId) ??
-    kelas.levels[kelas.levelAktif - 1];
-  const status = statusOf(kelas, level.id);
+    kelasAktif.levels.find((item) => item.id === activeId) ??
+    kelasAktif.levels.find((item) => item.id === levelAktif) ??
+    kelasAktif.levels[kelasAktif.levels.length - 1];
+  const status = statusOf(kelasAktif, level.id);
   const badge = statusBadge(status);
-  const cta = ctaStateOf(kelas, level, status);
+  const cta = ctaStateOf(kelasAktif, level, status);
 
   return (
     <section className="w-full px-margin-mobile md:px-margin py-space-lg">
@@ -180,7 +154,7 @@ export default function MapExplorer({ kelas }: { kelas: Kelas }) {
             </div>
             <div className="flex items-center gap-space-xs text-on-surface-variant font-label-badge text-label-badge bg-surface-container/70 px-2.5 sm:px-space-sm py-space-xs rounded-full">
               <span className="w-2.5 h-2.5 rounded-full bg-secondary inline-block shrink-0" />
-              {nodeSummaryOf(kelas)}
+              {nodeSummaryOf(kelasAktif)}
             </div>
           </div>
 
@@ -259,7 +233,7 @@ export default function MapExplorer({ kelas }: { kelas: Kelas }) {
                   key={item.id}
                   level={item}
                   onSelect={setActiveId}
-                  status={statusOf(kelas, item.id)}
+                  status={statusOf(kelasAktif, item.id)}
                 />
               ))}
             </div>
@@ -315,17 +289,15 @@ export default function MapExplorer({ kelas }: { kelas: Kelas }) {
             </p>
           </div>
 
-          <ConceptBanner code={kelas.bannerCode} title={kelas.bannerTitle} />
-
           <div className="bg-surface-container-low p-space-md rounded-2xl flex flex-col gap-space-xs">
             <div className="flex items-center gap-space-xs text-primary font-bold font-body-sm text-body-sm">
               <span className="material-symbols-outlined text-[18px]">
                 lightbulb
               </span>
-              Konsep Singkat
+              Isi Level Ini
             </div>
             <p className="font-body-md text-body-md text-on-surface">
-              {level.desc}
+              {materiMap[level.id] ?? level.desc}
             </p>
           </div>
 
@@ -348,7 +320,7 @@ export default function MapExplorer({ kelas }: { kelas: Kelas }) {
           {cta.enabled ? (
             <Link
               className="mt-space-xs w-full min-h-11 flex items-center justify-center gap-space-xs py-space-sm px-space-md rounded-full bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm shadow-[0_4px_0_0_#004b73] active:translate-y-1 active:shadow-[0_1px_0_0_#004b73] transition-all"
-              href="/belajar-dan-tantangan"
+              href={`/belajar-dan-tantangan/${kelas.slug}/${level.id}`}
             >
               <span>{cta.label}</span>
               <span className="material-symbols-outlined text-[20px]">

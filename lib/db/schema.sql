@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS levels (
   node_label TEXT,
   node_icon TEXT,
   xp_reward INTEGER NOT NULL DEFAULT 80,
+  visual TEXT,                                   -- identifier ilustrasi (lihat KuisVisual)
   is_published INTEGER NOT NULL DEFAULT 1,
   UNIQUE(kelas_id, nomor)
 );
@@ -33,12 +34,22 @@ CREATE TABLE IF NOT EXISTS challenges (
   id INTEGER PRIMARY KEY,
   level_id INTEGER NOT NULL REFERENCES levels(id) ON DELETE CASCADE,
   urutan INTEGER NOT NULL DEFAULT 1,
+  tipe TEXT NOT NULL DEFAULT 'blockly',          -- 'blockly' | 'kuis'
   title TEXT NOT NULL,
-  brief TEXT NOT NULL,
-  maze_json TEXT NOT NULL,
-  allowed_blocks_json TEXT NOT NULL,
-  win_condition_json TEXT NOT NULL,
-  hints_json TEXT NOT NULL DEFAULT '[]',
+  brief TEXT NOT NULL,                           -- ringkasan challenge
+  tujuan TEXT,
+  materi TEXT,
+  contoh TEXT,
+  kondisi_awal TEXT,
+  batasan_json TEXT NOT NULL DEFAULT '[]',
+  kriteria TEXT,
+  hints_json TEXT NOT NULL DEFAULT '[]',         -- satu hint (PRD)
+  feedback_sukses TEXT,
+  feedback_gagal TEXT,
+  maze_json TEXT,                                -- hanya tipe blockly
+  allowed_blocks_json TEXT NOT NULL DEFAULT '[]',
+  win_condition_json TEXT NOT NULL DEFAULT '{"type":"reach_goal"}',
+  payload_json TEXT,                             -- hanya tipe kuis
   difficulty INTEGER NOT NULL DEFAULT 1,
   is_published INTEGER NOT NULL DEFAULT 1,
   UNIQUE(level_id, urutan)

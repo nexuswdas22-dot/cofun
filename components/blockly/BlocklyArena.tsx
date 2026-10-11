@@ -20,10 +20,11 @@ export type BlocklyArenaHandle = {
 type Props = {
   allowedBlocks: string[];
   activeBlockId: string | null;
+  initialBlocks?: Record<string, unknown> | null;
 };
 
 const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena(
-  { allowedBlocks, activeBlockId },
+  { allowedBlocks, activeBlockId, initialBlocks },
   ref,
 ) {
   const divRef = useRef<HTMLDivElement | null>(null);
@@ -35,6 +36,10 @@ const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena
     const container = divRef.current;
     if (!container) return;
     registerCofunBlocks();
+    // Di layar kecil, skala blok dikecilkan supaya kotak pemilihan dan papan
+    // tidak terlalu besar relative dengan lebar HP.
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const flyoutScale = isMobile ? 0.7 : 1;
     const workspace = Blockly.inject(container, {
       toolbox: buildToolbox(allowedBlocks),
       theme: cofunTheme,
@@ -45,7 +50,7 @@ const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena
       move: { scrollbars: false, drag: true, wheel: true },
       zoom: {
         controls: true,
-        startScale: 0.85,
+        startScale: isMobile ? 0.7 : 0.85,
         maxScale: 1.4,
         minScale: 0.5,
         scaleSpeed: 1.2,
@@ -54,16 +59,33 @@ const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena
       grid: { spacing: 28, length: 3, colour: "#d7e3ef", snap: true },
     });
     workspaceRef.current = workspace;
+    // Kunci skala flyout: kotak pemilihan blok tidak ikut membesar/mengecil
+    // saat papan di-zoom, dan di mobile lebih kecil dari desktop.
+    const flyout = workspace.getFlyout();
+    if (flyout) {
+      (flyout as { getFlyoutScale?: () => number }).getFlyoutScale = () => flyoutScale;
+      flyout.reflow();
+    }
+    // Soal debugging: awali papan dengan program (yang berisi kesalahan).
+    if (initialBlocks) {
+      try {
+        Blockly.serialization.workspaces.load(initialBlocks as never, workspace);
+        workspace.scrollCenter();
+      } catch {
+        // State rusak: biarkan papan kosong, siswa bisa mulai dari nol.
+      }
+    }
     const updateEmpty = () => setIsEmpty(workspace.getAllBlocks(false).length === 0);
     workspace.addChangeListener((e: Blockly.Events.Abstract) => {
       if (e.isUiEvent) return;
       updateEmpty();
     });
+    updateEmpty();
     return () => {
       workspace.dispose();
       workspaceRef.current = null;
     };
-    // allowedBlocks hanya berubah saat ganti soal — remount ditangani parent via key.
+    // allowedBlocks/initialBlocks hanya berubah saat ganti soal — remount via key parent.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -95,24 +117,21 @@ const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena
   );
 
   return (
-    <div className="relative">
+    <div className="flex flex-col gap-space-xs">
+      {isEmpty && (
+        <div className="flex justify-center">
+          <div className="flex items-center gap-2 bg-surface-container-high border border-outline-variant/40 text-on-surface-variant font-label-badge text-label-badge px-space-md py-space-xs rounded-full">
+            <span className="material-symbols-outlined text-[18px] text-primary shrink-0">
+              drag_indicator
+            </span>
+            <span>Seret blok dari kotak atas ke papan</span>
+          </div>
+        </div>
+      )}
       <div
         ref={divRef}
         className="w-full h-[420px] sm:h-[460px] lg:h-[560px] rounded-xl overflow-hidden border border-outline-variant/40 bg-[#f9f9ff] shadow-[0_3px_0_0_#c3d2e2]"
       />
-      {isEmpty && (
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center pointer-events-none px-4">
-          <div className="flex items-center gap-2 bg-surface-container-lowest/92 border border-outline-variant/40 text-on-surface-variant font-label-badge text-label-badge px-space-md py-space-xs rounded-full shadow-sm">
-            <span className="material-symbols-outlined text-[18px] text-primary">
-              drag_indicator
-            </span>
-            <span className="hidden sm:inline">
-              Seret blok dari kotak kategori, lalu susun programmu di sini
-            </span>
-            <span className="sm:hidden">Klik kategori, lalu seret blok ke sini</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 });

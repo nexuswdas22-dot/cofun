@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import MapExplorer from "../MapExplorer";
-import { getAllKelas, getKelasBySlug } from "@/lib/db";
+import { getAllKelas, getKelasBySlug, getMateriPerLevel } from "@/lib/db";
 import { progressOf, statusMisiOf } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -36,6 +36,13 @@ export default async function PetaPetualanganKelasPage({
     kelas = undefined;
   }
   if (!kelas) notFound();
+
+  let materiMap: Record<number, string> = {};
+  try {
+    materiMap = getMateriPerLevel(slug);
+  } catch {
+    materiMap = {};
+  }
 
   return (
     <>
@@ -98,7 +105,7 @@ export default async function PetaPetualanganKelasPage({
             </div>
           </section>
 
-          <MapExplorer kelas={kelas} />
+          <MapExplorer kelas={kelas} materiMap={materiMap} />
 
           <section className="w-full px-margin-mobile md:px-margin pb-space-xl">
             <div className="max-w-7xl mx-auto bg-surface-container-low rounded-2xl p-space-md flex flex-col md:flex-row items-center justify-between gap-space-md">

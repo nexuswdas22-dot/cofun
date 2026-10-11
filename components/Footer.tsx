@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { cofunLogoSrc } from "@/lib/assets";
 
 type FooterProps = {
@@ -27,6 +28,12 @@ export default function Footer({ variant = "default" }: FooterProps) {
           </span>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-space-lg">
+          <Link
+            className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary underline underline-offset-2 transition-colors"
+            href="/tanya-jawab"
+          >
+            Tanya-Jawab
+          </Link>
           <span className="font-body-sm text-body-sm text-on-surface-variant">
             Aman &amp; Terbimbing untuk Anak
           </span>
