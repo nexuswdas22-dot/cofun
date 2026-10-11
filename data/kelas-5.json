@@ -1,0 +1,95 @@
+{
+  "slug": "kelas-5",
+  "nomor": 5,
+  "judul": "Kelas 5: Fungsi & Prosedur",
+  "badge": "Kelas 5 SD",
+  "pulau": "Pulau Pabrik Kue",
+  "chip": "Petualangan Fungsi",
+  "bannerTitle": "Resep Jadi Satu Fungsi",
+  "bannerCode": "fungsi aduk() { ... }",
+  "ctaEnabled": false,
+  "levelAktif": 1,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Loop Kompleks",
+      "topic": "Perulangan bertingkat untuk langkah yang panjang.",
+      "desc": "Aduk berkali-kali sambil mencetak — perulangan bersarang membuat produksi jauh lebih cepat!",
+      "skills": [
+        "Loop di dalam loop",
+        "Mengatur jumlah pengulangan",
+        "Menghemat balok instruksi"
+      ],
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Loop Kompleks",
+      "nodeIcon": "all_inclusive",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Kondisi Bersarang",
+      "topic": "Keputusan IF/ELSE di dalam perulangan.",
+      "desc": "Kalau adonan kurang, tambah; kalau cukup, lanjut mencetak — semuanya di dalam loop!",
+      "skills": [
+        "Menempatkan kondisi di dalam loop",
+        "Membaca kondisi bertingkat",
+        "Menguji tiap cabang keputusan"
+      ],
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Kondisi Bersarang",
+      "nodeIcon": "call_split",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Variabel",
+      "topic": "Menyimpan nilai bahan dan hasil kue dalam variabel.",
+      "desc": "Simpan jumlah tepung dan jumlah kue ke dalam variabel supaya mudah dipantau.",
+      "skills": [
+        "Membuat variabel",
+        "Mengubah nilai variabel",
+        "Membaca nilai variabel"
+      ],
+      "btnText": "Mulai Level 3",
+      "nodeLabel": "Variabel",
+      "nodeIcon": "data_object",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Function",
+      "topic": "Membuat blok fungsi untuk tugas yang berulang.",
+      "desc": "Simpan tugas aduk jadi satu fungsi, lalu panggil kapan pun dibutuhkan!",
+      "skills": [
+        "Membuat fungsi sendiri",
+        "Memanggil fungsi berkali-kali",
+        "Menggabungkan fungsi jadi prosedur"
+      ],
+      "btnText": "Mulai Level 4",
+      "nodeLabel": "Function",
+      "nodeIcon": "function",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Coding Mission",
+      "topic": "Misi akhir produksi kue otomatis.",
+      "desc": "Produksi 10 kue tanpa henti dengan program lengkap buatanmu!",
+      "skills": [
+        "Fungsi + loop + variabel",
+        "Menjaga produksi tetap stabil",
+        "Mendapat lencana Koki Algoritma"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Coding Mission",
+      "nodeIcon": "flag",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

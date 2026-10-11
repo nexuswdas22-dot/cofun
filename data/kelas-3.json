@@ -1,0 +1,95 @@
+{
+  "slug": "kelas-3",
+  "nomor": 3,
+  "judul": "Kelas 3: Loop & Counter",
+  "badge": "Kelas 3 SD",
+  "pulau": "Pulau Bintang Angkasa",
+  "chip": "Petualangan Perulangan",
+  "bannerTitle": "Loop Menuju Bintang",
+  "bannerCode": "ulangi(4) { langkah_bintang(); }",
+  "ctaEnabled": false,
+  "levelAktif": 1,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Apa Itu Algoritma?",
+      "topic": "Mengenal algoritma sebagai urutan langkah menuju tujuan.",
+      "desc": "Sebelum lepas landas, kenali dulu urutan persiapan roketmu!",
+      "skills": [
+        "Menyusun langkah logis",
+        "Mengecek urutan persiapan",
+        "Menjalankan langkah pertama"
+      ],
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Apa Itu Algoritma?",
+      "nodeIcon": "schema",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Buat Algoritma",
+      "topic": "Menyusun instruksi maju dan belok untuk robot penjelajah.",
+      "desc": "Tulis urutan maju dan belok agar penjelajah sampai ke bintang.",
+      "skills": [
+        "Instruksi maju satu langkah",
+        "Instruksi belok kiri & kanan",
+        "Menggabungkan maju dan belok"
+      ],
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Buat Algoritma",
+      "nodeIcon": "directions",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Pecahkan Masalah",
+      "topic": "Memecah masalah besar menjadi langkah-langkah kecil.",
+      "desc": "Ada asteroid di jalurmu! Pecah masalahnya jadi langkah kecil yang mudah.",
+      "skills": [
+        "Memecah masalah jadi langkah kecil",
+        "Mencoba solusi bertahap",
+        "Memeriksa hasil tiap langkah"
+      ],
+      "btnText": "Mulai Level 3",
+      "nodeLabel": "Pecahkan Masalah",
+      "nodeIcon": "psychology",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Jika... Maka...",
+      "topic": "Memperkenalkan keputusan sederhana JIKA / MAKA.",
+      "desc": "Jika ada bintang, ambil; jika kosong, lanjut. Robot mulai bisa memilih!",
+      "skills": [
+        "Membaca kondisi sederhana",
+        "Memilih tindakan sesuai kondisi",
+        "Menguji keputusan robot"
+      ],
+      "btnText": "Mulai Level 4",
+      "nodeLabel": "Jika... Maka...",
+      "nodeIcon": "alt_route",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Misi Algoritma",
+      "topic": "Misi akhir: kumpulkan bintang dengan algoritma lengkap.",
+      "desc": "Kumpulkan semua bintang di tata surya dengan algoritma terbaikmu!",
+      "skills": [
+        "Algoritma + keputusan sederhana",
+        "Mengoptimalkan jumlah langkah",
+        "Mendapat lencana Jelajah Bintang"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Misi Algoritma",
+      "nodeIcon": "flag",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

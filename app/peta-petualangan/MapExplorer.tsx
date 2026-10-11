@@ -11,7 +11,7 @@ import {
   type Kelas,
   type Level,
   type LevelStatus,
-} from "@/lib/curriculum";
+} from "@/lib/types";
 
 const NODE_POSITIONS = [
   "left-[10.5%] bottom-[8%]",

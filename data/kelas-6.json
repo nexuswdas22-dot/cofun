@@ -1,0 +1,95 @@
+{
+  "slug": "kelas-6",
+  "nomor": 6,
+  "judul": "Kelas 6: Variabel & Algoritma",
+  "badge": "Kelas 6 SD",
+  "pulau": "Pulau Pangkalan Rover Mars",
+  "chip": "Petualangan Variabel",
+  "bannerTitle": "Simpan Nilai di Variabel",
+  "bannerCode": "energi = 100; skor = 0;",
+  "ctaEnabled": false,
+  "levelAktif": 1,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Combine Logic",
+      "topic": "Menggabungkan beberapa kondisi menjadi satu aturan.",
+      "desc": "Kalau energi cukup DAN jalan aman, rover boleh maju terus.",
+      "skills": [
+        "Menggabung dua kondisi",
+        "Membaca hasil benar atau salah",
+        "Membuat keputusan bertingkat"
+      ],
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Combine Logic",
+      "nodeIcon": "alt_route",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Logic Master",
+      "topic": "Merancang aturan main sederhana untuk game mini.",
+      "desc": "Buat aturan menang dan kalah untuk mini game rover Mars.",
+      "skills": [
+        "Merancang aturan game",
+        "Menyimpan status menang",
+        "Menguji aturan game"
+      ],
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Logic Master",
+      "nodeIcon": "sports_esports",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Variable & Function",
+      "topic": "Menyimpan skor dan energi dalam variabel, lalu membungkusnya jadi fungsi.",
+      "desc": "Simpan skor batu dan sisa baterai dalam variabel, lalu rapikan menjadi fungsi.",
+      "skills": [
+        "Membuat & mengubah variabel",
+        "Membungkus logika jadi fungsi",
+        "Memanggil fungsi saat dibutuhkan"
+      ],
+      "btnText": "Mulai Level 3",
+      "nodeLabel": "Variable & Function",
+      "nodeIcon": "function",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Debug Master",
+      "topic": "Menemukan kesalahan kode dan memperbaikinya.",
+      "desc": "Jadilah dokter kode! Cari balok yang salah urutan dan perbaiki sampai misi sukses.",
+      "skills": [
+        "Menemukan bug program",
+        "Memperbaiki logika robot",
+        "Menguji ulang sampai benar"
+      ],
+      "btnText": "Mulai Level 4",
+      "nodeLabel": "Debug Master",
+      "nodeIcon": "pest_control",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Final Mission",
+      "topic": "Misi akhir: program lengkap rover Mars.",
+      "desc": "Rover harus mengumpulkan batu, menghemat energi, dan kembali ke landasan!",
+      "skills": [
+        "Variabel + kondisi + fungsi",
+        "Program utuh tanpa error",
+        "Mendapat lencana Pilot Rover"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Final Mission",
+      "nodeIcon": "flag",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

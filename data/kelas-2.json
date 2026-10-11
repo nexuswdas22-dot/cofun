@@ -1,0 +1,95 @@
+{
+  "slug": "kelas-2",
+  "nomor": 2,
+  "judul": "Kelas 2: Pola & Perulangan",
+  "badge": "Kelas 2 SD",
+  "pulau": "Pulau Kebun Wortel",
+  "chip": "Petualangan Pola",
+  "bannerTitle": "Pola yang Berulang",
+  "bannerCode": "ulangi(3) { maju(); }",
+  "ctaEnabled": false,
+  "levelAktif": 1,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Susun Langkah",
+      "topic": "Menyusun jalur sederhana dari titik awal ke tujuan.",
+      "desc": "Bawa robot ke bedeng wortel pertama dengan langkah maju yang tertib.",
+      "skills": [
+        "Menyusun langkah maju",
+        "Menghindari batas kebun",
+        "Sampai ke bedeng wortel"
+      ],
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Susun Langkah",
+      "nodeIcon": "route",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Jalan ke Tujuan",
+      "topic": "Memilih jalur teraman melewati rintangan kebun.",
+      "desc": "Ada pagar di tengah! Pilih jalan memutar agar robot tidak menabrak.",
+      "skills": [
+        "Memilih jalur aman",
+        "Berbelok dengan tepat",
+        "Menghindari tabrakan"
+      ],
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Jalan ke Tujuan",
+      "nodeIcon": "move_to_location",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Ikuti Pola",
+      "topic": "Mengenali pola langkah yang berulang.",
+      "desc": "Maju, maju, belok — pola ini terus berulang. Bantu robot menirunya!",
+      "skills": [
+        "Mengenali pola berulang",
+        "Meniru urutan pola",
+        "Melanjutkan pola yang hilang"
+      ],
+      "btnText": "Mulai Level 3",
+      "nodeLabel": "Ikuti Pola",
+      "nodeIcon": "pattern",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Cari Kesalahan",
+      "topic": "Menemukan langkah yang salah urutan pada program.",
+      "desc": "Ada langkah keliru di program kebun. Temukan dan perbaiki agar wortel selamat!",
+      "skills": [
+        "Menemukan langkah keliru",
+        "Memperbaiki urutan program",
+        "Menguji ulang program"
+      ],
+      "btnText": "Mulai Level 4",
+      "nodeLabel": "Cari Kesalahan",
+      "nodeIcon": "bug_report",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Misi Robot",
+      "topic": "Misi akhir memanen wortel dengan pola dan perulangan.",
+      "desc": "Panen wortel sebanyak mungkin dengan program paling hemat balok!",
+      "skills": [
+        "Menggabungkan pola & loop",
+        "Menghitung wortel hasil panen",
+        "Mendapat lencana Petani Pola"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Misi Robot",
+      "nodeIcon": "flag",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

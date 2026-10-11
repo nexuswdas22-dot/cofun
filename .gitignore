@@ -34,6 +34,11 @@ yarn-error.log*
 .env*
 opencode.json*
 
+# database (dihasilkan dari data/*.json lewat npm run seed)
+/data/*.db
+/data/*.db-shm
+/data/*.db-wal
+
 # vercel
 .vercel
 

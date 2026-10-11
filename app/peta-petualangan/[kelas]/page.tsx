@@ -3,15 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import MapExplorer from "../MapExplorer";
-import {
-  getAllKelas,
-  getKelasBySlug,
-  progressOf,
-  statusMisiOf,
-} from "@/lib/curriculum";
+import { getAllKelas, getKelasBySlug } from "@/lib/db";
+import { progressOf, statusMisiOf } from "@/lib/types";
 
 export function generateStaticParams() {
-  return getAllKelas().map((kelas) => ({ kelas: kelas.slug }));
+  try {
+    return getAllKelas().map((kelas) => ({ kelas: kelas.slug }));
+  } catch {
+    // Database belum di-seed — biarkan Next menangani route tanpa prerender.
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -28,7 +29,12 @@ export default async function PetaPetualanganKelasPage({
   params,
 }: PageProps<"/peta-petualangan/[kelas]">) {
   const { kelas: slug } = await params;
-  const kelas = getKelasBySlug(slug);
+  let kelas;
+  try {
+    kelas = getKelasBySlug(slug);
+  } catch {
+    kelas = undefined;
+  }
   if (!kelas) notFound();
 
   return (

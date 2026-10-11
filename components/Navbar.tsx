@@ -26,7 +26,7 @@ const activeLink =
   "bg-primary-container text-on-primary font-bold shadow-[0_3px_0_0_#004b73]";
 
 const ctaClass =
-  "group inline-flex items-center justify-center gap-space-xs bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-space-lg py-2 rounded-full shadow-[0_4px_0_0_#004b73] active:translate-y-1 active:shadow-[0_1px_0_0_#004b73] transition-all";
+  "group inline-flex items-center justify-center gap-space-xs bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm px-3 sm:px-space-lg py-2 rounded-full shadow-[0_4px_0_0_#004b73] active:translate-y-1 active:shadow-[0_1px_0_0_#004b73] transition-all";
 
 function Logo() {
   return (
@@ -54,14 +54,28 @@ function Logo() {
   );
 }
 
-function CtaLink({ className = "" }: { className?: string }) {
+function CtaLink({
+  className = "",
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
   return (
-    <Link className={`${ctaClass} ${className}`} href="/pilih-kelas">
+    <Link
+      aria-label="Mulai Bermain"
+      className={`${ctaClass} ${className}`}
+      href="/pilih-kelas"
+    >
       <span className="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">
         rocket_launch
       </span>
-      <span>Mulai Bermain</span>
-      <span className="material-symbols-outlined text-[18px]">
+      <span className={compact ? "hidden sm:inline" : ""}>Mulai Bermain</span>
+      <span
+        className={`material-symbols-outlined text-[18px] ${
+          compact ? "hidden sm:inline" : ""
+        }`}
+      >
         arrow_forward
       </span>
     </Link>
@@ -110,7 +124,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-space-sm shrink-0">
-          <CtaLink className="hidden lg:inline-flex" />
+          <CtaLink compact />
           <button
             aria-expanded={open}
             aria-label={open ? "Tutup menu" : "Buka menu"}
@@ -126,7 +140,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="lg:hidden max-h-[70vh] overflow-y-auto bg-surface-container-lowest border-t border-outline-variant/40 px-margin-mobile md:px-margin py-space-md flex flex-col gap-space-xs shadow-[0_12px_24px_-12px_rgba(0,97,148,0.18)] animate-slide-down">
+        <nav className="lg:hidden relative z-10 max-h-[80vh] overflow-y-auto overscroll-contain bg-surface-container-lowest border-t border-outline-variant/40 px-margin-mobile md:px-margin py-space-md flex flex-col gap-space-xs shadow-[0_12px_24px_-12px_rgba(0,97,148,0.18)] animate-slide-down">
           {navLinks.map((link) => {
             const active = pathname === link.href;
             return (
@@ -145,7 +159,7 @@ export default function Navbar() {
               </Link>
             );
           })}
-          <CtaLink className="mt-space-xs w-full" />
+          <CtaLink className="mt-2 w-full min-h-12 py-2.5" />
         </nav>
       )}
     </header>

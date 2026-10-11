@@ -1,0 +1,95 @@
+{
+  "slug": "kelas-1",
+  "nomor": 1,
+  "judul": "Kelas 1: Pondasi Logika",
+  "badge": "Kelas 1 SD",
+  "pulau": "Pulau Urutan Langkah",
+  "chip": "Petualangan Urutan",
+  "bannerTitle": "Langkah demi Langkah",
+  "bannerCode": "maju(); belok_kanan(); maju();",
+  "ctaEnabled": false,
+  "levelAktif": 1,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Kenali Pola",
+      "topic": "Mengenali pola gambar dan langkah yang berulang.",
+      "desc": "Lihat dulu pola langkah Kancil: maju, maju, maju. Sekarang giliranmu mengenali polanya!",
+      "skills": [
+        "Mengenali pola yang berulang",
+        "Menemukan pola yang hilang",
+        "Meniru pola sederhana"
+      ],
+      "btnText": "Mulai Level 1",
+      "nodeLabel": "Kenali Pola",
+      "nodeIcon": "pattern",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Kelompokkan",
+      "topic": "Mengelompokkan objek sesuai ciri yang sama.",
+      "desc": "Kelompokkan buah dan batu sebelum Kancil menyeberang, supaya jalurmu rapi!",
+      "skills": [
+        "Mengelompokkan objek serupa",
+        "Memisahkan yang bukan kelompok",
+        "Menjelaskan ciri kelompok"
+      ],
+      "btnText": "Mulai Level 2",
+      "nodeLabel": "Kelompokkan",
+      "nodeIcon": "category",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Kenali Arah",
+      "topic": "Mengenal arah hadap: utara, timur, selatan, dan barat.",
+      "desc": "Kancil butuh petunjuk arah. Arahkan hadapnya ke kanan, kiri, dan lurus supaya tidak tersesat!",
+      "skills": [
+        "Mengenal arah hadap robot",
+        "Memberi perintah belok",
+        "Membaca petunjuk arah"
+      ],
+      "btnText": "Mulai Level 3",
+      "nodeLabel": "Kenali Arah",
+      "nodeIcon": "explore",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Ikuti Instruksi",
+      "topic": "Melakukan instruksi persis seperti yang dibaca.",
+      "desc": "Bacakan resep nenek, lalu bantu Kancil mengambil buah sesuai urutan resepnya.",
+      "skills": [
+        "Membaca instruksi sederhana",
+        "Membandingkan urutan buah",
+        "Menyelesaikan resep nenek"
+      ],
+      "btnText": "Mulai Level 4",
+      "nodeLabel": "Ikuti Instruksi",
+      "nodeIcon": "menu_book",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Misi Pertama",
+      "topic": "Misi gabungan semua materi Kelas 1.",
+      "desc": "Misi terakhir: bantu Kancil sampai ke rumah nenek dengan urutan langkah yang tepat!",
+      "skills": [
+        "Menggabungkan pola, arah & urutan",
+        "Menyelesaikan misi tanpa salah langkah",
+        "Mendapat lencana Kancil Pintar"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Misi Pertama",
+      "nodeIcon": "flag",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "slug": "kelas-4",
+  "nomor": 4,
+  "judul": "Kelas 4: Block Coding",
+  "badge": "Kelas 4 SD",
+  "pulau": "Pulau Percabangan Algoritma",
+  "chip": "Petualangan Logika",
+  "bannerTitle": "Robot Memilih Jalan Sendiri",
+  "bannerCode": "jika (ada_batu) { belok_kiri() }",
+  "ctaEnabled": true,
+  "levelAktif": 4,
+  "isPublished": true,
+  "levels": [
+    {
+      "nomor": 1,
+      "title": "Level 1 — Kenalan dengan Blok",
+      "topic": "Mengenal bentuk potongan balok koding dan cara menempelkannya.",
+      "desc": "Kamu sudah berhasil belajar cara menempelkan blok maju, mundur, dan memutar. Dasar yang sangat kokoh!",
+      "skills": [
+        "Menemukan bentuk balok puzzle",
+        "Menempel blok tanpa salah urutan",
+        "Mengenal arah hadap robot"
+      ],
+      "btnText": "Buka Materi & Challenge",
+      "nodeLabel": "Kenalan dengan Blok",
+      "nodeIcon": "extension",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 2,
+      "title": "Level 2 — Susun Program",
+      "topic": "Menyusun rangkaian aksi berurutan secara teratur dari atas ke bawah.",
+      "desc": "Kamu sudah hebat mengatur urutan langkah robot agar sampai ke garis aman tanpa menabrak dinding.",
+      "skills": [
+        "Menyusun langkah dari atas ke bawah",
+        "Menghitung langkah robot",
+        "Menghindari tabrakan dinding"
+      ],
+      "btnText": "Buka Kembali Materi",
+      "nodeLabel": "Susun Program",
+      "nodeIcon": "reorder",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 3,
+      "title": "Level 3 — Perulangan",
+      "topic": "Mengulang perintah berkali-kali menggunakan 1 blok pintar.",
+      "desc": "Kamu berhasil menghemat balok dengan perulangan 4 langkah untuk menggambar pola persegi rapi!",
+      "skills": [
+        "Mengulang perintah dengan blok ULANGI",
+        "Menghitung bintang yang dikumpulkan",
+        "Menghemat jumlah balok"
+      ],
+      "btnText": "Buka Kembali Materi",
+      "nodeLabel": "Perulangan",
+      "nodeIcon": "all_inclusive",
+      "xpReward": 80,
+      "challenges": []
+    },
+    {
+      "nomor": 4,
+      "title": "Level 4 — Kondisi",
+      "topic": "Konsep percabangan keputusan saat robot menghadapi situasi berbeda di lintasan.",
+      "desc": "Robot belajar memilih jalan sendiri jika ada rintangan di depan! Kamu akan menyusun blok perintah: jika ada rintangan, belok; jika aman, maju terus.",
+      "skills": [
+        "Membaca kondisi sensor rintangan",
+        "Membuat jalur alternatif dengan blok ELSE",
+        "Mengarahkan CoFun Bot ke bendera akhir"
+      ],
+      "btnText": "Buka Materi & Challenge",
+      "nodeLabel": "Kondisi",
+      "nodeIcon": "alt_route",
+      "xpReward": 80,
+      "challenges": [
+        {
+          "urutan": 1,
+          "title": "Misi: Pandu CoFun Melewati Batu Karang!",
+          "brief": "Gunakan blok keputusan JIKA (IF) untuk memeriksa apakah ada rintangan di depan robot, dan pilih jalur aman ke Bintang Emas.",
+          "maze": {
+            "size": 5,
+            "cells": [
+              ["empty", "empty", "empty", "empty", "empty"],
+              ["start", "path", "rock", "empty", "empty"],
+              ["empty", "path", "path", "path", "empty"],
+              ["empty", "empty", "empty", "goal", "empty"],
+              ["empty", "empty", "empty", "empty", "empty"]
+            ],
+            "start": { "col": 0, "row": 1, "facing": "timur" }
+          },
+          "allowedBlocks": ["maju", "belok_kanan", "belok_kiri", "ulangi", "jika_rintangan"],
+          "winCondition": { "type": "reach_goal", "maxSteps": 12 },
+          "hints": [
+            "Coba perhatikan arah robot tepat sebelum batu karang! Robot harus Belok Kanan dulu untuk turun ke jalur aman bawah, lalu melangkah ke bintang.",
+            "Blok JIKA punya dua rak: MAKA dijalankan kalau ada batu di depan, SELAIN ITU dijalankan kalau jalannya aman."
+          ],
+          "difficulty": 2
+        }
+      ]
+    },
+    {
+      "nomor": 5,
+      "title": "Level 5 — Debugging",
+      "topic": "Menemukan kesalahan kode dan memperbaikinya agar misi sukses.",
+      "desc": "Jadilah dokter kode! Kamu akan mencari balok yang salah urutan atau salah arah dan menjadikannya sempurna.",
+      "skills": [
+        "Menemukan blok yang salah urutan",
+        "Memperbaiki logika robot",
+        "Menguji ulang sampai misi sukses"
+      ],
+      "btnText": "Mulai Level 5",
+      "nodeLabel": "Debugging",
+      "nodeIcon": "pest_control",
+      "xpReward": 80,
+      "challenges": []
+    }
+  ]
+}

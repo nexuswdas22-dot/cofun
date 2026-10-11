@@ -146,10 +146,34 @@
   main > :last-child {
     margin-bottom: 0 !important;
   }
+}
 
-  ::-webkit-scrollbar {
-    display: none;
-  }
+/* Sembunyikan SEMUA scrollbar di semua engine (Chrome/Edge, Firefox, legacy).
+   Konten tetap bisa digeser; hanya bilah scroll-nya yang tidak ditampilkan. */
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Utilitas: container scroll di dalam halaman (modal, menu) tanpa bilah scroll */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* Puzzle interlocking (arena) */
@@ -269,4 +293,38 @@
   .animate-slide-down {
     animation: none;
   }
+}
+
+/* ===== Customisasi engine Blockly (CoFun) ===== */
+/* Blockly menyuntik CSS-nya sendiri ke <head> saat inject; gaya di bawah
+   dimuat setelahnya sehingga menang tanpa perlu !important di mana-mana. */
+
+/* Toolbox: baris kategori seperti chip aplikasi, target sentuh 44px */
+.blocklyTreeRow {
+  min-height: 44px;
+  margin: 4px 6px;
+  border-radius: 12px;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.blocklyTreeLabel {
+  font-family: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.blocklyTreeSelected {
+  background-color: #d3eaf8 !important;
+  color: #004b73 !important;
+}
+
+.blocklyTreeSelected .blocklyTreeIcon {
+  color: #006194 !important;
+}
+
+/* Flyout: sudut membulat, putih bersih seperti kartu aplikasi */
+.blocklyFlyoutBackground {
+  rx: 16px;
+  fill-opacity: 0.97 !important;
 }
