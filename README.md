@@ -1,79 +1,139 @@
 # CoFun — Coding Fun
 
-Media pembelajaran interaktif berbasis game puzzle untuk memperkenalkan logika pemrograman dan *computational thinking* kepada siswa SD Kelas 1–6.
+Media pembelajaran interaktif berbasis game puzzle untuk memperkenalkan logika pemrograman dan *computational thinking* kepada siswa SD kelas 1–6.
 
 > *"Bukan sekadar editor kode, melainkan puzzle permainan logika."*
 
-Anak-anak tidak mengetik sintaks, melainkan menyusun balok koding di **Blockly** untuk memandu robot menuntaskan misi. Prinsip utama: **Salah → Coba → Perbaiki → Berhasil**.
+Siswa tidak mengetik sintaks. Mereka menyusun balok koding (Blockly) untuk memandu robot menyelesaikan misi di labirin. Prinsip utama: **Salah → Coba → Perbaiki → Berhasil**.
 
-## Tech Stack
+## Apa Itu CoFun?
 
-- [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
-- [React 19](https://react.dev/) + [TypeScript 5](https://www.typescriptlang.org/)
-- [Tailwind CSS 4](https://tailwindcss.com/) dengan design token kustom
-- [Blockly 13](https://developers.google.com/blockly) — engine blok visual (blok kustom CoFun, renderer Zelos)
-- [SQLite](https://www.sqlite.org/) via `better-sqlite3` — database soal (read-only, di-seed dari file JSON)
-- Font: Plus Jakarta Sans & Space Grotesk (`next/font`), Material Symbols (ikon)
+- **Peta petualangan per kelas**: 6 kelas SD, masing-masing 5 level, dengan tema game berbeda (mis. kelas 4 *Labirin Kristal* tentang percabangan IF/ELSE).
+- **Arena belajar**: simulator labirin 5×5 di satu sisi, papan Blockly di sisi lain. Blok yang disusun siswa dijalankan oleh simulator robot langkah demi langkah.
+- **Soal kuis**: soal pilihan ganda dan urutan kartu dengan ilustrasi SVG.
+- **Tanpa login**: akses terbuka untuk siswa, guru, dan orang tua. Progres hanya tersimpan di perangkat (localStorage).
+- **Ramah HP**: tata letak responsif dan target sentuh minimum 44px (lihat PRD §6.2).
 
-## Cara Menjalankan
+Konsep kurikulum per kelas ada di [PRD.md](./PRD.md).
+
+## Teknologi
+
+- [Next.js 16](https://nextjs.org/) (App Router, Turbopack) + [React 19](https://react.dev/) + TypeScript 5
+- [Tailwind CSS 4](https://tailwindcss.com/) dengan design token kustom (`app/globals.css`)
+- [Blockly 13](https://developers.google.com/blockly) (renderer Zelos, blok kustom CoFun)
+- [SQLite](https://www.sqlite.org/) lewat `better-sqlite3`, di-seed dari file JSON
+- Font: Plus Jakarta Sans & Space Grotesk (`next/font`), Material Symbols
+
+## Persyaratan
+
+- **Node.js 20 atau lebih baru** (disarankan LTS terbaru)
+- **npm** (ikut terpasang bersama Node.js)
+- Build tools C++ untuk `better-sqlite3` **hanya jika** tidak ada prebuilt binary untuk platform kamu:
+  - Windows: `npm install --global windows-build-tools` atau Visual Studio Build Tools (opsi "Desktop development with C++")
+  - macOS: `xcode-select --install`
+  - Linux: `sudo apt install build-essential python3`
+
+## Instalasi
 
 ```bash
+# 1. Masuk ke folder proyek
+cd cofun
+
+# 2. Pasang dependensi
 npm install
-npm run dev     # otomatis menjalankan seed, lalu dev server
+
+# 3. Jalankan mode pengembangan
+npm run dev
 ```
 
-Perintah lain:
+`npm run dev` otomatis menjalankan seed (membuat/mengisi `data/cofun.db` dari `data/kelas-*.json`), lalu menyalakan dev server.
+
+### Engine Blockly
+
+Blockly **tidak perlu diinstal terpisah**. Ia sudah terdaftar sebagai dependency di `package.json` (`"blockly": "^13.3.0"`) dan ikut terpasang saat `npm install`.
+
+- Untuk mengubah kode blok, toolbox, theme, atau logika papan, cukup edit file di `lib/blockly/` dan `components/blockly/BlocklyArena.tsx`, lalu jalankan `npm run dev`. Tidak perlu install ulang.
+- Jika ingin mengganti versi Blockly: `npm install blockly@<versi>`, lalu uji ulang arena (terutama seret blok di HP), karena `BlocklyArena.tsx` memakai API internal `Blockly.Touch.*` yang dapat berubah antarversi.
+
+Buka **http://localhost:3000** di browser. Halaman awal akan mengarahkan ke `/beranda`.
+
+### Mencoba di HP (satu jaringan Wi-Fi)
 
 ```bash
-npm run seed    # sinkronkan data/*.json ke database SQLite
-npm run build   # seed otomatis (prebuild), lalu production build
-npm run start   # jalankan production server
-npm run lint    # eslint
+npx next dev -H 0.0.0.0
 ```
 
-Buka `http://localhost:3000`. Arena butuh minimal satu soal di database; `npm run dev`/`npm run build` selalu men-seed ulang dari `data/*.json` sehingga database tidak pernah kosong.
+Lalu buka `http://<IP-komputer>:3000` dari HP. Cari IP komputer dengan `ipconfig` (Windows) atau `ifconfig` / `ip addr` (macOS/Linux).
+
+## Perintah Lain
+
+| Perintah | Fungsi |
+|---|---|
+| `npm run seed` | Sinkronkan `data/*.json` ke `data/cofun.db` (idempotent) |
+| `npm run build` | Seed otomatis (`prebuild`), lalu production build |
+| `npm run start` | Jalankan hasil build (butuh `npm run build` dulu) |
+| `npm run lint` | Jalankan ESLint |
+
+Untuk produksi:
+
+```bash
+npm run build
+npm run start
+```
 
 ## Rute
 
-| URL | Halaman | Status |
-|---|---|---|
-| `/` | Redirect ke `/beranda` | Selesai |
-| `/beranda` | Beranda (hero interaktif, fondasi, peta kelas K1–K6, alur 3 langkah) | Selesai |
-| `/pilih-kelas` | Katalog kartu kelas 1–6 + infobar pedagogis | Selesai |
-| `/peta-petualangan` | Redirect ke `/peta-petualangan/kelas-4` | Selesai |
-| `/peta-petualangan/kelas-1` … `kelas-6` | Peta level per kelas (data dari database) | Selesai |
-| `/belajar-dan-tantangan` | Arena: papan Blockly + simulator labirin (data soal dari database) | Selesai |
+| URL | Halaman |
+|---|---|
+| `/` | Redirect ke `/beranda` |
+| `/beranda` | Beranda: hero, fondasi, peta kelas 1–6, alur 3 langkah |
+| `/pilih-kelas` | Katalog kartu kelas 1–6 |
+| `/peta-petualangan` | Redirect ke `/peta-petualangan/kelas-4` |
+| `/peta-petualangan/kelas-1` … `kelas-6` | Peta level per kelas |
+| `/belajar-dan-tantangan/[kelas]/[level]` | Arena level (Blockly atau kuis) |
+| `/tanya-jawab` | Tanya-jawab |
 
-## Navigasi
-
-- **Menu lengkap hanya di `/beranda`:** logo · **Home · Tentang · Materi · Cara Belajar · Kontak** (anchor ke seksi beranda) · tombol CTA **Mulai Bermain** → `/pilih-kelas`.
-- Di HP, menu beranda berbentuk **hamburger** yang membuka panel dropdown (isi sama + CTA).
-- **Halaman lain** (`/pilih-kelas`, `/peta-petualangan/*`, `/belajar-dan-tantangan`): **hanya logo** (klik → beranda), tanpa menu & tanpa CTA. Navigasi antar halaman lewat konten: kartu *Buka Materi*, breadcrumb *Pilih Kelas*, chip *← Peta Petualangan* di arena, tombol aksi drawer peta.
-- Badge **Made by: RPL Student** berada di footer (semua halaman).
-
-## Konten & Database
-
-Seluruh data kelas, level, dan **soal arena** disimpan di database SQLite (`data/cofun.db`, dihasilkan otomatis — file ini tidak perlu di-commit). Sumber datanya adalah **file JSON per kelas** di folder `data/`:
+## Struktur Proyek
 
 ```
-data/
-├── kelas-1.json … kelas-6.json   # 1 file = "kotak soal" satu kelas
-└── cofun.db                      # hasil npm run seed (otomatis, git-ignored)
+cofun/
+├── app/                      # Rute App Router & layout
+│   ├── layout.tsx            # Font, metadata, Navbar, Reveal
+│   ├── globals.css           # Design token (@theme) + gaya Blockly & sentuh HP
+│   ├── beranda/              # Halaman beranda
+│   ├── pilih-kelas/          # Katalog kelas
+│   ├── peta-petualangan/     # Peta level per kelas
+│   ├── belajar-dan-tantangan/
+│   │   ├── Arena.tsx         # Arena Blockly (simulator + papan)
+│   │   └── KuisArena.tsx     # Arena kuis
+│   └── tanya-jawab/
+├── components/
+│   ├── blockly/BlocklyArena.tsx  # Inject workspace Blockly (client-only)
+│   ├── quiz/KuisVisual.tsx       # Ilustrasi SVG soal kuis
+│   └── Navbar.tsx / Footer.tsx / Reveal.tsx
+├── lib/
+│   ├── types.ts              # Tipe & helper murni
+│   ├── db.ts                 # Akses SQLite (server-only)
+│   ├── db/schema.sql         # Skema: kelas → levels → challenges
+│   ├── progress.ts           # Progres siswa (localStorage)
+│   └── blockly/              # Blok, theme, toolbox, simulator
+├── data/
+│   └── kelas-1.json … kelas-6.json   # Sumber data kelas & soal
+├── scripts/seed.ts           # JSON → SQLite
+├── design.md                 # Design system
+├── PRD.md                    # Product Requirements Document
+└── README.md
 ```
 
-Hierarki di database:
+## Menambah atau Mengubah Soal
 
+Soal ada di `data/kelas-*.json`. Tambahkan objek di `challenges` pada level mana pun, lalu jalankan:
+
+```bash
+npm run seed
 ```
-kelas (1 kelas SD)
- └── levels (5 level per kelas)
-      └── challenges (soal arena: labirin + blok yang diizinkan + kondisi menang)
-```
 
-Alurnya: **edit JSON → `npm run seed` → aplikasi membaca database**. Aplikasi **hanya membaca** (tanpa login, tanpa tabel pengguna); karena itu progres siswa bersifat **sesi** — terlihat selama mengerjakan, hilang saat refresh/tutup browser sesuai desain.
-
-### Cara menambah / mengubah soal
-
-Tambahkan objek `challenges` di level mana pun di `data/kelas-*.json`, lalu jalankan `npm run seed`. Contoh isi soal:
+Contoh soal arena (blockly):
 
 ```json
 {
@@ -97,110 +157,37 @@ Tambahkan objek `challenges` di level mana pun di `data/kelas-*.json`, lalu jala
 }
 ```
 
-Keterangan singkat:
-
-- `cells`: `"empty"` (sel koordinat), `"path"` (jalur), `"start"`, `"goal"`, `"rock"` (rintangan).
+- `cells`: `"empty"`, `"path"`, `"start"`, `"goal"`, `"rock"`.
 - `start.facing`: `"utara" | "timur" | "selatan" | "barat"`.
-- `allowedBlocks`: membatasi toolbox Blockly untuk soal itu (misal level awal hanya `maju`).
-- `winCondition.maxSteps`: batas langkah; robot menang jika mencapai sel `goal` dalam batas itu.
-- `levelAktif` (di objek kelas) menentukan node "selesai/aktif/terkunci" di peta — saat ini state tampilan, bukan progres siswa tersimpan.
+- `allowedBlocks`: membatasi isi toolbox untuk soal itu.
+- `winCondition.maxSteps`: batas langkah; robot menang jika mencapai `goal` dalam batas.
 
-## Arena & Engine Blockly
+## Catatan Mobile
 
-Arena (`/belajar-dan-tantangan`) terdiri dari: kolom kiri **simulator labirin** (grid, robot, gelembung ucapan, status) dan kolom kanan **papan Blockly** tempat siswa menyusun blok.
-
-Cara kerja engine:
-
-1. **Blok kustom CoFun** (`lib/blockly/blocks.ts`): `Maju`, `Belok Kanan`, `Belok Kiri`, `ulangi [n]`, dan `JIKA ada batu di depan, MAKA … SELAIN ITU …` (blok berbentuk C). Didefinisikan dengan JSON definition bawaan Blockly, warna mengikuti design system (biru gerakan, hijau perulangan, amber kondisi).
-2. **Toolbox dinamis** (`lib/blockly/toolbox.ts`) — kategori & isi kotak blok diambil dari `allowedBlocks` milik soal yang sedang dibuka.
-3. **Theme & renderer** (`lib/blockly/theme.ts`) — renderer `zelos` (sudut bulat, ramah anak) + tema warna CoFun.
-4. **Simulator** (`lib/blockly/simulate.ts`) — membaca struktur workspace (bukan mengeksekusi kode), menelusuri blok termasuk perulangan & percabangan, lalu menghasilkan rangkaian frame animasi untuk robot. **Tanpa `eval`** sehingga aman untuk konten buatan pengguna.
-5. **Integrasi React** (`components/blockly/BlocklyArena.tsx`) — Blockly di-`inject` ke div pada client component (via `next/dynamic` `ssr:false` karena butuh DOM), sorotan blok aktif mengikuti frame yang sedang berjalan.
-
-Saat tombol **Jalankan Robot!** ditekan, simulator menghasilkan frame → animasi robot berjalan di labirin → jika robot mencapai bintang, modal sukses + XP muncul. Semua state hanya di memori (reset saat refresh).
-
-## Fitur Interaktif
-
-- **Peta Petualangan:** klik node level → drawer kanan berganti (badge, judul, konsep, keahlian, tombol aksi) dengan animasi fade.
-- **Arena:**
-  - Tab *Pelajari Materi* membuka/menutup drawer "Inti Pelajaran Hari Ini".
-  - Siswa menyusun blok di papan Blockly, lalu ▶ *Jalankan Robot!* — blok aktif menyala, robot bergerak di labirin sesuai program nyata (bukan timeline tetap).
-  - 🔍 *Cek Logika* memvalidasi susunan blok tanpa menjalankannya; 🔄 *Reset* mengembalikan robot; tombol *Bersihkan* menghapus semua blok.
-  - Modal *Bantuan* (hints dari soal) & *Sukses* dengan tombol Ulangi/Kembali ke Peta.
-- Papan Blockly responsif: toolbox flyout, pinch/scroll zoom, trashcan, target sentuh.
-
-## Mobile & Responsif
-
-- Padding horizontal responsif `1rem → 2rem` di semua halaman; judul memakai skala `display-mobile` / `headline-lg-mobile` di HP.
-- Navbar HP: logo mengecil, hamburger 44px, panel menu `max-h-[70vh]`.
-- Target sentuh minimum 44px; `touch-action: manipulation` agar ketukan responsif.
-- Labirin memakai grid berbasis persentase sehingga presisi di layar 320px sekalipun; peta memakai koordinat persentase + SVG jalur.
-- Animasi: scroll reveal, fade drawer peta, slide-down menu HP, hover angkat kartu — semua menghormati `prefers-reduced-motion`.
-
-## Struktur Proyek
-
-```
-cofun/
-├── app/
-│   ├── layout.tsx               # Root layout: font, metadata, Navbar, Reveal
-│   ├── globals.css              # Design token (@theme) + utilitas & animasi
-│   ├── page.tsx                 # Redirect ke /beranda
-│   ├── beranda/                 # Halaman beranda + hero
-│   ├── pilih-kelas/             # 6 kartu kelas
-│   ├── peta-petualangan/        # Peta per kelas (SSG dari database) + drawer
-│   └── belajar-dan-tantangan/
-│       ├── page.tsx             # Server component: ambil soal dari DB → Arena
-│       └── Arena.tsx            # Layout arena, animasi robot, modal (client)
-├── components/
-│   ├── blockly/BlocklyArena.tsx # Inject workspace Blockly (client-only)
-│   ├── Navbar.tsx / Footer.tsx / Reveal.tsx
-├── lib/
-│   ├── types.ts                 # Tipe & helper murni (server & client)
-│   ├── db.ts                    # Koneksi SQLite + query (server-only)
-│   ├── db/schema.sql            # Skema: kelas → levels → challenges
-│   └── blockly/
-│       ├── blocks.ts            # Definisi blok kustom CoFun
-│       ├── theme.ts             # Theme + warna design system
-│       ├── toolbox.ts           # Toolbox dari allowedBlocks soal
-│       └── simulate.ts          # Workspace-walk → frame animasi (tanpa eval)
-├── data/
-│   └── kelas-1.json … kelas-6.json  # Sumber data kelas & soal
-├── scripts/seed.ts              # JSON → SQLite (npm run seed)
-├── stitch/                      # Referensi desain dari Stitch (bukan bagian build)
-├── design.md                    # Design system (token warna, tipografi, spacing)
-└── PRD.md                       # Product Requirements Document
-```
+- Hapus blok: seret blok kembali ke kotak blok di atas papan. Tong sampah dan tombol zoom +/- dihapus dari papan di HP (zoom tetap lewat pinch dan scroll).
+- Papan Blockly memakai kelas `.cofun-blockly` dengan `touch-action: none` agar seret blok dan geser papan tidak diambil alih browser.
+- Di HP, skala blok 0.8 dan `BlocklyArena.tsx` memasang safety net sentuhan: pointer aktif dilacak, dan `Blockly.Touch.clearTouchIdentifier()` dipanggil setelah semua jari terangkat, supaya papan tidak macet akibat jari kedua (telapak tangan).
+- Long-press 750 ms menu konteks Blockly dib  atalkan begitu jari bergerak lebih dari 8 px.
+- Catatan: `Blockly.Touch.*` adalah API internal yang ditandai `@internal` di typings Blockly. Periksa ulang saat upgrade Blockly.
+- Pengujian sentuh lengkap di perangkat Android/iOS nyata belum selesai; uji di HP sebelum rilis.
 
 ## Design System
 
-Token dibangun di `app/globals.css` (`@theme`) dan bersumber dari `design.md`:
+Token ada di `app/globals.css` (`@theme`) dan bersumber dari `design.md`:
 
-- **Warna:** palet Material-3 — primary `#006194`, container `#007bb9`, surface `#f9f9ff`, sekunder `#006c49`, tersier `#825100`, error `#ba1a1a`
-- **Tipografi:** skala `display` hingga `label-badge` (+ varian `-mobile`); blok kode memakai Space Grotesk (`label-code`)
-- **Gaya:** tombol taktil dengan efek ekstrusi bawah, sudut membulat, target sentuh minimum 44px
-- Warna blok Blockly mengikuti palet yang sama: gerakan `#0284c7`, perulangan `#059669`, kondisi `#d97706`
+- Warna: primary `#006194`, sekunder `#006c49`, tersier `#825100`, error `#ba1a1a`, surface `#f9f9ff`
+- Warna blok: gerakan `#0284c7`, perulangan `#059669`, kondisi `#d97706`
+- Target sentuh minimum 44px, sudut membulat, gaya tombol taktil
 
-## Sumber Desain
+## Roadmap
 
-- Proyek Stitch: **CoFun UI/UX Prototype**
-- Layar yang dikonversi: Beranda, Pilih Kelas, Peta Petualangan, Arena Belajar & Tantangan
-- File HTML + screenshot asli tersimpan di `stitch/` sebagai referensi proses desain
+- [ ] Soal untuk kelas lain (tambah `challenges` di JSON, tanpa ubah kode)
+- [ ] Blok tambahan (variabel, fungsi) untuk kelas 5–6
+- [ ] Efek suara dan narasi ramah anak (Fase 4 PRD)
+- [ ] Interpreter sandbox agar program bisa diekspor dan dijalankan langkah demi langkah
 
-## Roadmap (rencana pengembangan)
+## Lisensi
 
-- [ ] Soal untuk kelas lain — tinggal tambah `challenges` di `data/kelas-*.json` lalu `npm run seed`, tanpa ubah kode
-- [ ] Simpan progres siswa opsional (localStorage per perangkat, atau token anonim ke database)
-- [ ] Blok tambahan (variabel, fungsi) mengikuti materi kelas 5–6
-- [ ] Halaman admin untuk mengelola soal lewat UI (saat ini lewat JSON)
-- [ ] Interpreter sandbox agar kode bisa diekspor dan dijalankan langkah demi langkah
-- [ ] Efek suara & narasi ramah anak (Fase 4 di PRD)
-
-## Catatan Teknis & Keamanan
-
-- Eksekusi program siswa **tidak memakai `eval`**: simulator membaca struktur blok secara rekursif (loop & kondisi ditangani eksplisit, dengan batas maksimum langkah anti-infinite-loop).
-- Blockly v11+ tidak lagi menyertakan teks pesan bawaan di `blockly/core`; CoFun memuat locale Inggris via `blockly/msg/en` + `Blockly.setLocale` sebelum `inject` (`lib/blockly/blocks.ts`).
-- Semua query database memakai prepared statements; file DB dihasilkan ulang dari JSON (seed idempotent, replace per kelas).
-- Halaman peta di-prerender (SSG) dari database saat build; arena membaca soal terbaru dari database.
-- Tanpa login — akses terbuka untuk siswa, guru, dan orang tua; tidak ada data pribadi yang dikumpulkan.
+Proyek internal / pembelajaran. Belum ada lisensi resmi.
 
 Made by: RPL Student

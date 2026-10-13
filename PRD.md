@@ -124,5 +124,5 @@ Anak-anak tidak merasa sedang mengetik skrip atau kode profesional, melainkan se
 ## 7. Roadmap & Pengembangan Mendatang
 - [x] **Fase 1 (Design Baseline):** Desain Beranda, Pilih Kelas, Peta Petualangan, dan Arena Tantangan Desktop.
 - [x] **Fase 2 (Refinement):** Penyelarasan identitas *"Made by: RPL Student"*, penyempurnaan bentuk puzzle interlocking, dan penataan ulang 3 kolom gameplay.
-- [ ] **Fase 3 (Frontend Engine):** Integrasi JavaScript game engine untuk drag-and-drop kepingan puzzle SVG/DOM dan parser eksekusi AST (*Abstract Syntax Tree*) sederhana ke simulator robot.
-- [ ] **Fase 4 (Sound & Voice Effects):** Efek suara klik magnetik saat puzzle terpasang dan narasi suara ramah anak untuk materi panduan.
+- [x] **Fase 3 (Frontend Engine):** Integrasi JavaScript game engine untuk drag-and-drop kepingan puzzle SVG/DOM dan parser eksekusi AST (*Abstract Syntax Tree*) sederhana ke simulator robot.
+- [x] **Fase 4 (Sound & Voice Effects):** Efek suara klik magnetik saat puzzle terpasang dan narasi suara ramah anak untuk materi panduan.

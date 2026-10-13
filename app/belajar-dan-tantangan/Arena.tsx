@@ -341,58 +341,54 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
   // dan kartu desktop (di dalam papan Blockly).
   const actionButtons = (
     <>
-      <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
-        <button
-          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#ffb95f] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
-          onClick={() => setHintOpen(true)}
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[17px]">
-            lightbulb
-          </span>
-          Bantuan
-        </button>
-        <button
-          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-badge text-[11px] sm:text-label-badge shadow-[0_3px_0_0_#4edea3] hover:translate-y-[-1px] active:translate-y-[2px] transition-all"
-          onClick={checkLogic}
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[17px]">
-            check_box
-          </span>
-          Cek Logika
-        </button>
-        <button
-          className="flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 min-h-11 px-1 sm:px-space-md py-1.5 sm:py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-[11px] sm:text-label-badge hover:bg-surface-container-highest transition-all"
-          onClick={resetSimulation}
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[17px]">
-            restart_alt
-          </span>
-          Reset
-        </button>
-      </div>
+      {/* Aksi utama di atas dan lebar penuh di HP: jelas mana tombol yang
+          harus ditekan. Tombol sekunder berjajar di bawahnya. */}
       <button
-        className="flex items-center justify-center gap-2 min-h-11 px-space-lg py-2.5 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] hover:translate-y-[-1px] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-all w-full sm:w-auto disabled:opacity-70"
+        className="flex items-center justify-center gap-2 min-h-12 w-full px-space-lg py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[17px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform disabled:opacity-70 sm:w-auto"
         disabled={executing}
         onClick={runRobotSequence}
         type="button"
       >
         <span
-          className="material-symbols-outlined text-[22px]"
+          className="material-symbols-outlined text-[24px]"
           style={{ fontVariationSettings: "'FILL' 1" }}
         >
           play_arrow
         </span>
         {executing ? "Robot Berjalan..." : "Jalankan Robot!"}
       </button>
+      <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 min-h-12 px-2 sm:px-space-md py-2 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-badge text-[12px] sm:text-label-badge shadow-[0_3px_0_0_#ffb95f] active:translate-y-[2px] active:shadow-[0_1px_0_0_#ffb95f] transition-transform"
+          onClick={() => setHintOpen(true)}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[20px]">lightbulb</span>
+          Bantuan
+        </button>
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 min-h-12 px-2 sm:px-space-md py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-badge text-[12px] sm:text-label-badge shadow-[0_3px_0_0_#4edea3] active:translate-y-[2px] active:shadow-[0_1px_0_0_#4edea3] transition-transform"
+          onClick={checkLogic}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[20px]">check_box</span>
+          Cek Logika
+        </button>
+        <button
+          className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 min-h-12 px-2 sm:px-space-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-[12px] sm:text-label-badge active:bg-surface-container-highest transition-colors"
+          onClick={resetSimulation}
+          type="button"
+        >
+          <span className="material-symbols-outlined text-[20px]">restart_alt</span>
+          Reset
+        </button>
+      </div>
     </>
   );
 
   return (
     <>
-      <div className="px-margin-mobile md:px-margin pb-space-xl flex flex-col gap-space-md max-w-[1560px] mx-auto w-full">
+      <div className="cofun-arena px-margin-mobile md:px-margin pb-space-xl flex flex-col gap-space-md max-w-[1560px] mx-auto w-full">
         <section className="bg-surface-container-lowest rounded-xl shadow-md p-space-md lg:p-space-lg flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mt-4">
           <div className="flex flex-col gap-space-xs">
             <div className="flex flex-wrap items-center gap-space-sm">
@@ -689,7 +685,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               />
 
               {/* Tombol aksi desktop: tetap di dalam papan Blockly. */}
-              <div className="hidden lg:flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-sm pt-space-xs border-t border-surface-container-high">
+              <div className="hidden lg:flex flex-row-reverse items-center justify-between gap-space-sm pt-space-xs border-t border-surface-container-high">
                 {actionButtons}
               </div>
             </div>
@@ -779,7 +775,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
           successOpen ? "flex" : "hidden"
         } items-end sm:items-center justify-center`}
       >
-        <div className="bg-surface-container-lowest rounded-t-2xl sm:rounded-2xl max-w-md w-full max-h-[85dvh] overflow-y-auto p-space-md sm:p-space-lg shadow-2xl border border-secondary-fixed flex flex-col items-center text-center gap-space-md animate-bounce-short">
+        <div className="bg-surface-container-lowest rounded-t-2xl sm:rounded-2xl max-w-md w-full max-h-[85dvh] overflow-y-auto p-space-md sm:p-space-lg shadow-2xl border border-secondary-fixed flex flex-col items-center text-center gap-space-md animate-scale-up">
           <div className="w-20 h-20 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shadow-[0_4px_0_0_#006c49]">
             <span
               className="material-symbols-outlined text-[44px]"
@@ -807,17 +803,10 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               +{challenge.xpReward} XP 🌟
             </span>
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-2 w-full pt-2">
-            <button
-              className="flex-1 py-2.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-badge text-label-badge font-bold hover:bg-surface-container-highest"
-              onClick={resetSimulation}
-              type="button"
-            >
-              Ulangi Level
-            </button>
+          <div className="flex flex-col sm:flex-row-reverse items-stretch sm:items-center gap-2 w-full pt-2">
             {challenge.levelNomor < challenge.totalLevels ? (
               <Link
-                className="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110 text-center"
+                className="flex items-center justify-center min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
                 href={`/belajar-dan-tantangan/${challenge.kelasSlug}/${challenge.levelNomor + 1}`}
                 onClick={() => setSuccessOpen(false)}
               >
@@ -825,16 +814,23 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               </Link>
             ) : (
               <Link
-                className="flex-1 py-2.5 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73] hover:brightness-110 text-center"
+                className="flex items-center justify-center min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
                 href={`/peta-petualangan/${challenge.kelasSlug}`}
                 onClick={() => setSuccessOpen(false)}
               >
                 Kembali ke Peta ➔
               </Link>
             )}
+            <button
+              className="flex items-center justify-center min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-surface-container-high text-on-surface-variant font-headline-sm text-[16px] font-bold active:bg-surface-container-highest transition-colors"
+              onClick={resetSimulation}
+              type="button"
+            >
+              Ulangi Level
+            </button>
           </div>
           <button
-            className="text-on-surface-variant font-label-badge text-label-badge underline underline-offset-2"
+            className="min-h-11 px-space-md py-2 text-on-surface-variant font-label-badge text-label-badge underline underline-offset-2"
             onClick={() => setSuccessOpen(false)}
             type="button"
           >

@@ -328,3 +328,36 @@ body::-webkit-scrollbar,
   rx: 16px;
   fill-opacity: 0.97 !important;
 }
+
+/* ===== Higiene sentuh arena (HP) — PRD §6.2 responsivitas mobile ===== */
+/* Papan Blockly: semua gerakan jari di dalam papan dipakai Blockly
+   (seret blok, geser papan, pinch zoom) sehingga browser tidak boleh
+   mengambil alih gestur menjadi scroll/select teks. */
+.cofun-blockly {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: contain;
+}
+
+/* Kontainer arena: cegah teks kartu ikut terselect saat jari slip keluar
+   papan (gejala "blok nyangkut" di Android). */
+.cofun-arena {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Elemen input (mis. field angka pada blok ULANGI) harus tetap bisa
+   diseleksi, diketik, dan tidak terkunci touch-action-nya. */
+.cofun-blockly input,
+.cofun-blockly textarea,
+.cofun-arena input,
+.cofun-arena textarea {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+  touch-action: auto;
+}
