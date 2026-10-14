@@ -2,9 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
-import { getChallengeForLevel } from "@/lib/db";
+import { getAllKelas, getChallengeForLevel } from "@/lib/db";
 import Arena from "../../Arena";
 import KuisArena from "../../KuisArena";
+
+// Prerender SEMUA halaman arena saat build (DB masih bisa ditulis di build
+// container). Tanpa ini, route dynamic dirender runtime dan SQLite tidak
+// tersedia di serverless (mis. Vercel) → halaman 404.
+export function generateStaticParams() {
+  try {
+    return getAllKelas().flatMap((kelas) =>
+      kelas.levels.map((lvl) => ({ kelas: kelas.slug, level: String(lvl.id) })),
+    );
+  } catch {
+    // Database belum di-seed — biarkan Next menangani route tanpa prerender.
+    return [];
+  }
+}
+
+export const dynamicParams = false;
 
 type Params = Promise<{ kelas: string; level: string }>;
 
