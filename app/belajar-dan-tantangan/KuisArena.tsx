@@ -4,7 +4,7 @@
 // Memakai token tema yang sudah ada (tidak ada warna baru).
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import KuisVisual from "@/components/quiz/KuisVisual";
 import { markLevelComplete } from "@/lib/progress";
 import type { Challenge, KuisOption } from "@/lib/types";
@@ -25,9 +25,16 @@ export default function KuisArena({ challenge }: Props) {
   const payload = challenge.kuis;
   const [picked, setPicked] = useState<string[]>([]);
   const [checked, setChecked] = useState<"idle" | "ok" | "salah">("idle");
-  const [deck] = useState<KuisOption[]>(() =>
-    payload?.mode === "urutan" ? shuffle(payload.kartu) : [],
-  );
+  // Kartu diacak SETELAH mount (useEffect) supaya hasil SSR dan client sama —
+  // menghindari hydration error dari Math.random di useState initializer.
+  const [deck, setDeck] = useState<KuisOption[]>(payload?.mode === "urutan" ? payload.kartu : []);
+
+  useEffect(() => {
+    if (payload?.mode === "urutan") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDeck(shuffle(payload.kartu));
+    }
+  }, [payload]);
 
   if (!payload) {
     return (
@@ -192,17 +199,19 @@ export default function KuisArena({ challenge }: Props) {
         {checked === "ok" &&
           (challenge.levelNomor < challenge.totalLevels ? (
             <Link
-              className="min-h-11 flex items-center px-space-lg py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73]"
+              className="min-h-11 flex items-center gap-1.5 px-space-lg py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73]"
               href={`/belajar-dan-tantangan/${challenge.kelasSlug}/${challenge.levelNomor + 1}`}
             >
-              Lanjut Level Berikutnya ➔
+              Lanjut Level Berikutnya
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           ) : (
             <Link
-              className="min-h-11 flex items-center px-space-lg py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73]"
+              className="min-h-11 flex items-center gap-1.5 px-space-lg py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge font-bold shadow-[0_3px_0_0_#004b73]"
               href={`/peta-petualangan/${challenge.kelasSlug}`}
             >
-              Kembali ke Peta ➔
+              Kembali ke Peta
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           ))}
       </div>

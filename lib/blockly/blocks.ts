@@ -47,16 +47,24 @@ const cofunBlockJson = [
   },
   {
     type: "cf_jika_rintangan",
-    message0: "JIKA ada batu di depan: MAKA %1 — SELAIN ITU (jalur aman): %2",
-    args0: [
-      { type: "input_statement", name: "DO" },
-      { type: "input_statement", name: "ELSE" },
-    ],
+    message0: "JIKA ada rintangan di depan: %1",
+    args0: [{ type: "input_statement", name: "DO" }],
     previousStatement: null,
     nextStatement: null,
     style: "logic_blocks",
     tooltip:
-      "JIKA ada batu di depan → jalankan rak MAKA.\nKalau jalannya aman → jalankan rak SELAIN ITU.",
+      "Kalau di depan robot ada rintangan (batu, pintu terkunci, atau tepi peta), jalankan rak ini.",
+    helpUrl: "",
+  },
+  {
+    type: "cf_jika_aman",
+    message0: "Kalau tidak ada rintangan di depan: %1",
+    args0: [{ type: "input_statement", name: "DO" }],
+    previousStatement: null,
+    nextStatement: null,
+    style: "logic_blocks",
+    tooltip:
+      "Kalau di depan robot jalur aman (tidak ada rintangan), jalankan rak ini.",
     helpUrl: "",
   },
 ];

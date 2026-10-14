@@ -3,24 +3,29 @@
 // Memakai flyoutToolbox (flat, tanpa kategori): semua blok tampil di strip
 // horizontal atas. Ini menghindari bug flyout vertikal + scrollbar yang
 // tabrakan dengan papan saat digulir.
+//
+// "jika_rintangan" diizinkan → tampilkan DUA blok kondisi terpisah:
+// cf_jika_rintangan (cek rintangan) dan cf_jika_aman (cek jalur aman).
 
 import type * as Blockly from "blockly/core";
 
-const FRIENDLY_TO_BLOCK: Record<string, string> = {
-  maju: "cf_maju",
-  belok_kanan: "cf_belok_kanan",
-  belok_kiri: "cf_belok_kiri",
-  ulangi: "cf_ulangi",
-  jika_rintangan: "cf_jika_rintangan",
+const FRIENDLY_TO_BLOCK: Record<string, string[]> = {
+  maju: ["cf_maju"],
+  belok_kanan: ["cf_belok_kanan"],
+  belok_kiri: ["cf_belok_kiri"],
+  ulangi: ["cf_ulangi"],
+  jika_rintangan: ["cf_jika_rintangan", "cf_jika_aman"],
 };
 
 const ORDER: string[] = ["maju", "belok_kanan", "belok_kiri", "ulangi", "jika_rintangan"];
 
 export function buildToolbox(allowedBlocks: string[]): Blockly.utils.toolbox.ToolboxDefinition {
-  const contents = ORDER.filter((kind) => allowedBlocks.includes(kind)).map((kind) => ({
-    kind: "block" as const,
-    type: FRIENDLY_TO_BLOCK[kind],
-  }));
+  const contents = ORDER.filter((kind) => allowedBlocks.includes(kind)).flatMap((kind) =>
+    FRIENDLY_TO_BLOCK[kind].map((type) => ({
+      kind: "block" as const,
+      type,
+    })),
+  );
 
   return { kind: "flyoutToolbox", contents } as Blockly.utils.toolbox.ToolboxDefinition;
 }

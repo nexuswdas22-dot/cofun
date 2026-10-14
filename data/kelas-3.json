@@ -375,8 +375,8 @@
           "brief": "Robot harus mengambil kunci dulu, lalu melewati pintu menuju bintang.",
           "tujuan": "Siswa memecah masalah menjadi beberapa tujuan kecil.",
           "materi": "Masalah besar lebih mudah diselesaikan jika dibagi menjadi bagian-bagian yang teratur.",
-          "contoh": "Peragakan mengambil kunci sebelum menuju pintu.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Kunci ada di tengah. Pintu menghalangi jalur ke bintang.",
+          "contoh": "Maju 2 langkah, Belok Kanan, Maju 1 langkah untuk menginjak kunci, lalu Maju 3 langkah melewati pintu, Belok Kiri, Maju 1 langkah ke bintang.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Kunci ada di jalur tengah. Pintu menghalangi jalan terakhir sebelum bintang.",
           "batasan": [
             "Interaksi dengan objek: kunci diambil saat robot menginjaknya.",
             "Pintu hanya bisa dilewati setelah kunci diambil.",
@@ -384,7 +384,7 @@
           ],
           "kriteria": "Kunci diambil lebih dulu, lalu robot mencapai bintang.",
           "hints": [
-            "Tentukan tujuan yang harus diselesaikan terlebih dahulu."
+            "Jalurnya satu-satunya: Maju 2, Belok Kanan, Maju 1 (injak kunci), Maju 3 (lewati pintu), Belok Kiri, Maju 1 (injak bintang)."
           ],
           "feedbackSukses": "Semua tujuan tercapai sesuai urutan!",
           "feedbackGagal": "Periksa apakah setiap tujuan sudah dipenuhi sebelum melanjutkan.",
@@ -395,24 +395,24 @@
                 "start",
                 "path",
                 "path",
-                "path"
+                "empty"
               ],
               [
                 "empty",
-                "empty",
-                "empty",
-                "door"
-              ],
-              [
                 "empty",
                 "key",
-                "empty",
-                "path"
+                "empty"
               ],
               [
                 "empty",
                 "empty",
+                "path",
+                "empty"
+              ],
+              [
                 "empty",
+                "empty",
+                "door",
                 "goal"
               ]
             ],
@@ -430,7 +430,7 @@
           "winCondition": {
             "type": "reach_goal"
           },
-          "difficulty": 3
+          "difficulty": 2
         }
       ],
       "visual": null

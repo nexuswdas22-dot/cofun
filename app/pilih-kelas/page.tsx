@@ -24,7 +24,7 @@ const classes = [
       "Ikuti Instruksi",
       "Misi Pertama",
     ],
-    activeStepClass: "bg-tertiary-fixed-dim",
+    barClass: "bg-tertiary-fixed-dim",
   },
   {
     slug: "kelas-2",
@@ -43,7 +43,7 @@ const classes = [
       "Cari Kesalahan",
       "Misi Robot",
     ],
-    activeStepClass: "bg-primary-fixed-dim",
+    barClass: "bg-primary-fixed-dim",
   },
   {
     slug: "kelas-3",
@@ -62,7 +62,7 @@ const classes = [
       "Jika... Maka...",
       "Misi Algoritma",
     ],
-    activeStepClass: "bg-secondary-fixed-dim",
+    barClass: "bg-secondary-fixed-dim",
   },
   {
     slug: "kelas-4",
@@ -81,7 +81,7 @@ const classes = [
       "Kondisi",
       "Debugging",
     ],
-    activeStepClass: "bg-primary-fixed-dim",
+    barClass: "bg-primary-fixed-dim",
   },
   {
     slug: "kelas-5",
@@ -100,7 +100,7 @@ const classes = [
       "Function",
       "Coding Mission",
     ],
-    activeStepClass: "",
+    barClass: "bg-surface-container-highest",
   },
   {
     slug: "kelas-6",
@@ -119,7 +119,7 @@ const classes = [
       "Debug Master",
       "Final Mission",
     ],
-    activeStepClass: "",
+    barClass: "bg-tertiary-fixed-dim",
   },
 ];
 
@@ -216,11 +216,7 @@ export default function PilihKelasPage() {
                         {[1, 2, 3, 4, 5].map((level) => (
                           <div
                             key={level}
-                            className={`w-7 h-2 rounded-full ${
-                              level === 1 && item.activeStepClass
-                                ? item.activeStepClass
-                                : "bg-surface-container"
-                            }`}
+                            className={`w-7 h-2 rounded-full ${item.barClass}`}
                             title={`Level ${level}`}
                           />
                         ))}

@@ -64,15 +64,25 @@ function cellAt(maze: MazeData, col: number, row: number): MazeCell | null {
   return cells[col];
 }
 
-// Rintangan: batu, tepi peta, dan pintu yang belum dibuka (belum punya kunci).
+// Gerakan (MAKA robot tidak bisa lewat): area kosong (void di luar jalur),
+// batu, tepi peta, dan pintu yang belum dibuka (belum punya kunci).
 function isBlocked(state: SimState, cell: MazeCell | null): boolean {
+  if (cell === null || cell === "rock" || cell === "empty") return true;
+  return cell === "door" && !state.hasKey;
+}
+
+// Sensor blok JIKA: hanya "penghalang nyata" — batu, tepi peta, dan pintu
+// terkunci. VOID (area kosong di luar jalur) TIDAK dihitung rintangan supaya
+// sensor sesuai materi level ("cek ada batu") dan program dengan rak
+// SELAIN ITU tetap terbaca saat robot menghadap ruang kosong di sisi koridor.
+function isSensorObstacle(state: SimState, cell: MazeCell | null): boolean {
   if (cell === null || cell === "rock") return true;
   return cell === "door" && !state.hasKey;
 }
 
 function isObstacleAhead(state: SimState): boolean {
   const { dc, dr } = DELTA[state.facing];
-  return isBlocked(state, cellAt(state.maze, state.col + dc, state.row + dr));
+  return isSensorObstacle(state, cellAt(state.maze, state.col + dc, state.row + dr));
 }
 
 function stopWith(state: SimState, message: string): void {
@@ -89,7 +99,7 @@ function stopWith(state: SimState, message: string): void {
 function doMaju(block: Block, state: SimState): void {
   if (state.stopped) return;
   if (state.actions >= MAX_ACTIONS) {
-    stopWith(state, "Program terlalu panjang. Coba sederhanakan blokmu!");
+    stopWith(state, "Programnya kepanjangan. Coba buat lebih singkat, ya!");
     return;
   }
   state.actions += 1;
@@ -101,7 +111,7 @@ function doMaju(block: Block, state: SimState): void {
     const locked = cell === "door";
     pushFrame(state, {
       blockId: block.id,
-      status: locked ? "⚠️ Pintu Terkunci!" : "⚠️ Menabrak Rintangan!",
+      status: locked ? "Pintu Terkunci!" : "Menabrak Rintangan!",
       step: state.steps,
       speech: locked
         ? "Pintunya terkunci. Aku butuh kunci dulu!"
@@ -146,7 +156,7 @@ function doMaju(block: Block, state: SimState): void {
   if (state.win.maxSteps && state.steps > state.win.maxSteps) {
     stopWith(
       state,
-      `Langkah sudah melebihi batas ${state.win.maxSteps}. Coba rangkai program yang lebih hemat!`,
+      `Wah, langkahnya sudah lebih dari ${state.win.maxSteps}. Coba buat program yang lebih singkat, ya!`,
     );
   }
 }
@@ -190,18 +200,39 @@ function runStatements(first: Block | null, state: SimState): void {
         }
         break;
       }
+      // Dua blok kondisi terpisah (bukan if/else gabungan):
+      // cf_jika_rintangan → jalankan rak kalau ada rintangan di depan.
+      // cf_jika_aman → jalankan rak kalau jalur aman di depan.
+      // Ini lebih ramah buat siswa: dua kondisi berdiri sendiri, tanpa rak
+      // SELAIN ITU yang gampang salah tempel.
       case "cf_jika_rintangan": {
         const obstacle = isObstacleAhead(state);
         pushFrame(state, {
           blockId: block.id,
-          status: obstacle ? "Sensor: Ada rintangan di depan!" : "Sensor: Jalur aman",
+          status: obstacle ? "Sensor: Rintangan! Jalankan raknya" : "Sensor: Aman, rak dilewati",
           speech: obstacle
-            ? "SENSOR: Ada rintangan di depan! Menjalankan instruksi MAKA..."
-            : "SENSOR: jalannya aman, aku lanjut terus!",
+            ? "SENSOR: Ada rintangan di depan! Menjalankan rak di bawahnya..."
+            : "SENSOR: jalur aman, rak ini tidak dijalankan.",
         });
         state.t += SENSOR_MS;
-        const branch = obstacle ? "DO" : "ELSE";
-        runStatements(getInputBlock(block, branch), state);
+        if (obstacle) {
+          runStatements(getInputBlock(block, "DO"), state);
+        }
+        break;
+      }
+      case "cf_jika_aman": {
+        const safe = !isObstacleAhead(state);
+        pushFrame(state, {
+          blockId: block.id,
+          status: safe ? "Sensor: Aman! Jalankan raknya" : "Sensor: Rintangan, rak dilewati",
+          speech: safe
+            ? "SENSOR: Jalur aman di depan! Menjalankan rak di bawahnya..."
+            : "SENSOR: Ada rintangan di depan, rak ini tidak dijalankan.",
+        });
+        state.t += SENSOR_MS;
+        if (safe) {
+          runStatements(getInputBlock(block, "DO"), state);
+        }
         break;
       }
       default:
@@ -233,7 +264,21 @@ export function simulateWorkspace(
     if (used > win.maxBlocks) {
       return {
         ok: false,
-        error: `Programmu memakai ${used} blok, padahal batasnya ${win.maxBlocks}. Coba ringkas dengan blok ULANGI!`,
+        error: `Programnya pakai ${used} blok. Yuk, hemat blok dengan memakai ULANGI supaya muat dalam ${win.maxBlocks} blok!`,
+      };
+    }
+  }
+
+  // Aturan misi: beberapa level mewajibkan blok tertentu (mis. JIKA) dipakai,
+  // supaya siswa tidak menembus misi dengan belok langsung tanpa kondisi.
+  if (win.requireAnyBlock?.length) {
+    const types = new Set(workspace.getAllBlocks(false).map((b) => b.type));
+    const used = win.requireAnyBlock.some((t) => types.has(t));
+    if (!used) {
+      return {
+        ok: false,
+        error:
+          "Misi ini mensyaratkan blok JIKA, ya! Pakai blok JIKA untuk memeriksa rintangan sebelum robot melangkah.",
       };
     }
   }

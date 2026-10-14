@@ -20,10 +20,6 @@ type RobotState = { col: number; row: number; rotate: number; keyTaken?: boolean
 
 const GRID_GAP_PX = 6;
 
-function cellLabel(row: number, col: number): string {
-  return `${row + 1},${col + 1}`;
-}
-
 function MazeCellView({
   kind,
   row,
@@ -134,14 +130,9 @@ function MazeCellView({
       </div>
     );
   }
-  return (
-    <div
-      className="bg-surface-container rounded-lg flex items-center justify-center text-[10px] font-mono text-outline-variant"
-      key={key}
-    >
-      {cellLabel(row, col)}
-    </div>
-  );
+  // Area "empty" = ruang kosong di luar jalur. Tampil sunyi tanpa teks,
+  // dan simulator memperlakukannya sebagai rintangan (lihat lib/blockly/simulate.ts).
+  return <div className="rounded-lg bg-outline-variant/15" key={key} />;
 }
 
 export default function Arena({ challenge }: { challenge: Challenge }) {
@@ -173,11 +164,13 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
   const [toast, setToast] = useState<string | null>(null);
   const [hintOpen, setHintOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
+  const [loseOpen, setLoseOpen] = useState(false);
+  const [loseReason, setLoseReason] = useState("");
   const [activeBlock, setActiveBlock] = useState<string | null>(null);
   const [steps, setSteps] = useState(0);
   const [status, setStatus] = useState("Siap di Titik Awal");
   const [speech, setSpeech] = useState(
-    "“Ayo susun blok kodingmu! Aku siap mendeteksi rintangan batu di depan.”",
+    "“Halo! Ayo susun blokmu, lalu tekan Jalankan Robot. Aku siap menjelajah!”",
   );
   const [robot, setRobot] = useState<RobotState>(initialRobot);
   const [executing, setExecuting] = useState(false);
@@ -220,7 +213,8 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
     setSpeech("“Robot kembali ke titik awal. Tekan Jalankan Robot untuk mencoba!”");
     setRobot(initialRobot);
     setSuccessOpen(false);
-    spawnNotification("Simulator di-reset.");
+    setLoseOpen(false);
+    spawnNotification("Simulator sudah direset. Ayo coba lagi!");
   };
 
   const clearBlocks = () => {
@@ -234,17 +228,18 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
     if (executing) return;
     clearTimers();
     setSuccessOpen(false);
+    setLoseOpen(false);
 
     const sim = arenaRef.current?.generateFrames(maze, challenge.winCondition);
     if (!sim) return;
     if (!sim.ok) {
-      setStatus("⚠️ Belum Siap");
+      setStatus("Belum Siap");
       setSpeech(`“${sim.error}”`);
       spawnNotification(sim.error);
       return;
     }
     if (sim.frames.length === 0) {
-      spawnNotification("Susun dulu bloknya ya!");
+      spawnNotification("Susun dulu bloknya, ya!");
       return;
     }
 
@@ -252,7 +247,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
     setExecuting(true);
     setSteps(0);
     setRobot(initialRobot);
-    setSpeech("“Mengcek logika... Ikuti jalanku ya!”");
+    setSpeech("“Mengecek logika... Ikuti jalanku, ya!”");
 
     if (window.matchMedia("(max-width: 1023px)").matches) {
       simulatorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -270,13 +265,13 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
       setRobot(initialRobot);
       setSteps(0);
       if (sim.result === "success") {
-        setStatus("✓ Logika Benar!");
+        setStatus("Logika Benar!");
         setSpeech("“Logika programmu benar! Robot bisa sampai tujuan. Tekan Jalankan Robot untuk menyelesaikan misi!”");
-        spawnNotification("✓ Logika benar! Siap dijalankan.");
+        spawnNotification("Logika benar! Siap dijalankan.");
       } else {
-        setStatus("✗ Logika Belum Lengkap");
+        setStatus("Logika Belum Lengkap");
         setSpeech("“Programnya belum sampai tujuan. Perbaiki blokmu, lalu cek lagi!”");
-        spawnNotification("Logika belum benar. Perbaiki blokmu!");
+        spawnNotification("Logikanya belum lengkap. Ayo perbaiki blokmu!");
       }
     }, lastFrame.t + 900);
     timers.current.push(endId);
@@ -295,23 +290,24 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
     if (executing) return;
     clearTimers();
     setSuccessOpen(false);
+    setLoseOpen(false);
 
     const sim = arenaRef.current?.generateFrames(maze, challenge.winCondition);
     if (!sim) return;
     if (!sim.ok) {
-      setStatus("⚠️ Belum Siap");
+      setStatus("Belum Siap");
       spawnNotification(sim.error);
       return;
     }
     if (sim.frames.length === 0) {
-      spawnNotification("Susun dulu bloknya ya!");
+      spawnNotification("Susun dulu bloknya, ya!");
       return;
     }
 
     setExecuting(true);
     setSteps(0);
     setRobot(initialRobot);
-    setSpeech("“Berangkat! Ikuti aku ya...”");
+    setSpeech("“Berangkat! Ikuti aku, ya...”");
 
     // Di layar kecil simulator ada di atas papan blok — pastikan robot terlihat.
     if (window.matchMedia("(max-width: 1023px)").matches) {
@@ -331,7 +327,13 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
         markLevelComplete(challenge.kelasSlug, challenge.levelNomor);
         setSuccessOpen(true);
       } else {
+        // Kalah berdasarkan hasil eksekusi: robot nabrak, pintu terkunci,
+        // nyasar ke area kosong, atau program selesai tapi belum sampai FINISH.
+        const failFrame = sim.frames[sim.frames.length - 1];
         setStatus("Coba Lagi, Perbaiki Blokmu!");
+        setSpeech("“Jangan menyerah, ayo coba lagi! Perbaiki blokmu, lalu tekan Jalankan Robot.”");
+        setLoseReason(failFrame.speech ?? "");
+        setLoseOpen(true);
       }
     }, lastFrame.t + 900);
     timers.current.push(endId);
@@ -442,7 +444,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               <span className="material-symbols-outlined text-[18px]">
                 menu_book
               </span>
-              <span className="hidden sm:inline">📖 Pelajari Materi</span>
+              <span className="hidden sm:inline">Pelajari Materi</span>
             </button>
             <span
               className="flex items-center gap-1.5 px-2.5 sm:px-space-md py-space-xs rounded-full font-label-badge text-label-badge text-on-surface-variant"
@@ -451,7 +453,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               <span className="material-symbols-outlined text-[18px]">
                 sports_esports
               </span>
-              <span className="hidden sm:inline">🎮 Arena Tantangan</span>
+              <span className="hidden sm:inline">Arena Tantangan</span>
             </span>
           </div>
         </section>
@@ -764,7 +766,8 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               onClick={() => setHintOpen(false)}
               type="button"
             >
-              Saya Paham! 👍
+              Saya Paham!
+              <span className="material-symbols-outlined text-[16px]">check</span>
             </button>
           </div>
         </div>
@@ -789,7 +792,7 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               Level Selesai!
             </span>
             <h3 className="font-headline-lg text-[26px] text-on-surface font-extrabold mt-1">
-              🎉 Mantap! Robot Sampai Tujuan!
+              Hebat! Robot Sampai Tujuan!
             </h3>
             <p className="font-body-md text-on-surface-variant mt-2">
               {challenge.brief}
@@ -799,26 +802,29 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
             <span className="font-label-badge text-secondary font-bold text-sm">
               Hadiah Didapat:
             </span>
-            <span className="px-3 py-1 bg-secondary text-white rounded-full font-label-code text-sm font-bold shadow-sm">
-              +{challenge.xpReward} XP 🌟
+            <span className="px-3 py-1 bg-secondary text-white rounded-full font-label-code text-sm font-bold shadow-sm inline-flex items-center gap-1">
+              <span className="material-symbols-outlined text-[15px]">stars</span>
+              +{challenge.xpReward} XP
             </span>
           </div>
           <div className="flex flex-col sm:flex-row-reverse items-stretch sm:items-center gap-2 w-full pt-2">
             {challenge.levelNomor < challenge.totalLevels ? (
               <Link
-                className="flex items-center justify-center min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
+                className="flex items-center justify-center gap-1.5 min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
                 href={`/belajar-dan-tantangan/${challenge.kelasSlug}/${challenge.levelNomor + 1}`}
                 onClick={() => setSuccessOpen(false)}
               >
-                Lanjut Level Berikutnya ➔
+                Lanjut Level Berikutnya
+                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
               </Link>
             ) : (
               <Link
-                className="flex items-center justify-center min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
+                className="flex items-center justify-center gap-1.5 min-h-12 w-full sm:flex-1 px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform text-center"
                 href={`/peta-petualangan/${challenge.kelasSlug}`}
                 onClick={() => setSuccessOpen(false)}
               >
-                Kembali ke Peta ➔
+                Kembali ke Peta
+                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
               </Link>
             )}
             <button
@@ -829,12 +835,57 @@ function BlocklyChallenge({ challenge, maze }: { challenge: Challenge; maze: Maz
               Ulangi Level
             </button>
           </div>
-          <button
-            className="min-h-11 px-space-md py-2 text-on-surface-variant font-label-badge text-label-badge underline underline-offset-2"
+          <Link
+            className="min-h-11 flex items-center justify-center px-space-md py-2 text-on-surface-variant font-label-badge text-label-badge underline underline-offset-2"
+            href={`/peta-petualangan/${challenge.kelasSlug}`}
             onClick={() => setSuccessOpen(false)}
-            type="button"
           >
             Kembali ke peta petualangan
+          </Link>
+        </div>
+      </div>
+
+      {/* Modal kalah: muncul hanya saat "Jalankan Robot" dan hasil eksekusi gagal.
+          "Cek Logika" tetap memberi lembut lewat toast + teks status (bukan kalah). */}
+      <div
+        className={`fixed inset-0 z-50 bg-black/50 backdrop-blur-sm p-0 sm:p-4 transition-all ${
+          loseOpen ? "flex" : "hidden"
+        } items-end sm:items-center justify-center`}
+      >
+        <div className="bg-surface-container-lowest rounded-t-2xl sm:rounded-2xl max-w-md w-full max-h-[85dvh] overflow-y-auto p-space-md sm:p-space-lg shadow-2xl border border-tertiary-fixed flex flex-col items-center text-center gap-space-md animate-scale-up">
+          <div className="w-20 h-20 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary shadow-[0_4px_0_0_#a36700]">
+            <span
+              className="material-symbols-outlined text-[44px]"
+              style={{ fontVariationSettings: "'FILL' 1" }}
+            >
+              favorite
+            </span>
+          </div>
+          <div>
+            <span className="text-xs uppercase font-label-badge text-tertiary font-bold tracking-widest">
+              Belum Berhasil
+            </span>
+            <h3 className="font-headline-lg text-[26px] text-on-surface font-extrabold mt-1">
+              Yah, robot belum sampai tujuan
+            </h3>
+            <p className="font-body-md text-on-surface-variant mt-2">
+              Jangan menyerah, ayo coba lagi! Perbaiki blokmu, lalu tekan Jalankan Robot.
+            </p>
+          </div>
+          {loseReason && (
+            <div className="w-full bg-tertiary-fixed/30 p-space-md rounded-xl border border-tertiary-fixed text-left">
+              <span className="font-label-badge text-tertiary font-bold text-sm block mb-1">
+                Yang terjadi:
+              </span>
+              <span className="font-body-md text-on-surface">{loseReason}</span>
+            </div>
+          )}
+          <button
+            className="flex items-center justify-center min-h-12 w-full px-space-md py-3 rounded-full bg-primary text-on-primary font-headline-sm text-[16px] font-bold shadow-[0_4px_0_0_#004b73] active:translate-y-[3px] active:shadow-[0_1px_0_0_#004b73] transition-transform"
+            onClick={() => setLoseOpen(false)}
+            type="button"
+          >
+            Mengerti! Ayo Coba Lagi
           </button>
         </div>
       </div>

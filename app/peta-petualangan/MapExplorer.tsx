@@ -139,6 +139,19 @@ export default function MapExplorer({
   const badge = statusBadge(status);
   const cta = ctaStateOf(kelasAktif, level, status);
 
+  // Di layar kecil, kartu preview ada di BAWAH peta. Setelah node diketuk,
+  // bawa user ke preview-nya supaya ketukan terasa ada efeknya.
+  const selectLevel = (id: number) => {
+    setActiveId(id);
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      window.setTimeout(() => {
+        document
+          .getElementById("level-preview-drawer")
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 0);
+    }
+  };
+
   return (
     <section className="w-full px-margin-mobile md:px-margin py-space-lg">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
@@ -158,7 +171,9 @@ export default function MapExplorer({
             </div>
           </div>
 
-          <div className="lg:hidden mt-2 inline-flex w-fit items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 font-label-badge text-label-badge text-on-surface-variant tracking-wide">
+          {/* Peta punya lebar tetap 760px sehingga perlu digeser di layar kecil–sedang
+              (sampai viewport ~1228px), jadi hint ini tampil di semua ukuran layar. */}
+          <div className="mt-2 inline-flex w-fit items-center gap-1.5 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 font-label-badge text-label-badge text-on-surface-variant tracking-wide">
             <span className="material-symbols-outlined text-[15px] text-primary">
               swipe
             </span>
@@ -232,7 +247,7 @@ export default function MapExplorer({
                   active={item.id === activeId}
                   key={item.id}
                   level={item}
-                  onSelect={setActiveId}
+                  onSelect={selectLevel}
                   status={statusOf(kelasAktif, item.id)}
                 />
               ))}

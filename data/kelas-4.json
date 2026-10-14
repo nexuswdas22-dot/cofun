@@ -184,18 +184,18 @@
           "urutan": 1,
           "tipe": "blockly",
           "title": "Lurus dengan Perulangan",
-          "brief": "Sampai bintang dengan memakai blok ULANGI. Batas blok: 4.",
+          "brief": "Sampai bintang dengan memakai blok ULANGI. Batas blok: 2.",
           "tujuan": "Siswa menggunakan perulangan untuk mengurangi instruksi berulang.",
           "materi": "Perulangan menjalankan instruksi di dalamnya beberapa kali.",
           "contoh": "Tiga blok maju bisa diganti satu perulangan yang menjalankan maju tiga kali.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang empat petak ke kanan.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang tiga petak ke kanan.",
           "batasan": [
             "Jelaskan jumlah pengulangan.",
-            "Gunakan paling banyak 4 blok."
+            "Gunakan paling banyak 2 blok."
           ],
           "kriteria": "Robot mencapai tujuan dan memenuhi batas blok.",
           "hints": [
-            "Cari bagian program yang mengulang gerakan yang sama."
+            "Ganti tiga blok Maju dengan satu blok ULANGI yang berisi Maju."
           ],
           "feedbackSukses": "Bagus! Kamu menggunakan perulangan.",
           "feedbackGagal": "Periksa isi perulangan dan jumlah pengulangannya.",
@@ -206,8 +206,8 @@
                 "start",
                 "path",
                 "path",
-                "path",
-                "goal"
+                "goal",
+                "empty"
               ],
               [
                 "empty",
@@ -250,7 +250,7 @@
           ],
           "winCondition": {
             "type": "reach_goal",
-            "maxBlocks": 4
+            "maxBlocks": 2
           },
           "difficulty": 2
         }
@@ -264,7 +264,7 @@
       "desc": "Jika ada batu di depan, robot belok. Jika jalan aman, robot maju.",
       "skills": [
         "Memahami kondisi JIKA",
-        "Memakai MAKA dan SELAIN ITU",
+        "Memakai blok JIKA rintangan dan JIKA aman",
         "Memilih tindakan sesuai keadaan"
       ],
       "btnText": "Mulai Level 4",
@@ -278,19 +278,19 @@
           "title": "Misi: Pandu CoFun Melewati Batu Karang!",
           "brief": "Gunakan blok keputusan JIKA untuk memeriksa apakah ada batu di depan robot, lalu pilih jalur aman ke Bintang Emas.",
           "tujuan": "Siswa membuat program yang merespons keadaan tertentu.",
-          "materi": "Kondisi JIKA/SELAIN ITU memungkinkan program memilih tindakan berdasarkan keadaan yang diperiksa.",
+          "materi": "Dua blok kondisi membantu program memilih tindakan: JIKA ada rintangan di depan, dan JIKA jalur aman di depan.",
           "contoh": "Jika ada batu di depan, belok. Jika tidak, maju.",
           "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu karang di depan robot.",
           "batasan": [
-            "Kondisi harus didukung engine (ada batu di depan).",
-            "Setiap cabang harus memiliki perilaku yang dapat diuji."
+            "Wajib memakai blok JIKA untuk memeriksa rintangan.",
+            "Belok langsung tanpa blok JIKA tidak dihitung."
           ],
           "kriteria": "Program memilih tindakan sesuai keadaan dan mencapai tujuan.",
           "hints": [
             "Perhatikan keadaan yang diperiksa sebelum program memilih tindakan."
           ],
           "feedbackSukses": "Tepat! Programmu merespons kondisi dengan benar.",
-          "feedbackGagal": "Periksa kondisi dan tindakan di setiap cabang.",
+          "feedbackGagal": "Periksa kondisi dan tindakan di setiap rak blok JIKA.",
           "maze": {
             "size": 5,
             "cells": [
@@ -345,7 +345,8 @@
           ],
           "winCondition": {
             "type": "reach_goal",
-            "maxSteps": 12
+            "maxSteps": 12,
+            "requireAnyBlock": ["cf_jika_rintangan", "cf_jika_aman"]
           },
           "difficulty": 2
         }
@@ -371,62 +372,63 @@
           "urutan": 1,
           "tipe": "blockly",
           "title": "Misi Gabungan Batu Karang",
-          "brief": "Gabungkan perulangan untuk menyelesaikan rute ke bintang. Batas blok: 7, jadi program harus ringkas.",
+          "brief": "Rute kali ini terhalang dua batu karang. Wajib pakai blok JIKA untuk mendeteksi tiap batu, dan hemat blok dengan ULANGI. Batas blok: 8.",
           "tujuan": "Siswa menggabungkan urutan dan perulangan untuk menyelesaikan rute.",
           "materi": "Beberapa konsep pemrograman dapat digunakan bersama untuk menyelesaikan misi.",
-          "contoh": "Satu perulangan maju untuk lurus, lalu belok dan perulangan lagi.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu karang di tengah jalur.",
+          "contoh": "Saat ada batu di depan, rak JIKA rintangan menjalankan belok. Pakai ULANGI untuk bagian lurus yang panjang.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu karang pertama menghalangi jalur ke kanan, batu karang kedua menghalangi jalur ke bawah. Bintang ada di ujung jalur bawah.",
           "batasan": [
+            "Wajib memakai blok JIKA untuk bagian jalur yang berbatu.",
             "Semua konsep telah diajarkan.",
-            "Gunakan paling banyak 7 blok."
+            "Gunakan paling banyak 8 blok."
           ],
-          "kriteria": "Robot mencapai bintang dengan batas blok terpenuhi.",
+          "kriteria": "Robot menghindari kedua batu dan mencapai bintang dengan batas blok terpenuhi.",
           "hints": [
-            "Cari gerakan lurus yang berulang, lalu tulis dengan satu blok ULANGI."
+            "Setiap kali JIKA mendeteksi batu, robot belok. Hitung berapa kali maju di antara batu pertama dan batu kedua."
           ],
           "feedbackSukses": "Mantap! Kamu menggabungkan beberapa konsep.",
-          "feedbackGagal": "Hitung dulu berapa blok yang kamu pakai, lalu ringkas gerakan yang berulang.",
+          "feedbackGagal": "Periksa arah belok setelah tiap batu dan jumlah pengulangannya.",
           "maze": {
             "size": 5,
             "cells": [
               [
+                "empty",
                 "start",
-                "path",
-                "path",
-                "path",
-                "empty"
-              ],
-              [
-                "empty",
-                "empty",
-                "empty",
-                "path",
-                "empty"
-              ],
-              [
-                "empty",
-                "empty",
                 "rock",
-                "path",
+                "empty",
                 "empty"
               ],
               [
                 "empty",
-                "empty",
-                "empty",
                 "path",
+                "empty",
+                "empty",
                 "empty"
               ],
               [
                 "empty",
+                "path",
                 "empty",
                 "empty",
+                "empty"
+              ],
+              [
+                "empty",
+                "path",
+                "path",
                 "path",
                 "goal"
+              ],
+              [
+                "empty",
+                "rock",
+                "empty",
+                "empty",
+                "empty"
               ]
             ],
             "start": {
-              "col": 0,
+              "col": 1,
               "row": 0,
               "facing": "timur"
             }
@@ -440,7 +442,8 @@
           ],
           "winCondition": {
             "type": "reach_goal",
-            "maxBlocks": 7
+            "maxBlocks": 8,
+            "requireAnyBlock": ["cf_jika_rintangan", "cf_jika_aman"]
           },
           "difficulty": 3
         }

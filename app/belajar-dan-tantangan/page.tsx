@@ -10,7 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default async function BelajarDanTantanganPage() {
-  const challenge = getArenaChallenge();
+  // Jaga-jaga kalau database belum siap: tampilkan keadaan kosong, bukan halaman error.
+  let challenge: import("@/lib/types").Challenge | undefined;
+  try {
+    challenge = getArenaChallenge();
+  } catch {
+    challenge = undefined;
+  }
 
   let content: React.ReactNode;
   if (!challenge) {
@@ -26,11 +32,8 @@ export default async function BelajarDanTantanganPage() {
             Belum Ada Soal di Arena
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Soal arena dibuat lewat file JSON di folder{" "}
-            <code className="font-label-code text-primary">data/</code>,
-            lalu dijalankan <code className="font-label-code text-primary">npm run seed</code>.
-            Tambahkan satu objek <code className="font-label-code text-primary">challenges</code>{" "}
-            di level mana pun, lalu muat ulang halaman ini.
+            Soal di arena ini sedang disiapkan. Sambil menunggu, kamu bisa
+            jalan-jalan dulu ke Peta Petualangan dan membaca materi di sana, ya!
           </p>
           <Link
             className="min-h-11 flex items-center justify-center gap-1 px-space-md py-2 rounded-full bg-primary text-on-primary font-label-badge text-label-badge shadow-[0_3px_0_0_#004b73]"

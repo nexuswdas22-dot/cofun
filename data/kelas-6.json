@@ -113,7 +113,7 @@
       "skills": [
         "Menangani beberapa kondisi",
         "Menelusuri urutan evaluasi",
-        "Menguji setiap cabang"
+        "Menguji setiap blok kondisi"
       ],
       "btnText": "Mulai Level 2",
       "nodeLabel": "Logika Bertingkat",
@@ -126,17 +126,17 @@
           "title": "Dua Titik Berbatu",
           "brief": "Rute punya dua titik berbatu. Susun program dengan blok JIKA agar robot menghindari keduanya dan sampai bintang.",
           "tujuan": "Siswa memahami dan menguji kondisi yang saling berkaitan.",
-          "materi": "Kondisi dapat diperiksa lebih dari satu kali dalam satu program. Kamu boleh menaruh satu kondisi di dalam cabang kondisi lain.",
-          "contoh": "Jika ada batu di depan, jalankan cabang MAKA; di dalam cabang itu boleh ada pemeriksaan kondisi lagi.",
+          "materi": "Kondisi dapat diperiksa lebih dari satu kali dalam satu program. Kamu boleh menaruh satu blok JIKA di dalam rak blok JIKA lain.",
+          "contoh": "Jika ada batu di depan, jalankan raknya; di dalam rak itu boleh ada pemeriksaan kondisi lagi.",
           "kondisiAwal": "Robot di kiri atas menghadap kanan. Batu pertama di jalur lurus atas, batu kedua di jalur bawah.",
           "batasan": [
-            "Gunakan blok JIKA yang didukung engine.",
-            "Semua kondisi dijelaskan di materi.",
-            "Sediakan waktu menguji tiap cabang."
+            "Wajib memakai blok JIKA — belok langsung tanpa JIKA tidak dihitung.",
+            "Boleh menaruh blok JIKA di dalam blok JIKA lain.",
+            "Semua kondisi dijelaskan di materi."
           ],
-          "kriteria": "Program memilih cabang yang benar di kedua titik dan mencapai bintang.",
+          "kriteria": "Program memilih tindakan yang benar di kedua titik dan mencapai bintang.",
           "hints": [
-            "Telusuri kondisi dari bagian terluar menuju bagian di dalamnya."
+            "Telusuri kondisi dari blok terluar menuju blok di dalamnya."
           ],
           "feedbackSukses": "Tepat! Kamu memahami logika bertingkat.",
           "feedbackGagal": "Periksa kondisi mana yang dievaluasi terlebih dahulu.",
@@ -193,7 +193,8 @@
             "jika_rintangan"
           ],
           "winCondition": {
-            "type": "reach_goal"
+            "type": "reach_goal",
+            "requireAnyBlock": ["cf_jika_rintangan", "cf_jika_aman"]
           },
           "difficulty": 3
         }
@@ -313,19 +314,19 @@
           "urutan": 1,
           "tipe": "blockly",
           "title": "Perbaiki Program di Papan",
-          "brief": "Papan sudah terisi program, tapi robot gagal karena satu blok belok yang salah. Temukan dan perbaiki blok itu.",
+          "brief": "Papan sudah terisi program dengan dua perulangan ULANGI, tapi robot gagal karena satu blok belok yang salah di antaranya. Temukan dan perbaiki blok itu.",
           "tujuan": "Siswa menemukan kesalahan pada program yang menggabungkan beberapa konsep.",
           "materi": "Debugging terpadu memerlukan pemeriksaan urutan, perulangan, kondisi, dan perubahan nilai.",
-          "contoh": "Telusuri satu putaran perulangan dan catat perubahan arah robot.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Program awal di papan menggunakan belok kiri yang membuat robot menabrak dinding.",
+          "contoh": "Telusuri satu putaran ULANGI pertama, lalu perhatikan arah robot setelah blok belok.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Program awal memakai dua blok ULANGI 3 kali Maju dengan Belok Kiri di tengahnya — belok itu salah arah dan membuat robot menabrak dinding.",
           "batasan": [
-            "Kesalahan hanya satu blok belok.",
-            "Semua konsep sudah diajarkan.",
+            "Kesalahan hanya satu blok di program awal.",
+            "Program yang diperbaiki harus muat dalam 5 blok.",
             "Program awal harus benar-benar gagal."
           ],
-          "kriteria": "Program yang diperbaiki membawa robot ke bintang.",
+          "kriteria": "Program yang diperbaiki membawa robot ke bintang dalam 5 blok.",
           "hints": [
-            "Telusuri satu langkah dan catat arah robot sebelum melanjutkan."
+            "Telusuri isi ULANGI pertama: robot bergerak 3 langkah ke kanan. Lalu perhatikan blok belok di antara dua ULANGI — arahnya menuju mana?"
           ],
           "feedbackSukses": "Debugging selesai! Programmu lolos pengujian.",
           "feedbackGagal": "Periksa urutan eksekusi dan arah robot setelah setiap belok.",
@@ -368,30 +369,30 @@
               "languageVersion": 0,
               "blocks": [
                 {
-                  "type": "cf_maju",
+                  "type": "cf_ulangi",
+                  "fields": {
+                    "COUNT": 3
+                  },
+                  "inputs": {
+                    "DO": {
+                      "block": {
+                        "type": "cf_maju"
+                      }
+                    }
+                  },
                   "next": {
                     "block": {
-                      "type": "cf_maju",
+                      "type": "cf_belok_kiri",
                       "next": {
                         "block": {
-                          "type": "cf_maju",
-                          "next": {
-                            "block": {
-                              "type": "cf_belok_kiri",
-                              "next": {
-                                "block": {
-                                  "type": "cf_maju",
-                                  "next": {
-                                    "block": {
-                                      "type": "cf_maju",
-                                      "next": {
-                                        "block": {
-                                          "type": "cf_maju"
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
+                          "type": "cf_ulangi",
+                          "fields": {
+                            "COUNT": 3
+                          },
+                          "inputs": {
+                            "DO": {
+                              "block": {
+                                "type": "cf_maju"
                               }
                             }
                           }
@@ -411,7 +412,8 @@
             "jika_rintangan"
           ],
           "winCondition": {
-            "type": "reach_goal"
+            "type": "reach_goal",
+            "maxBlocks": 5
           },
           "difficulty": 3
         }
@@ -441,7 +443,7 @@
           "tujuan": "Siswa menggabungkan konsep yang dipelajari untuk menyelesaikan masalah terpadu.",
           "materi": "Pemecahan masalah terpadu melibatkan perencanaan, perulangan, kondisi, variabel, pengujian, dan perbaikan.",
           "contoh": "Pecah misi menjadi beberapa target kecil dan uji setiap bagian program.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah. Batu menghalangi jalur lurus.",
+          "kondisiAwal": "Robot di kiri atas menghadap kanan. Jalur lurus ke kanan terhalang BATU, jadi robot harus belok ke bawah. Bintang ada di ujung jalur bawah.",
           "batasan": [
             "Semua konsep yang dibutuhkan sudah diajarkan.",
             "Tujuan dan aturan interaksi dijelaskan dengan jelas.",
@@ -454,15 +456,31 @@
           "feedbackSukses": "Misi Final CoFun berhasil! Kamu merancang, menguji, dan memperbaiki programmu.",
           "feedbackGagal": "Pilih tujuan yang belum tercapai dan telusuri program yang memengaruhinya.",
           "maze": {
-            "size": 4,
+            "size": 5,
             "cells": [
               [
                 "start",
                 "path",
                 "path",
+                "path",
+                "rock"
+              ],
+              [
+                "empty",
+                "empty",
+                "empty",
+                "path",
                 "empty"
               ],
               [
+                "empty",
+                "rock",
+                "rock",
+                "path",
+                "empty"
+              ],
+              [
+                "empty",
                 "empty",
                 "empty",
                 "path",
@@ -471,14 +489,9 @@
               [
                 "empty",
                 "empty",
-                "rock",
-                "path"
-              ],
-              [
                 "empty",
-                "empty",
-                "empty",
-                "goal"
+                "goal",
+                "empty"
               ]
             ],
             "start": {

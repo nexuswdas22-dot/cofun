@@ -181,7 +181,7 @@ const BlocklyArena = forwardRef<BlocklyArenaHandle, Props>(function BlocklyArena
             <span className="material-symbols-outlined text-[18px] text-primary shrink-0">
               drag_indicator
             </span>
-            <span>Seret blok dari kotak atas ke papan</span>
+            <span>Seret blok dari kotak di atas ke papan, ya!</span>
           </div>
         </div>
       )}

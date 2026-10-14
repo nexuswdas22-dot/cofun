@@ -10,7 +10,12 @@ type Params = Promise<{ kelas: string; level: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { kelas, level } = await params;
-  const challenge = getChallengeForLevel(kelas, Number(level));
+  let challenge;
+  try {
+    challenge = getChallengeForLevel(kelas, Number(level));
+  } catch {
+    challenge = undefined;
+  }
   return { title: challenge ? `${challenge.title} - CoFun` : "Arena - CoFun" };
 }
 
@@ -19,7 +24,12 @@ export default async function ArenaLevelPage({ params }: { params: Params }) {
   const nomor = Number(level);
   if (!Number.isInteger(nomor)) notFound();
 
-  const challenge = getChallengeForLevel(kelas, nomor);
+  let challenge;
+  try {
+    challenge = getChallengeForLevel(kelas, nomor);
+  } catch {
+    challenge = undefined;
+  }
   if (!challenge) notFound();
 
   return (

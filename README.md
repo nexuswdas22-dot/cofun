@@ -11,7 +11,7 @@ Siswa tidak mengetik sintaks. Mereka menyusun balok koding (Blockly) untuk meman
 - **Peta petualangan per kelas**: 6 kelas SD, masing-masing 5 level, dengan tema game berbeda (mis. kelas 4 *Labirin Kristal* tentang percabangan IF/ELSE).
 - **Arena belajar**: simulator labirin 5×5 di satu sisi, papan Blockly di sisi lain. Blok yang disusun siswa dijalankan oleh simulator robot langkah demi langkah.
 - **Soal kuis**: soal pilihan ganda dan urutan kartu dengan ilustrasi SVG.
-- **Tanpa login**: akses terbuka untuk siswa, guru, dan orang tua. Progres hanya tersimpan di perangkat (localStorage).
+- **Tanpa login**: akses terbuka untuk siswa, guru, dan orang tua. Progres belajar tersimpan sementara di memori perangkat — saat halaman dimuat ulang, petualangan dimulai lagi dari awal (mudah didemokan berulang kali).
 - **Ramah HP**: tata letak responsif dan target sentuh minimum 44px (lihat PRD §6.2).
 
 Konsep kurikulum per kelas ada di [PRD.md](./PRD.md).
@@ -90,6 +90,7 @@ npm run start
 | `/pilih-kelas` | Katalog kartu kelas 1–6 |
 | `/peta-petualangan` | Redirect ke `/peta-petualangan/kelas-4` |
 | `/peta-petualangan/kelas-1` … `kelas-6` | Peta level per kelas |
+| `/belajar-dan-tantangan` | Tantangan acak (atau keadaan kosong kalau belum ada soal) |
 | `/belajar-dan-tantangan/[kelas]/[level]` | Arena level (Blockly atau kuis) |
 | `/tanya-jawab` | Tanya-jawab |
 
@@ -115,7 +116,7 @@ cofun/
 │   ├── types.ts              # Tipe & helper murni
 │   ├── db.ts                 # Akses SQLite (server-only)
 │   ├── db/schema.sql         # Skema: kelas → levels → challenges
-│   ├── progress.ts           # Progres siswa (localStorage)
+│   ├── progress.ts           # Progres siswa (memori sesi berjalan)
 │   └── blockly/              # Blok, theme, toolbox, simulator
 ├── data/
 │   └── kelas-1.json … kelas-6.json   # Sumber data kelas & soal
@@ -162,14 +163,6 @@ Contoh soal arena (blockly):
 - `allowedBlocks`: membatasi isi toolbox untuk soal itu.
 - `winCondition.maxSteps`: batas langkah; robot menang jika mencapai `goal` dalam batas.
 
-## Catatan Mobile
-
-- Hapus blok: seret blok kembali ke kotak blok di atas papan. Tong sampah dan tombol zoom +/- dihapus dari papan di HP (zoom tetap lewat pinch dan scroll).
-- Papan Blockly memakai kelas `.cofun-blockly` dengan `touch-action: none` agar seret blok dan geser papan tidak diambil alih browser.
-- Di HP, skala blok 0.8 dan `BlocklyArena.tsx` memasang safety net sentuhan: pointer aktif dilacak, dan `Blockly.Touch.clearTouchIdentifier()` dipanggil setelah semua jari terangkat, supaya papan tidak macet akibat jari kedua (telapak tangan).
-- Long-press 750 ms menu konteks Blockly dib  atalkan begitu jari bergerak lebih dari 8 px.
-- Catatan: `Blockly.Touch.*` adalah API internal yang ditandai `@internal` di typings Blockly. Periksa ulang saat upgrade Blockly.
-- Pengujian sentuh lengkap di perangkat Android/iOS nyata belum selesai; uji di HP sebelum rilis.
 
 ## Design System
 
@@ -179,15 +172,8 @@ Token ada di `app/globals.css` (`@theme`) dan bersumber dari `design.md`:
 - Warna blok: gerakan `#0284c7`, perulangan `#059669`, kondisi `#d97706`
 - Target sentuh minimum 44px, sudut membulat, gaya tombol taktil
 
-## Roadmap
-
-- [ ] Soal untuk kelas lain (tambah `challenges` di JSON, tanpa ubah kode)
-- [ ] Blok tambahan (variabel, fungsi) untuk kelas 5–6
-- [ ] Efek suara dan narasi ramah anak (Fase 4 PRD)
-- [ ] Interpreter sandbox agar program bisa diekspor dan dijalankan langkah demi langkah
-
 ## Lisensi
 
-Proyek internal / pembelajaran. Belum ada lisensi resmi.
+Proyek internal Yang Digunakan Dalam Perlombaa serta pembelajaran. Belum ada lisensi resmi.
 
 Made by: RPL Student

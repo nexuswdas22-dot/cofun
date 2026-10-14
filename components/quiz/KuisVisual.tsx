@@ -45,6 +45,74 @@ function Robot({ x, y, rotate = 0, scale = 1 }: { x: number; y: number; rotate?:
   );
 }
 
+// Bintang digambar sebagai poligon SVG (bukan emoji) supaya tampil konsisten
+// di semua perangkat.
+const STAR_POINTS = "0,-9 2.6,-3.5 8.5,-2.8 4.3,1.8 5.3,7.6 0,4.5 -5.3,7.6 -4.3,1.8 -8.5,-2.8 -2.6,-3.5";
+
+function Star({ cx, cy, scale = 1 }: { cx: number; cy: number; scale?: number }) {
+  return <polygon fill={C.tertiary} points={STAR_POINTS} transform={`translate(${cx} ${cy}) scale(${scale})`} />;
+}
+
+// Kunci digambar dengan lingkaran + batang + gigi (bukan emoji).
+function KeyGlyph({ cx, cy, scale = 1 }: { cx: number; cy: number; scale?: number }) {
+  return (
+    <g
+      fill="none"
+      stroke={C.tertiary}
+      strokeLinecap="round"
+      strokeWidth="2.5"
+      transform={`translate(${cx} ${cy}) scale(${scale})`}
+    >
+      <circle cx="0" cy="-4" r="3.5" />
+      <line x1="0" y1="-0.5" x2="0" y2="9" />
+      <line x1="0" y1="5" x2="4" y2="5" />
+      <line x1="0" y1="8" x2="4" y2="8" />
+    </g>
+  );
+}
+
+// Gambar kecil untuk kartu urutan (air panas, teh, cangkir, minum) —
+// semua bentuk SVG sederhana, tanpa emoji.
+function TehGlyph({ kind }: { kind: "air" | "teh" | "cangkir" | "minum" }) {
+  if (kind === "air") {
+    return (
+      <g>
+        <path d="M-8,-8 L-6,10 L6,10 L8,-8 Z" fill={C.primaryFixed} stroke={C.primary} strokeWidth="2" />
+        <path d="M-3,-11 q1.5,-3 0,-6" fill="none" stroke={C.outline} strokeLinecap="round" strokeWidth="1.5" />
+        <path d="M3,-11 q1.5,-3 0,-6" fill="none" stroke={C.outline} strokeLinecap="round" strokeWidth="1.5" />
+      </g>
+    );
+  }
+  if (kind === "teh") {
+    return (
+      <g>
+        <ellipse cx="0" cy="3" fill={C.secondaryFixed} rx="10" ry="8" stroke={C.secondary} strokeWidth="2" />
+        <path d="M10,-1 Q16,-5 13,-11" fill="none" stroke={C.secondary} strokeLinecap="round" strokeWidth="2.5" />
+        <rect fill={C.secondary} height="3" rx="1" width="7" x="-3.5" y="-8" />
+        <path d="M-10,-1 Q-15,3 -10,7" fill="none" stroke={C.secondary} strokeWidth="2" />
+      </g>
+    );
+  }
+  if (kind === "cangkir") {
+    return (
+      <g>
+        <path d="M-8,-6 L-6,9 L6,9 L8,-6 Z" fill={C.surface} stroke={C.primary} strokeWidth="2" />
+        <path d="M8,-3 Q13,1 8,5" fill="none" stroke={C.primary} strokeWidth="2" />
+        <line stroke={C.outline} strokeLinecap="round" strokeWidth="1.5" x1="-3" y1="-10" x2="-3" y2="-14" />
+        <line stroke={C.outline} strokeLinecap="round" strokeWidth="1.5" x1="2" y1="-10" x2="2" y2="-14" />
+      </g>
+    );
+  }
+  return (
+    <g>
+      <circle cx="0" cy="0" fill={C.tertiaryFixed} r="11" stroke={C.tertiary} strokeWidth="2" />
+      <circle cx="-4" cy="-2" fill={C.tertiary} r="1.6" />
+      <circle cx="4" cy="-2" fill={C.tertiary} r="1.6" />
+      <path d="M-4.5,3.5 Q0,8 4.5,3.5" fill="none" stroke={C.tertiary} strokeLinecap="round" strokeWidth="2" />
+    </g>
+  );
+}
+
 function Grid({
   cells,
   cell = 34,
@@ -67,16 +135,14 @@ function Grid({
           return (
             <g key={`${col}-${row}`}>
               <rect fill={C.tertiaryFixed} height={cell - 2} rx="4" width={cell - 2} x={x + 1} y={y + 1} />
-              <text fill={C.tertiary} fontSize="18" textAnchor="middle" x={x + cell / 2} y={y + cell / 2 + 6}>
-                ★
-              </text>
+              <Star cx={x + cell / 2} cy={y + cell / 2 + 2} scale={0.9} />
             </g>
           );
         if (kind === "key")
           return (
-            <text fill={C.tertiary} fontSize="16" key={`${col}-${row}`} textAnchor="middle" x={x + cell / 2} y={y + cell / 2 + 6}>
-              🔑
-            </text>
+            <g key={`${col}-${row}`}>
+              <KeyGlyph cx={x + cell / 2} cy={y + cell / 2 + 2} scale={0.9} />
+            </g>
           );
         if (kind === "door")
           return <rect fill={C.primaryFixed} height={cell - 2} rx="4" stroke={C.primary} width={cell - 2} x={x + 1} y={y + 1} key={`${col}-${row}`} />;
@@ -166,29 +232,27 @@ function RobotArah() {
         maju 1 langkah
       </text>
       <rect fill={C.tertiaryFixed} height="34" rx="8" width="34" x="360" y="63" />
-      <text fill={C.tertiary} fontSize="18" textAnchor="middle" x="377" y="87">
-        ★
-      </text>
+      <Star cx={377} cy={80} scale={0.9} />
     </Frame>
   );
 }
 
 function UrutanTeh() {
   const cards = [
-    { x: 30, icon: "🥛", label: "Air panas" },
-    { x: 150, icon: "🫖", label: "Teh" },
-    { x: 270, icon: "☕", label: "Cangkir" },
-    { x: 390, icon: "😋", label: "Minum" },
+    { x: 30, kind: "air" as const, label: "Air panas" },
+    { x: 150, kind: "teh" as const, label: "Teh" },
+    { x: 270, kind: "cangkir" as const, label: "Cangkir" },
+    { x: 390, kind: "minum" as const, label: "Minum" },
   ];
   return (
     <Frame>
       {cards.map((c) => (
-        <g key={c.icon}>
+        <g key={c.label}>
           <rect fill={C.surfaceHigh} height="90" rx="12" stroke={C.outline} strokeWidth="2" width="60" x={c.x} y="35" />
-          <text fontSize="28" textAnchor="middle" x={c.x + 30} y="80">
-            {c.icon}
-          </text>
-          <text fill={C.primary} fontSize="10" textAnchor="middle" x={c.x + 30} y="145">
+          <g transform={`translate(${c.x + 30} 72)`}>
+            <TehGlyph kind={c.kind} />
+          </g>
+          <text fill={C.primary} fontSize="10" textAnchor="middle" x={c.x + 30} y={145}>
             {c.label}
           </text>
         </g>
@@ -248,9 +312,7 @@ function RuteDebug() {
         belok kiri?
       </text>
       <rect fill={C.tertiaryFixed} height="34" rx="8" width="34" x="335" y="63" />
-      <text fill={C.tertiary} fontSize="18" textAnchor="middle" x="352" y="87">
-        ★
-      </text>
+      <Star cx={352} cy={80} scale={0.9} />
       <text fill={C.primary} fontSize="12" fontWeight="bold" x="400" y="85">
         bintang
       </text>
@@ -331,9 +393,7 @@ function RuteLangkah() {
         3
       </text>
       <rect fill={C.tertiaryFixed} height="34" rx="8" width="34" x="263" y="26" />
-      <text fill={C.tertiary} fontSize="18" textAnchor="middle" x="280" y="50">
-        ★
-      </text>
+      <Star cx={280} cy={43} scale={0.9} />
       <text fill={C.primary} fontSize="12" fontWeight="bold" x="330" y="70">
         langkah 2
       </text>

@@ -234,9 +234,10 @@ export default function BerandaPage() {
                           {item.badge}
                         </div>
                         <span
-                          className={`font-label-badge text-label-badge px-2.5 py-1 rounded-full font-bold ${item.chip}`}
+                          className={`font-label-badge text-label-badge px-2.5 py-1 rounded-full font-bold inline-flex items-center gap-1 ${item.chip}`}
                         >
-                          🎮 {item.game}
+                          <span className="material-symbols-outlined text-[14px]">sports_esports</span>
+                          {item.game}
                         </span>
                       </div>
                       <div className="flex flex-col gap-space-xs">

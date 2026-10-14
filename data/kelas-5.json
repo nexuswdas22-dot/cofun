@@ -33,7 +33,7 @@
           "brief": "Gunakan satu ULANGI berisi maju dan belok untuk mencapai bintang. Batas blok: 5.",
           "tujuan": "Siswa mengatur perulangan yang berisi beberapa gerakan.",
           "materi": "Perulangan dapat menjalankan beberapa instruksi secara berulang.",
-          "contoh": "Dua gerakan (maju lalu belok) diulang dua kali membentuk pola tangga.",
+          "contoh": "Isi ULANGI: Maju, Belok Kanan, Maju, Belok Lalu jalankan ULANGI 3 kali. Satu putaran menaiki satu anak tangga; pada putaran terakhir robot sudah menginjak bintang.",
           "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah membentuk pola tangga.",
           "batasan": [
             "Siswa sudah memahami perulangan dasar.",
@@ -41,10 +41,10 @@
           ],
           "kriteria": "Robot menyelesaikan rute tanpa tabrakan dengan batas blok terpenuhi.",
           "hints": [
-            "Periksa seluruh isi perulangan, bukan hanya jumlah pengulangannya."
+            "Isi ULANGI: Maju, Belok Kanan, Maju, Belok Lalu jumlah pengulangannya 3."
           ],
           "feedbackSukses": "Kamu mengatur pola berulang dengan tepat.",
-          "feedbackGagal": "Periksa urutan instruksi di dalam perulangan.",
+          "feedbackGagal": "Putaran yang benar: Maju, Belok Kanan, Maju, Belok diulang 3 kali. Dua kali tidak sampai, empat kali menabrak.",
           "maze": {
             "size": 4,
             "cells": [
@@ -98,10 +98,10 @@
       "nomor": 2,
       "title": "Level 2 — Kondisi Kompleks",
       "topic": "Program dapat memilih tindakan berbeda untuk situasi berbeda.",
-      "desc": "Setiap cabang JIKA harus punya tujuan yang jelas. Uji tiap kemungkinan keadaan.",
+      "desc": "Setiap blok kondisi harus punya tujuan yang jelas. Uji tiap kemungkinan keadaan.",
       "skills": [
         "Menangani beberapa situasi",
-        "Membaca cabang JIKA dan SELAIN ITU",
+        "Membaca blok JIKA rintangan dan Kalau tidak",
         "Menguji setiap kemungkinan"
       ],
       "btnText": "Mulai Level 2",
@@ -116,18 +116,18 @@
           "brief": "Pilih tindakan yang benar untuk setiap situasi di jalan robot.",
           "tujuan": "Siswa menangani beberapa keadaan menggunakan kondisi.",
           "materi": "Program dapat memilih tindakan berbeda untuk situasi yang berbeda.",
-          "contoh": "Jika ada batu di depan maka belok, selain itu maju.",
+          "contoh": "JIKA ada rintangan di depan: belok. Kalau tidak ada rintangan di depan: maju.",
           "kondisiAwal": "Dua situasi diuji: (1) batu di depan robot, (2) jalan di depan robot aman.",
           "batasan": [
             "Gunakan kondisi yang didukung engine.",
-            "Setiap cabang punya tujuan jelas."
+            "Setiap blok kondisi punya tujuan jelas."
           ],
           "kriteria": "Program memberikan tindakan yang benar pada kedua skenario.",
           "hints": [
-            "Uji setiap kemungkinan keadaan dan amati cabang yang dijalankan."
+            "Uji setiap kemungkinan keadaan dan amati blok kondisi yang dijalankan."
           ],
           "feedbackSukses": "Programmu menangani semua situasi yang diuji.",
-          "feedbackGagal": "Periksa cabang yang belum memberikan tindakan sesuai keadaan.",
+          "feedbackGagal": "Periksa blok kondisi yang belum memberikan tindakan sesuai keadaan.",
           "kuis": {
             "mode": "pilihan",
             "pertanyaan": "Jika ada batu di depan robot, tindakan apa yang benar? Jika jalan aman, tindakan apa yang benar?",
@@ -243,7 +243,7 @@
           "tujuan": "Siswa menggabungkan variabel, perulangan, dan kondisi.",
           "materi": "Program dapat mengelola perubahan sambil menjalankan instruksi berulang dan memilih tindakan berdasarkan kondisi.",
           "contoh": "Perulangan menjalankan isinya beberapa kali, dan setiap putaran memeriksa kondisi lagi.",
-          "kondisiAwal": "Program: ULANGI 3 [JIKA batu di depan: belok, SELAIN ITU: maju].",
+          "kondisiAwal": "Program: ULANGI 3 [JIKA ada rintangan di depan: belok; Kalau tidak ada rintangan di depan: maju].",
           "batasan": [
             "Semua konsep sudah diperkenalkan.",
             "Nilai awal dan aturan perubahan jelas."
@@ -300,54 +300,54 @@
           "urutan": 1,
           "tipe": "blockly",
           "title": "Uji Satu Bagian Dulu",
-          "brief": "Robot harus sampai bintang. Program ini gagal di bagian turun. Ubah dengan menguji satu bagian dulu.",
+          "brief": "Program awal punya dua kesalahan: arah belok salah dan jumlah pengulangan kurang. Uji tiap bagian, lalu perbaiki agar robot sampai bintang.",
           "tujuan": "Siswa merancang, menguji, dan memperbaiki program dengan beberapa tujuan.",
           "materi": "Program kompleks lebih mudah diperbaiki jika diuji per bagian.",
-          "contoh": "Uji dulu jalur lurus, baru uji jalur turun.",
-          "kondisiAwal": "Robot di kiri atas menghadap kanan. Bintang di kanan bawah. Ada batu di jalur turun.",
+          "contoh": "Uji bagian lurus dulu (berhasil). Lalu perbaiki arah belok, dan tambahkan satu kali pengulangan di ULANGI kedua supaya robot menginjak bintang.",
+          "kondisiAwal": "Robot menghadap ke bawah. Bintang ada di ujung jalur membelok. Program awal memakai Belok Kanan sehingga robot keluar jalur, dan ULANGI kedua hanya 2 kali sehingga langkahnya kurang satu.",
           "batasan": [
             "Gunakan konsep yang telah dipelajari.",
             "Tujuan dan syarat harus jelas.",
-            "Gunakan paling banyak 6 blok."
+            "Gunakan paling banyak 5 blok."
           ],
           "kriteria": "Robot mencapai bintang dengan batas blok terpenuhi.",
           "hints": [
-            "Uji satu bagian program terlebih dahulu."
+            "Dua perbaikan: ganti Belok Kanan menjadi Belok Kiri, lalu ubah ULANGI kedua dari 2 kali menjadi 3 kali."
           ],
           "feedbackSukses": "Misi strategis selesai melalui perencanaan dan pengujian.",
-          "feedbackGagal": "Pilih satu bagian program untuk diperiksa lebih dahulu.",
+          "feedbackGagal": "Uji bagian per bagian: bagian lurus, bagian belok, lalu bagian turun.",
           "maze": {
             "size": 4,
             "cells": [
               [
                 "start",
-                "path",
-                "path",
+                "empty",
+                "empty",
                 "empty"
               ],
               [
-                "empty",
-                "empty",
                 "path",
+                "empty",
+                "empty",
                 "empty"
               ],
               [
+                "path",
                 "empty",
                 "empty",
-                "rock",
-                "path"
+                "empty"
               ],
               [
-                "empty",
-                "empty",
-                "empty",
+                "path",
+                "path",
+                "path",
                 "goal"
               ]
             ],
             "start": {
               "col": 0,
               "row": 0,
-              "facing": "timur"
+              "facing": "selatan"
             }
           },
           "allowedBlocks": [
@@ -358,9 +358,49 @@
           ],
           "winCondition": {
             "type": "reach_goal",
-            "maxBlocks": 6
+            "maxBlocks": 5
           },
-          "difficulty": 3
+          "difficulty": 3,
+          "initialBlocks": {
+            "blocks": {
+              "languageVersion": 0,
+              "blocks": [
+                {
+                  "type": "cf_ulangi",
+                  "fields": {
+                    "COUNT": 3
+                  },
+                  "inputs": {
+                    "DO": {
+                      "block": {
+                        "type": "cf_maju"
+                      }
+                    }
+                  },
+                  "next": {
+                    "block": {
+                      "type": "cf_belok_kanan",
+                      "next": {
+                        "block": {
+                          "type": "cf_ulangi",
+                          "fields": {
+                            "COUNT": 2
+                          },
+                          "inputs": {
+                            "DO": {
+                              "block": {
+                                "type": "cf_maju"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
         }
       ],
       "visual": null

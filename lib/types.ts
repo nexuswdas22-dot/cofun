@@ -41,6 +41,8 @@ export type WinCondition = {
   type: "reach_goal";
   maxSteps?: number;
   maxBlocks?: number;
+  // Workspace harus memuat minimal satu blok dari tipe ini (mis. blok JIKA).
+  requireAnyBlock?: string[];
 };
 
 export type ChallengeTipe = "blockly" | "kuis";
